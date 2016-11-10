@@ -1,0 +1,48 @@
+AppBundle\Entity\Modelo:
+    type: entity
+    table: modelo
+    indexes:
+        fk_MODELO_MARCA1_idx:
+            columns:
+                - MARCA_MAR_ID
+    uniqueConstraints:
+        MAR_ID_UNIQUE:
+            columns:
+                - MOD_ID
+    id:
+        modId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: MOD_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        modNombre:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: MOD_NOMBRE
+        modObservacion:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: MOD_OBSERVACION
+    manyToOne:
+        marcaMar:
+            targetEntity: Marca
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                MARCA_MAR_ID:
+                    referencedColumnName: MAR_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

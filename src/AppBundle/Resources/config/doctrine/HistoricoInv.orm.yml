@@ -1,0 +1,44 @@
+AppBundle\Entity\HistoricoInv:
+    type: entity
+    table: historico_inv
+    indexes:
+        fk_HISTORICO_INV_INVENTARIO1_idx:
+            columns:
+                - INVENTARIO_INV_ID
+    uniqueConstraints:
+        HIS_INV_ID_UNIQUE:
+            columns:
+                - HIS_INV_ID
+    id:
+        hisInvId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: HIS_INV_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        hisInvFecha:
+            type: date
+            nullable: false
+            column: HIS_INV_FECHA
+        hisInvCantidad:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: HIS_INV_CANTIDAD
+    manyToOne:
+        inventarioInv:
+            targetEntity: Inventario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                INVENTARIO_INV_ID:
+                    referencedColumnName: INV_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

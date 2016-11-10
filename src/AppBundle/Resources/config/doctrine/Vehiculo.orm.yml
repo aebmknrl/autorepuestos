@@ -1,0 +1,61 @@
+AppBundle\Entity\Vehiculo:
+    type: entity
+    table: vehiculo
+    indexes:
+        fk_VEHICULO_MODELO1_idx:
+            columns:
+                - MODELO_MOD_ID
+    uniqueConstraints:
+        VEH_ID_UNIQUE:
+            columns:
+                - VEH_ID
+    id:
+        vehId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: VEH_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        anioAniId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: ANIO_ANI_ID
+        vehVariante:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: VEH_VARIANTE
+        vehVin:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: VEH_VIN
+        nota:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: NOTA
+    manyToOne:
+        modeloMod:
+            targetEntity: Modelo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                MODELO_MOD_ID:
+                    referencedColumnName: MOD_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

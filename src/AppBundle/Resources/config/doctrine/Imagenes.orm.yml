@@ -1,0 +1,37 @@
+AppBundle\Entity\Imagenes:
+    type: entity
+    table: imagenes
+    indexes:
+        fk_IMAGENES_PARTE1_idx:
+            columns:
+                - PARTE_PAR_ID
+    id:
+        imgId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: IMG_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        imgUbicacion:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: IMG_UBICACION
+    manyToOne:
+        partePar:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PARTE_PAR_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

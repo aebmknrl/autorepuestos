@@ -1,0 +1,176 @@
+AppBundle\Entity\Parte:
+    type: entity
+    table: parte
+    indexes:
+        fk_PARTE_EQ2_idx:
+            columns:
+                - PAR_EQ_ID
+        fk_PARTE_FABRICANTE1_idx:
+            columns:
+                - FABRICANTE_FAB_ID
+        fk_PARTE_KIT2_idx:
+            columns:
+                - KIT_ID
+    uniqueConstraints:
+        PAR_ID_UNIQUE:
+            columns:
+                - PAR_ID
+        PAR_UPC_UNIQUE:
+            columns:
+                - PAR_UPC
+    id:
+        parId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: PAR_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        parUpc:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+                comment: 'CODIGO UPC 12 DIGITOS'
+            column: PAR_UPC
+        parNombre:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 'NOMBRE INTERNACIONAL TRADUCIDO DEL INGLES'
+            column: PAR_NOMBRE
+        parNombret:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 'NOMBRE COLOQUIAL DE LA PIEZA'
+            column: PAR_NOMBRET
+        parNombrein:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: PAR_NOMBREIN
+        parAsin:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+                comment: 'CODIGO EN AMAZON'
+            column: PAR_ASIN
+        parCodigo:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+                comment: 'CODIGO INTERNO DEL FABRICANTE'
+            column: PAR_CODIGO
+        parGrupo:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+                comment: 'NOMBRE DEL CONJUNTO O SISTEMA AL QUE PERTENECE, SUSPENCION,FRENOS'
+            column: PAR_GRUPO
+        parSubgrupo:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+                comment: 'SUBCATEGORIA DENTRO DE PARTES, SUSPENCION NORMAL REFORZADOS EXTRAREFORZADOS'
+            column: PAR_SUBGRUPO
+        parLargo:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+                comment: 'EMPAQUE CM'
+            column: PAR_LARGO
+        parAncho:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: PAR_ANCHO
+        parEspesor:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: PAR_ESPESOR
+        parPeso:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+                comment: KILOS
+            column: PAR_PESO
+        parCaract:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+                comment: 'MEDIADAS, POSICION O UBICACION EN EL VEHICULO'
+            column: PAR_CARACT
+        parObservacion:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+                comment: 'TIPS, RECOMENDACIONES '
+            column: PAR_OBSERVACION
+        parKit:
+            type: boolean
+            nullable: false
+            column: PAR_KIT
+    manyToOne:
+        parEq:
+            targetEntity: EquivalenciaV2
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PAR_EQ_ID:
+                    referencedColumnName: id
+            orphanRemoval: false
+        fabricanteFab:
+            targetEntity: Fabricante
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                FABRICANTE_FAB_ID:
+                    referencedColumnName: FAB_ID
+            orphanRemoval: false
+        kit:
+            targetEntity: ConjuntoV2
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                KIT_ID:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

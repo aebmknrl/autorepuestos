@@ -1,0 +1,51 @@
+AppBundle\Entity\Proveedor:
+    type: entity
+    table: proveedor
+    id:
+        provId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: PROV_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        provNombre:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: PROV_NOMBRE
+        provDireccion:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: PROV_DIRECCION
+        provRif:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: PROV_RIF
+        provStatus:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+                default: ACTIVO
+            column: PROV_STATUS
+        provObservacion:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: PROV_OBSERVACION
+    lifecycleCallbacks: {  }

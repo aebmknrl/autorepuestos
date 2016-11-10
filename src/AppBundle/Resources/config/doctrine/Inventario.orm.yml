@@ -1,0 +1,73 @@
+AppBundle\Entity\Inventario:
+    type: entity
+    table: inventario
+    indexes:
+        fk_INVENTARIO_PROVEEDOR1_idx:
+            columns:
+                - PROVEEDOR_PROV_ID
+        fk_INVENTARIO_PARTE1_idx:
+            columns:
+                - PARTE_PAR_ID
+    uniqueConstraints:
+        INV_ID_UNIQUE:
+            columns:
+                - INV_ID
+    id:
+        invId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: INV_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        invCantidad:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: INV_CANTIDAD
+        invPrecio:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: INV_PRECIO
+        invEmpaque:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 'EN CASO DE CANTIDAD MINIMA DE VENTA'
+            column: INV_EMPAQUE
+        invObservacion:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: INV_OBSERVACION
+    manyToOne:
+        partePar:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PARTE_PAR_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+        proveedorProv:
+            targetEntity: Proveedor
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PROVEEDOR_PROV_ID:
+                    referencedColumnName: PROV_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

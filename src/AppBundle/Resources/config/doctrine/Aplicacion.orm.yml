@@ -1,0 +1,56 @@
+AppBundle\Entity\Aplicacion:
+    type: entity
+    table: aplicacion
+    indexes:
+        fk_APLICACION_VEHICULO1_idx:
+            columns:
+                - VEHICULO_VEH_ID
+        fk_APLICACION_PARTE1_idx:
+            columns:
+                - PARTE_PAR_ID
+    id:
+        aplId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: APL_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        aplCantidad:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: APL_CANTIDAD
+        aplObservacion:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: APL_OBSERVACION
+    manyToOne:
+        partePar:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PARTE_PAR_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+        vehiculoVeh:
+            targetEntity: Vehiculo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                VEHICULO_VEH_ID:
+                    referencedColumnName: VEH_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

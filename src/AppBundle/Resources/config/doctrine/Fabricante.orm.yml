@@ -1,0 +1,46 @@
+AppBundle\Entity\Fabricante:
+    type: entity
+    table: fabricante
+    uniqueConstraints:
+        FAB_ID_UNIQUE:
+            columns:
+                - FAB_ID
+    id:
+        fabId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: FAB_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        fabNombre:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: FAB_NOMBRE
+        fabDescripcion:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: FAB_DESCRIPCION
+        fabPais:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: FAB_PAIS
+        fabTiempo:
+            type: date
+            nullable: true
+            options:
+                comment: 'ANIOO EN LA QUE FUE FUNDAD'
+            column: FAB_TIEMPO
+    lifecycleCallbacks: {  }
