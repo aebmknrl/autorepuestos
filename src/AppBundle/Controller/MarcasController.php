@@ -78,19 +78,6 @@ class MarcasController extends FOSRestController
             ->getQuery();
         $marcas = $query->getResult();
         return $marcas;
-        
-
-        /*
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Marca');
-        $query = $repository->createQueryBuilder('p')
-            ->getQuery()
-            ->setFirstResult(0)
-            ->setMaxResults(100);
-        $marcas = $query->getResult();
-        $paginator = new Paginator($query, $fetchJoinCollection = true);
-        $c = count($paginator);
-
-        return $paginator;*/
     }
 
      /**
@@ -98,18 +85,31 @@ class MarcasController extends FOSRestController
      */
     public function getAllMarcaPaginatedAction(Request $request)
     {
+        // Set up the limit and page vars from request
         $limit = $request->get('limit');
         $page = $request->get('page');
 
+        // Check if the params are numbers before continue
         if(!is_numeric($limit) || !is_numeric($page)) {
             throw new HttpException (400,"Por favor use solo números");  
         }
 
-        $data = array("config" => array(
-            'limit'=> $limit,
-            'page' => $page
-            )
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Marca');
+        // The dsql syntax query
+        $query = $repository->createQueryBuilder('p')
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        // Build the paginator
+        $paginator = new Paginator($query, $fetchJoinCollection = true);
+        // Construct the response
+        $response = array(
+            'marcas' => $paginator->getIterator(),
+            'totalMarcasReturned' => $paginator->getIterator()->count(),
+            'totalMarcas' => $paginator->count()
         );
-        return $data;
+        // Send the response
+        return $response;
     }
 }   
