@@ -90,14 +90,26 @@ class MarcasController extends FOSRestController
         $page = $request->get('page');
 
         // Check if the params are numbers before continue
-        if(!is_numeric($limit) || !is_numeric($page)) {
-            throw new HttpException (400,"Por favor use solo números");  
+        if(!is_numeric($page)) {
+            throw new HttpException (400,"Por favor use solo números para la página");  
+        }
+        // Check if the limit asked has all or not.
+        if (!is_numeric($limit)) {
+            if ($limit != 'todos') {
+                if ($limit != 'Todos') {
+                    throw new HttpException (400,"Por favor use solo números para el límite o indique si son 'todos'");  
+                } else {
+                    $limit = 10000;
+                }
+            } else {
+                $limit = 10000;
+            }
         }
 
         // Connect with the autoparts db repository
         $repository = $this->getDoctrine()->getRepository('AppBundle:Marca');
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('p')
+        $query = $repository->createQueryBuilder('marca')
             ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
@@ -108,6 +120,60 @@ class MarcasController extends FOSRestController
             'marcas' => $paginator->getIterator(),
             'totalMarcasReturned' => $paginator->getIterator()->count(),
             'totalMarcas' => $paginator->count()
+        );
+        // Send the response
+        return $response;
+    }
+    /**
+     * @Rest\Get("/marca/{limit}/{page}/{searchtext}")
+     */
+    public function getAllMarcaPaginatedSearchAction(Request $request)
+    {
+        // Set up the limit and page vars from request
+        $limit = $request->get('limit');
+        $page = $request->get('page');
+        $searchtext = $request->get('searchtext');
+
+        // Check if the params are numbers before continue
+        if(!is_numeric($page)) {
+            throw new HttpException (400,"Por favor use solo números para la página");  
+        }
+        // Check if the limit asked has all or not.
+        if (!is_numeric($limit)) {
+            if ($limit != 'todos') {
+                if ($limit != 'Todos') {
+                    throw new HttpException (400,"Por favor use solo números para el límite o indique si son 'todos'");  
+                } else {
+                    $limit = 10000;
+                }
+            } else {
+                $limit = 10000;
+            }
+        }
+
+        if($searchtext == ""){
+            throw new HttpException (400,"Escriba un texto para la búsqueda"); 
+        }
+
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Marca');
+        // The dsql syntax query
+        $query = $repository->createQueryBuilder('marca')
+            ->where('marca.marObservacion LIKE :searchtext')
+            ->orWhere('marca.marNombre LIKE :searchtext')
+            ->orWhere('marca.marId LIKE :searchtext')
+            ->setParameter('searchtext',"%" .$searchtext ."%")
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        // Build the paginator
+        $paginator = new Paginator($query, $fetchJoinCollection = true);
+        // Construct the response
+        $response = array(
+            'marcas' => $paginator->getIterator(),
+            'totalMarcasReturned' => $paginator->getIterator()->count(),
+            'totalMarcas' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;
