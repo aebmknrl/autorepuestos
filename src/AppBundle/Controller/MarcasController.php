@@ -178,4 +178,49 @@ class MarcasController extends FOSRestController
         // Send the response
         return $response;
     }
+
+
+    /**
+     * @Rest\Post("/marca/edit/{marcaid}")
+     */
+     public function postUpdateMarcaAction(Request $request)
+     {
+         $marcaid = $request->get('marcaid');
+         $nombre = $request->get('nombre');
+         $observacion = $request->get('observacion');
+
+         if($marcaid == "" || !$marcaid){
+             throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
+         }
+
+          if($nombre == ""){
+                throw new HttpException (400,"El campo nombre no puede estar vacío");   
+            }
+            if($observacion == ""){
+                throw new HttpException (400,"El campo observacion no puede estar vacío");   
+            }
+         
+         $em = $this->getDoctrine()->getManager();
+         $marca = $em->getRepository('AppBundle:Marca')
+            ->find($marcaid);
+
+
+        if (!$marca) {
+        throw new HttpException (400,"No se ha encontrado la marca especificada: " .$marcaid);
+         }
+
+        $marca->setMarNombre($nombre);
+        $marca->setMarObservacion($observacion);
+        $em->flush();
+
+        $data = array(
+            'message' => 'La marca ha sido actualizada',
+             'marcaid' => $marcaid,
+             'nombre' => $nombre,
+             'observacion' => $observacion
+         );
+
+         return $request;
+
+     }
 }   
