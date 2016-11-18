@@ -42,10 +42,10 @@ class MarcasController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $data = array("Marca" => array(
+            $data = array("marca" => array(
                 array(
-                    "Marca:"   => $nombre,
-                    "ID" => $marca->getMarId()
+                    "marca"   => $nombre,
+                    "id" => $marca->getMarId()
                     )
                 )  
             ); 
