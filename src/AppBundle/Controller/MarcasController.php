@@ -63,7 +63,7 @@ class MarcasController extends FOSRestController
         $marcaid = $request->get('marcaid');
 
         $repository = $this->getDoctrine()->getRepository('AppBundle:Marca');
-        $marcas = $repository->findAll();
+        $marcas = $repository->findOneBymarId($marcaid);
         return $marcas;
     }
     
