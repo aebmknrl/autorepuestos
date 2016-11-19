@@ -4,7 +4,6 @@ app:
 app_bundle_api:
     type:     rest
     prefix:   /api
-<<<<<<< HEAD
     resource: "@AppBundle/Resources/config/api-rest-routing.yml"
 # FOSUserBundle
 fos_user_security:
@@ -27,6 +26,3 @@ fos_user_change_password:
     prefix: /profile
 api_login_check:
     path: /api/login_check
-=======
-    resource: "@AppBundle/Resources/config/api-rest-routing.yml"
->>>>>>> parent of cc604b8... LexikJWTAuthenticationBundle installed and configured
