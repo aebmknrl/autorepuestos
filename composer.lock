@@ -4,8 +4,13 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "hash": "26b6bdc06eb282a83f10026bd7d99452",
     "content-hash": "5b01f621b0a269fce30ade2369a50165",
+=======
+    "hash": "dcaf865ce137aaef6c1e2d011d74cf33",
+    "content-hash": "e3e354152318926b13dc141fee0d27aa",
+>>>>>>> parent of cc604b8... LexikJWTAuthenticationBundle installed and configured
     "packages": [
         {
             "name": "doctrine/annotations",
