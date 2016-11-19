@@ -77,6 +77,11 @@ nelmio_cors:
             allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE','OPTIONS']
             max_age: 3600
+# FOS Users
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
 
 # REST API Config
 fos_rest:
