@@ -220,7 +220,33 @@ class MarcasController extends FOSRestController
              'observacion' => $observacion
          );
 
-         return $request;
+         return $data;
 
      }
+
+    /**
+     * @Rest\Delete("/marca/delete/{marcaid}")
+     */
+    public function deleteRemoveMarcaAction(Request $request)
+    {
+        $marcaid = $request->get('marcaid');
+
+        // get EntityManager
+        $em = $this->getDoctrine()->getManager();
+        $marcatoremove = $em->getRepository('AppBundle:Marca')->find($marcaid);
+
+        if ($marcatoremove != "") {      
+            // Remove it and flush
+            $em->remove($marcatoremove);
+            $em->flush();
+            $data = array(
+                'message' => 'La marca ha sido eliminada',
+                'marcaid' => $marcaid
+            );
+             return $data;
+        } else{
+            throw new HttpException (400,"No se ha encontrado la marca especificada: " .$marcaid);
+        }
+        
+    }
 }   
