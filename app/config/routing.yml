@@ -5,3 +5,5 @@ app_bundle_api:
     type:     rest
     prefix:   /api
     resource: "@AppBundle/Resources/config/api-rest-routing.yml"
+api_login_check:
+    path: /api/login_check
