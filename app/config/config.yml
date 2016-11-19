@@ -89,9 +89,3 @@ fos_rest:
         rules:
             - { path: ^/api, priorities: [ json ], fallback_format: json, prefer_extension: true }
             - { path: ^/, priorities: [ html ], fallback_format: html, prefer_extension: true }
-
-lexik_jwt_authentication:
-    private_key_path:   "%jwt_private_key_path%"
-    public_key_path:    "%jwt_public_key_path%"
-    pass_phrase:    "%jwt_key_pass_phrase%"
-    token_ttl:  "%jwt_token_ttl%"
