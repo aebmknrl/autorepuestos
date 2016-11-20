@@ -3,8 +3,11 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\User;
 
 class DefaultController extends Controller
 {
@@ -17,5 +20,25 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
+    }
+    /**
+     * @Route("/register", name="register")
+     * @Method({"POST"})
+     */
+    public function registerAction(Request $request)
+    {
+        $em = $this->get('doctrine')->getManager();
+        $encoder = $this->container->get('security.password_encoder');
+
+        $username = $request->request->get('_username');
+        $password = $request->request->get('_password');
+
+        $user = new User($username);
+        $user->setPassword($encoder->encodePassword($user, $password));
+
+        $em->persist($user);
+        $em->flush($user);
+
+        return new Response(sprintf('User %s successfully created', $user->getUsername()));
     }
 }
