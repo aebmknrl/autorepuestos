@@ -10,3 +10,12 @@ services:
     app.jwt_token_authenticator:
         parent: lexik_jwt_authentication.security.guard.jwt_token_authenticator
         class: AppBundle\Security\Guard\JWTAuthenticator
+    acme_api.event.jwt_created_listener:
+        class: AppBundle\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+    acme_api.event.authentication_success_listener:
+        class: AppBundle\EventListener\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
