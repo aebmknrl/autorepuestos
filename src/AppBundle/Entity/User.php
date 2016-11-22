@@ -35,10 +35,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
-     * @ORM\JoinTable(name="user_role",
-     * joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", cascade="persist")
      * @var ArrayCollection $roles
      */
     private $roles;
@@ -137,7 +134,6 @@ class User implements AdvancedUserInterface, \Serializable
     public function addRole(\AppBundle\Entity\Role $role)
     {
         $this->roles[] = $role;
-
         return $this;
     }
 
