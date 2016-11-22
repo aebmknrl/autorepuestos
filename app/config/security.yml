@@ -6,6 +6,7 @@ security:
             algorithm: bcrypt
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     role_hierarchy:
+        ROLE_CLIENT: ROLE_CLIENT
         ROLE_ADMIN: ROLE_ADMIN
 
     providers:
@@ -45,4 +46,4 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: ROLE_ADMIN }

@@ -15,12 +15,19 @@ class AuthenticationSuccessListener {
     {
         $data = $event->getData();
         $user = $event->getUser();
+        $roles =  $event->getUser()->getRoles();
 
+        $role_length = count($roles); 
 
+        $role_list = array();
 
-        $data['data'] = array(
-            'roles' => $event->getUser()->getRoles()
-        );
+        for ($i=0; $i <$role_length ; $i++) { 
+        array_push($role_list,$roles[$i]->getRole());
+        }
+
+            $data['data'] = array(
+                'roles' => $role_list
+            );
 
         $event->setData($data);
     }

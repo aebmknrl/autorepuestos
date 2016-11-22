@@ -30,10 +30,19 @@ class JWTCreatedListener
     public function onJWTCreated(JWTCreatedEvent $event)
     {
         $request = $this->requestStack->getCurrentRequest();
+        
+        // Work of roles
+        $roles = $event->getUser()->getRoles();
+        $role_length = count($roles); 
+        $role_list = array();
+        for ($i=0; $i <$role_length ; $i++) { 
+        array_push($role_list,$roles[$i]->getRole());
+        }
+
 
         $payload       = $event->getData();
         $payload['ip'] = $request->getClientIp();
-        $payload['roles'] = $event->getUser()->getRoles();
+        $payload['roles'] = $role_list;
 
         $event->setData($payload);
     }

@@ -1,5 +1,5 @@
 <?php
-// src/Acme/Bundle/UserBundle/Entity/Role.php
+
 namespace AppBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="acme_role")
+ * @ORM\Table(name="system_roles")
  * @ORM\Entity()
  */
 class Role implements RoleInterface
@@ -46,8 +46,6 @@ class Role implements RoleInterface
     {
         return $this->role;
     }
-
-    // ... getters and setters for each property
 
     /**
      * Get id
