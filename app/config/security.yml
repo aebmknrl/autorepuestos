@@ -6,8 +6,8 @@ security:
             algorithm: bcrypt
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     role_hierarchy:
-        ROLE_CLIENT: ROLE_CLIENT
-        ROLE_ADMIN: ROLE_ADMIN
+        ROLE_CLIENT: [ROLE_CLIENT]
+        ROLE_ADMIN: [ROLE_CLIENT, ROLE_ADMIN]
 
     providers:
         entity_provider:
@@ -33,6 +33,10 @@ security:
             pattern:  ^/api/user/register
             stateless: true
             anonymous: true
+            provider: entity_provider
+            guard:
+                authenticators:
+                    - app.jwt_token_authenticator
 
         api:
             pattern:  ^/api
