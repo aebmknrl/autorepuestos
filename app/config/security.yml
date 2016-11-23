@@ -30,7 +30,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         register:
-            pattern:  ^/api/register
+            pattern:  ^/api/user/register
             stateless: true
             anonymous: true
 
@@ -45,5 +45,5 @@ security:
 
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: ROLE_ADMIN }
+        - { path: ^/api/user, roles: ROLE_ADMIN }
+        - { path: ^/api, roles: ROLE_CLIENT }

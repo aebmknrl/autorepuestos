@@ -16,7 +16,7 @@ use AppBundle\Entity\Role;
 class UsersController extends FOSRestController
 {
 	/**
-     * @Rest\Post("/register")
+     * @Rest\Post("/user/register")
      */
     public function registerAction(Request $request)
     {
@@ -36,7 +36,7 @@ class UsersController extends FOSRestController
     }
 
 	/**
-     * @Rest\Post("/addrole")
+     * @Rest\Post("/user/addrole")
      */
      public function addRoleAction(Request $request)
     {
@@ -81,10 +81,14 @@ THE GOOD CODE:
         if(!in_array($assignedRole,$role_list)){
             $role = $em->getRepository('AppBundle:Role')
                 ->findOneBy(array('role' => $assignedRole));
+            // If the role gives not exists, throw error
+            if (!$role) {
+                throw new HttpException (400,"No se ha encontrado el rol solicitado: " .$assignedRole);
+            }
+            // If exists the role, save
             $user->addRole($role);
             $em->persist($user); // persisting only the user. 
-            $em->flush();
-                
+            $em->flush();     
                 $data = array(
                     'result' => 'Rol asignado',
                     'user' => $userid,
@@ -99,10 +103,55 @@ THE GOOD CODE:
 
 
 	/**
-     * @Rest\Post("/updateroles")
+     * @Rest\Post("/user/removerole")
      */
-     public function updateRolesAction(Request $request)
+     public function removeRoleAction(Request $request)
     {
+        $userid = $request->get('userid');
+        $assignedRole = $request->get('role');
+        $assignedRoleName = $request->get('role_name');
+        
+        // Obtain the User
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->find($userid);
+      
+      // If the user gives not exists, throw error
+        if (!$user) {
+            throw new HttpException (400,"No se ha encontrado el usuario solicitado: " .$userid);
+         }
+
+         // obtain present user roles
+        $presentRoles = $user->getRoles();
+        $role_length = count($presentRoles); 
+        $role_list = array();
+        for ($i=0; $i <$role_length ; $i++) { 
+        array_push($role_list,$presentRoles[$i]->getRole());
+        }
+
+        if(in_array($assignedRole,$role_list)){
+            $role = $em->getRepository('AppBundle:Role')
+                ->findOneBy(array('role' => $assignedRole));
+            // If the role gives not exists, throw error
+            if (!$role) {
+                throw new HttpException (400,"No se ha encontrado el rol solicitado: " .$assignedRole);
+            }
+            // If exists the role, save
+            $user->removeRole($role);
+            $em->persist($user); // persisting only the user. 
+            $em->flush();     
+                $data = array(
+                    'result' => 'Rol eliminado',
+                    'user' => $userid,
+                    'Role' => $assignedRoleName
+                );
+            return $data;
+        } else {
+            throw new HttpException (400,"El usuario no posee el rol solicitado");
+        }
+
+
+
 
     }
 
