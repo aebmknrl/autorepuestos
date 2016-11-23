@@ -46,7 +46,7 @@ class UsersController extends FOSRestController
         
         // Obtain the User
         $em = $this->getDoctrine()->getManager();
-         $user = $em->getRepository('AppBundle:User')
+        $user = $em->getRepository('AppBundle:User')
             ->find($userid);
       
       // If the user gives not exists, throw error
@@ -79,16 +79,16 @@ THE GOOD CODE:
 // If the user don't have the role, persist data on DB'
 
         if(!in_array($assignedRole,$role_list)){
-        $role = $em->getRepository('AppBundle:Role')
-                ->findOneBy(array('name' => $assignedRoleName));
-                $user->addRole($role);
-                $em->persist($user); // persisting only the user. 
-                $em->flush();
+            $role = $em->getRepository('AppBundle:Role')
+                ->findOneBy(array('role' => $assignedRole));
+            $user->addRole($role);
+            $em->persist($user); // persisting only the user. 
+            $em->flush();
                 
                 $data = array(
                     'result' => 'Rol asignado',
-                    'user' => $user,
-                    'assignedRole' => $assignedRole
+                    'user' => $userid,
+                    'assignedRole' => $assignedRoleName
                 );
             return $data;
         } else {
