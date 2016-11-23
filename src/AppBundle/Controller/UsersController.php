@@ -28,7 +28,10 @@ class UsersController extends FOSRestController
 
         $user = new User($username);
         $user->setPassword($encoder->encodePassword($user, $password));
-
+        // Set default role
+        $role = $em->getRepository('AppBundle:Role')
+                ->findOneBy(array('name' => 'client'));
+        $user->addRole($role);
         $em->persist($user);
         $em->flush($user);
 
@@ -61,22 +64,7 @@ class UsersController extends FOSRestController
         for ($i=0; $i <$role_length ; $i++) { 
         array_push($role_list,$presentRoles[$i]->getRole());
         }
-
-
-/* 
-VERY BAD CODE:
-         $role = new Role();
-         $role->setRole($assignedRole);
-         $role->setName($assignedRoleName);
-
-THE GOOD CODE:
-        $user->addRole($role);
-        $em->persist($user);
-        $em->flush();
-
-*/
-
-// If the user don't have the role, persist data on DB'
+    // If the user don't have the role, persist data on DB'
 
         if(!in_array($assignedRole,$role_list)){
             $role = $em->getRepository('AppBundle:Role')
