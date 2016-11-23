@@ -124,6 +124,10 @@ class UsersController extends FOSRestController
             if (!$role) {
                 throw new HttpException (400,"No se ha encontrado el rol solicitado: " .$assignedRole);
             }
+            if ($user->getUsername() == 'admin' && $assignedRole == 'ROLE_ADMIN' ) {
+               throw new HttpException (400,"No se puede eliminar el rol solicitado al Administrador del sistema (" .$assignedRole .")");
+            }
+
             // If exists the role, save
             $user->removeRole($role);
             $em->persist($user); // persisting only the user. 
