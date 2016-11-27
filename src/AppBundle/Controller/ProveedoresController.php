@@ -31,11 +31,13 @@ class ProveedoresController extends FOSRestController
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
             }
 
-            if($observacion == ""){
-                throw new HttpException (400,"El campo observacion no puede estar vacío");   
+            if($rif == ""){
+                throw new HttpException (400,"El campo rif no puede estar vacío");   
             }
            
-            
+            if(($estatus == "") || ($estatus != "ACTIVO") && ($estatus != "INACTIVO")){
+                throw new HttpException (400,"El campo estatus no puede estar vacío o debe contener un valor válido");   
+            }
 
             $proveedor = new Proveedor();
             $proveedor -> setProvNombre($nombre);
@@ -45,16 +47,16 @@ class ProveedoresController extends FOSRestController
             $proveedor -> setProvObservacion($observacion);
             $em = $this->getDoctrine()->getManager();
             
-            // tells Doctrine you want to (eventually) save the Product (no queries yet)
+            // tells Doctrine you want to (eventually) save the Proveedor (no queries yet)
             $em->persist($proveedor);
             
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $data = array("Proveedor" => array(
+            $data = array("proveedor" => array(
                 array(
-                    "Proveedor:"   => $nombre,
-                    "ID" => $proveedor->getProvId()
+                    "proveedor"   => $nombre,
+                    "id" => $proveedor->getProvId()
                     )
                 )  
             ); 
@@ -126,7 +128,7 @@ class ProveedoresController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'Proveedores' => $paginator->getIterator(),
+            'proveedores' => $paginator->getIterator(),
             'totalProveedoresReturned' => $paginator->getIterator()->count(),
             'totalProveedores' => $paginator->count()
         );
@@ -182,7 +184,7 @@ class ProveedoresController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'Proveedores' => $paginator->getIterator(),
+            'proveedores' => $paginator->getIterator(),
             'totalProveedoresReturned' => $paginator->getIterator()->count(),
             'totalProveedores' => $paginator->count(),
             'searchedText' => $searchtext
@@ -209,10 +211,18 @@ class ProveedoresController extends FOSRestController
          }
 
 
+            if($nombre == ""){
+                throw new HttpException (400,"El campo nombre no puede estar vacío");   
+            }
+
             if($rif == ""){
                 throw new HttpException (400,"El campo rif no puede estar vacío");   
             }
-         
+           
+            if(($estatus == "") || ($estatus != "ACTIVO") && ($estatus != "INACTIVO")){
+                throw new HttpException (400,"El campo estatus no puede estar vacío o debe contener un valor válido");   
+            }
+
          $em = $this->getDoctrine()->getManager();
          $proveedor = $em->getRepository('AppBundle:Proveedor')
             ->find($provid);
@@ -232,7 +242,7 @@ class ProveedoresController extends FOSRestController
 
         $data = array(
             'message' => 'El Proveedor ha sido actualizado',
-             'Proveedorid' => $provid,
+             'proveedorid' => $provid,
              'nombre' => $nombre,
              'observacion' => $observacion
          );
