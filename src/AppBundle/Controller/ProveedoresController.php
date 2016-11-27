@@ -203,7 +203,7 @@ class ProveedoresController extends FOSRestController
          $nombre = $request->get('nombre');
          $direccion = $request->get('direccion');
          $rif = $request->get('rif');
-         $status = $request->get('estatus');
+         $estatus = $request->get('estatus');
          $observacion = $request->get('observacion');
 
          if($provid == "" || !$provid){
@@ -236,7 +236,7 @@ class ProveedoresController extends FOSRestController
         $proveedor->setProvObservacion($observacion);
         $proveedor -> setProvDireccion($direccion);
         $proveedor -> setProvRif($rif);
-        $proveedor -> setProvStatus($status);
+        $proveedor -> setProvStatus($estatus);
 
         $em->flush();
 
@@ -247,7 +247,7 @@ class ProveedoresController extends FOSRestController
              'observacion' => $observacion
          );
 
-         return $request;
+         return $data;
 
      }
 }   
