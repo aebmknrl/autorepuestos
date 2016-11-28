@@ -250,4 +250,30 @@ class ProveedoresController extends FOSRestController
          return $data;
 
      }
+
+         /**
+     * @Rest\Delete("/proveedor/delete/{provid}")
+     */
+    public function deleteRemoveProveedorAction(Request $request)
+    {
+        $provid = $request->get('provid');
+
+        // get EntityManager
+        $em = $this->getDoctrine()->getManager();
+        $proveedortoremove = $em->getRepository('AppBundle:Proveedor')->find($provid);
+
+        if ($proveedortoremove != "") {      
+            // Remove it and flush
+            $em->remove($proveedortoremove);
+            $em->flush();
+            $data = array(
+                'message' => 'El proveedor ha sido eliminada',
+                'provid' => $provid
+            );
+             return $data;
+        } else{
+            throw new HttpException (400,"No se ha encontrado el proveedor especificado: " .$provid);
+        }
+        
+    }
 }   
