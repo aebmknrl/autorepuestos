@@ -49,10 +49,10 @@ class ModelosController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $data = array("Modelo" => array(
+            $data = array("modelo" => array(
                 array(
-                    "Modelo:"   => $nombre,
-                    "ID" => $modelo->getModId()
+                    "modelo:"   => $nombre,
+                    "id" => $modelo->getModId()
                     )
                 )  
             ); 
