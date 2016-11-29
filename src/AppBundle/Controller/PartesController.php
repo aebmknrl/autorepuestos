@@ -46,10 +46,10 @@ class PartesController extends FOSRestController
 
           
             if($nombre == ""){
-                throw new HttpException (400,"El campo nombre no puede estar vacío");   
+                throw new HttpException (400,"El campo nombre no puede estar vacío");
             }
             if($nombret == ""){
-                throw new HttpException (400,"El campo nombre parte parte no puede estar vacío");   
+                throw new HttpException (400,"El campo nombre pieza no puede estar vacío");   
             }
 
 
@@ -80,10 +80,10 @@ class PartesController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $data = array("Parte" => array(
+            $data = array("parte" => array(
                 array(
-                    "Parte:"   => $nombre,
-                    "ID" => $parte->getParId()
+                    "parte:"   => $nombre,
+                    "id" => $parte->getParId()
                     )
                 )  
             ); 
