@@ -22,21 +22,31 @@ class ModelosController extends FOSRestController
     {
         try {
             
+            // Obtaining vars from request
             $nombre = $request->get('nombre');
             $observacion = $request->get('observacion');
             $marcaid = $request->get('marcaid');
+
+            // Check for mandatory fields
+            if($nombre == ""){
+                throw new HttpException (400,"El campo nombre no puede estar vacío");   
+            }
+            if($marcaid == ""){
+                throw new HttpException (400,"Se necesita proveer de un ID de Marca para relacionar el modelo");   
+            }
+
+
+            // Find the relationship with Marcas
             $marca = $this->getDoctrine()
                 ->getRepository('AppBundle:Marca')
                 ->find($marcaid);
             
-            if($nombre == ""){
-                throw new HttpException (400,"El campo nombre no puede estar vacío");   
-            }
-            if($observacion == ""){
-                throw new HttpException (400,"El campo observacion no puede estar vacío");   
+            if($marca == ""){
+                throw new HttpException (400,"La marca especificada no existe");   
             }
 
 
+            // Create the model
             $modelo = new Modelo();
             $modelo -> setModNombre($nombre);
             $modelo -> setModObservacion($observacion);
