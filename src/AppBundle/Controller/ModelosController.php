@@ -59,7 +59,7 @@ class ModelosController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $data = array("modelo" => array(
+            $data = array("modelos" => array(
                 array(
                     "modelo"   => $nombre,
                     "id" => $modelo->getModId()
@@ -134,7 +134,7 @@ class ModelosController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'modelo' => $paginator->getIterator(),
+            'modelos' => $paginator->getIterator(),
             'totalModelosReturned' => $paginator->getIterator()->count(),
             'totalModelos' => $paginator->count()
         );
