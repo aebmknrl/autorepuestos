@@ -176,8 +176,8 @@ class ModelosController extends FOSRestController
         $repository = $this->getDoctrine()->getRepository('AppBundle:Modelo');
     
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('modelo')->join('modelo.Marca','m')
-            ->where('m.marNombre = :searchtext')
+        $query = $repository->createQueryBuilder('modelo')->join('modelo.marcaMar','m')
+            ->where('m.marNombre LIKE :searchtext')
             ->orwhere('modelo.modObservacion LIKE :searchtext')
             ->orWhere('modelo.modNombre LIKE :searchtext')
             ->orWhere('modelo.modId LIKE :searchtext')
