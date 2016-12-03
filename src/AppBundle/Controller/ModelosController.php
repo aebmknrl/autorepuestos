@@ -61,7 +61,7 @@ class ModelosController extends FOSRestController
             
             $data = array("modelo" => array(
                 array(
-                    "modelo:"   => $nombre,
+                    "modelo"   => $nombre,
                     "id" => $modelo->getModId()
                     )
                 )  
