@@ -220,8 +220,8 @@ class ModelosController extends FOSRestController
           if($nombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
             }
-            if($observacion == ""){
-                throw new HttpException (400,"El campo observacion no puede estar vacío");   
+            if($marcaid == ""){
+                throw new HttpException (400,"Debe especificar un ID de Marca válido");   
             }
          
          $em = $this->getDoctrine()->getManager();
@@ -245,7 +245,7 @@ class ModelosController extends FOSRestController
              'observacion' => $observacion
          );
 
-         return $request;
+         return $data;
 
      }
 }   
