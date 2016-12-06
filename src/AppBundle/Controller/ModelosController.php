@@ -248,4 +248,31 @@ class ModelosController extends FOSRestController
          return $data;
 
      }
+
+    /**
+     * @Rest\Delete("/modelo/delete/{modid}")
+     */
+    public function deleteRemoveModeloAction(Request $request)
+    {
+        $modid = $request->get('modid');
+
+        // get EntityManager
+        $em = $this->getDoctrine()->getManager();
+        $modelotoremove = $em->getRepository('AppBundle:Modelo')->find($modid);
+
+        if ($modelotoremove != "") {      
+            // Remove it and flush
+            $em->remove($modelotoremove);
+            $em->flush();
+            $data = array(
+                'message' => 'El modelo ha sido eliminado',
+                'modid' => $modid
+            );
+             return $data;
+        } else{
+            throw new HttpException (400,"No se ha encontrado el modelo especificado: " .$modid);
+        }
+        
+    }
+
 }   

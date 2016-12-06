@@ -251,7 +251,7 @@ class ProveedoresController extends FOSRestController
 
      }
 
-         /**
+    /**
      * @Rest\Delete("/proveedor/delete/{provid}")
      */
     public function deleteRemoveProveedorAction(Request $request)
