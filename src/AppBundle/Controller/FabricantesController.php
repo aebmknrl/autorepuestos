@@ -51,10 +51,10 @@ class FabricantesController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
 
-            $data = array("Fabricante" => array(
+            $data = array("fabricantes" => array(
                 array(
-                    "Fabricante:"   => $nombre,
-                    "ID" => $fabricante->getFabId()
+                    "fabricante:"   => $nombre,
+                    "id" => $fabricante->getFabId()
                     )
                 )  
             );
@@ -182,8 +182,8 @@ class FabricantesController extends FOSRestController
         // Construct the response
         $response = array(
             'fabricante' => $paginator->getIterator(),
-            'totalModelosReturned' => $paginator->getIterator()->count(),
-            'totalModelos' => $paginator->count(),
+            'totalFabricantesReturned' => $paginator->getIterator()->count(),
+            'totalFabricantes' => $paginator->count(),
             'searchedText' => $searchtext
         );
         // Send the response
@@ -240,7 +240,7 @@ class FabricantesController extends FOSRestController
              'descripcion' => $descripcion
          );
 
-         return $request;
+         return $data;
 
      }
 }   
