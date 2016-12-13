@@ -1,6 +1,10 @@
 AppBundle\Entity\Proveedor:
     type: entity
     table: proveedor
+    uniqueConstraints:
+        PROV_NOMBRE_UNIQUE:
+            columns:
+                - PROV_NOMBRE
     id:
         provId:
             type: integer

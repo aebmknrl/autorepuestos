@@ -1,0 +1,56 @@
+AppBundle\Entity\Conjunto:
+    type: entity
+    table: conjunto
+    indexes:
+        fk_parte_id_idx:
+            columns:
+                - PARTE_ID
+        fk_partekit_id_idx:
+            columns:
+                - PARTEKIT_ID
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        kitRef:
+            type: string
+            nullable: false
+            length: 15
+            options:
+                fixed: false
+            column: KIT_REF
+        kitCount:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: KIT_COUNT
+    manyToOne:
+        parte:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PARTE_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+        partekit:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PARTEKIT_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

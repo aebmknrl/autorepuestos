@@ -9,6 +9,10 @@ AppBundle\Entity\Vehiculo:
         VEH_ID_UNIQUE:
             columns:
                 - VEH_ID
+        inx_var_mod:
+            columns:
+                - MODELO_MOD_ID
+                - VEH_VARIANTE
     id:
         vehId:
             type: integer
@@ -47,6 +51,18 @@ AppBundle\Entity\Vehiculo:
             options:
                 fixed: false
             column: NOTA
+        vehFabDesde:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: VEH_FAB_DESDE
+        vehFabHasta:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: VEH_FAB_HASTA
     manyToOne:
         modeloMod:
             targetEntity: Modelo

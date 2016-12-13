@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Vehiculo
  *
- * @ORM\Table(name="vehiculo", uniqueConstraints={@ORM\UniqueConstraint(name="VEH_ID_UNIQUE", columns={"VEH_ID"})}, indexes={@ORM\Index(name="fk_VEHICULO_MODELO1_idx", columns={"MODELO_MOD_ID"})})
+ * @ORM\Table(name="vehiculo", uniqueConstraints={@ORM\UniqueConstraint(name="VEH_ID_UNIQUE", columns={"VEH_ID"}), @ORM\UniqueConstraint(name="inx_var_mod", columns={"MODELO_MOD_ID", "VEH_VARIANTE"})}, indexes={@ORM\Index(name="fk_VEHICULO_MODELO1_idx", columns={"MODELO_MOD_ID"})})
  * @ORM\Entity
  */
 class Vehiculo
@@ -48,6 +48,20 @@ class Vehiculo
      * @ORM\Column(name="NOTA", type="string", length=250, nullable=true)
      */
     private $nota;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="VEH_FAB_DESDE", type="integer", nullable=true)
+     */
+    private $vehFabDesde;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="VEH_FAB_HASTA", type="integer", nullable=true)
+     */
+    private $vehFabHasta;
 
     /**
      * @var \AppBundle\Entity\Modelo
@@ -165,6 +179,54 @@ class Vehiculo
     public function getNota()
     {
         return $this->nota;
+    }
+
+    /**
+     * Set vehFabDesde
+     *
+     * @param integer $vehFabDesde
+     *
+     * @return Vehiculo
+     */
+    public function setVehFabDesde($vehFabDesde)
+    {
+        $this->vehFabDesde = $vehFabDesde;
+
+        return $this;
+    }
+
+    /**
+     * Get vehFabDesde
+     *
+     * @return integer
+     */
+    public function getVehFabDesde()
+    {
+        return $this->vehFabDesde;
+    }
+
+    /**
+     * Set vehFabHasta
+     *
+     * @param integer $vehFabHasta
+     *
+     * @return Vehiculo
+     */
+    public function setVehFabHasta($vehFabHasta)
+    {
+        $this->vehFabHasta = $vehFabHasta;
+
+        return $this;
+    }
+
+    /**
+     * Get vehFabHasta
+     *
+     * @return integer
+     */
+    public function getVehFabHasta()
+    {
+        return $this->vehFabHasta;
     }
 
     /**

@@ -66,7 +66,7 @@ class Parte
     /**
      * @var string
      *
-     * @ORM\Column(name="PAR_GRUPO", type="string", length=45, nullable=false)
+     * @ORM\Column(name="PAR_GRUPO", type="string", length=45, nullable=true)
      */
     private $parGrupo;
 
@@ -94,7 +94,7 @@ class Parte
     /**
      * @var string
      *
-     * @ORM\Column(name="PAR_ESPESOR", type="string", length=45, nullable=false)
+     * @ORM\Column(name="PAR_ESPESOR", type="string", length=45, nullable=true)
      */
     private $parEspesor;
 
@@ -122,16 +122,16 @@ class Parte
     /**
      * @var boolean
      *
-     * @ORM\Column(name="PAR_KIT", type="boolean", nullable=false)
+     * @ORM\Column(name="PAR_KIT", type="boolean", nullable=true)
      */
     private $parKit;
 
     /**
-     * @var \AppBundle\Entity\EquivalenciaV2
+     * @var \AppBundle\Entity\Equivalencia
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EquivalenciaV2")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Equivalencia")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PAR_EQ_ID", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="PAR_EQ_ID", referencedColumnName="ID")
      * })
      */
     private $parEq;
@@ -147,11 +147,11 @@ class Parte
     private $fabricanteFab;
 
     /**
-     * @var \AppBundle\Entity\ConjuntoV2
+     * @var \AppBundle\Entity\Conjunto
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ConjuntoV2")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Conjunto")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="KIT_ID", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="KIT_ID", referencedColumnName="ID")
      * })
      */
     private $kit;
@@ -531,11 +531,11 @@ class Parte
     /**
      * Set parEq
      *
-     * @param \AppBundle\Entity\EquivalenciaV2 $parEq
+     * @param \AppBundle\Entity\Equivalencia $parEq
      *
      * @return Parte
      */
-    public function setParEq(\AppBundle\Entity\EquivalenciaV2 $parEq = null)
+    public function setParEq(\AppBundle\Entity\Equivalencia $parEq = null)
     {
         $this->parEq = $parEq;
 
@@ -545,7 +545,7 @@ class Parte
     /**
      * Get parEq
      *
-     * @return \AppBundle\Entity\EquivalenciaV2
+     * @return \AppBundle\Entity\Equivalencia
      */
     public function getParEq()
     {
@@ -579,11 +579,11 @@ class Parte
     /**
      * Set kit
      *
-     * @param \AppBundle\Entity\ConjuntoV2 $kit
+     * @param \AppBundle\Entity\Conjunto $kit
      *
      * @return Parte
      */
-    public function setKit(\AppBundle\Entity\ConjuntoV2 $kit = null)
+    public function setKit(\AppBundle\Entity\Conjunto $kit = null)
     {
         $this->kit = $kit;
 
@@ -593,7 +593,7 @@ class Parte
     /**
      * Get kit
      *
-     * @return \AppBundle\Entity\ConjuntoV2
+     * @return \AppBundle\Entity\Conjunto
      */
     public function getKit()
     {

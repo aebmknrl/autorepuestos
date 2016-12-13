@@ -1,36 +1,44 @@
-AppBundle\Entity\Marca:
+AppBundle\Entity\VehiculoImagenes:
     type: entity
-    table: marca
+    table: vehiculo_imagenes
+    indexes:
+        fk_veh_id_idx:
+            columns:
+                - VEH_ID
     uniqueConstraints:
-        MAR_ID_UNIQUE:
+        index3:
             columns:
-                - MAR_ID
-        MAR_NOMBRE_UNIQUE:
-            columns:
-                - MAR_NOMBRE
+                - VEH_IMG_NOMBRE
+                - VEH_ID
     id:
-        marId:
+        vehImgId:
             type: integer
             nullable: false
             options:
                 unsigned: false
             id: true
-            column: MAR_ID
+            column: VEH_IMG_ID
             generator:
                 strategy: IDENTITY
     fields:
-        marNombre:
+        vehImgNombre:
             type: string
             nullable: false
             length: 45
             options:
                 fixed: false
-            column: MAR_NOMBRE
-        marObservacion:
+            column: VEH_IMG_NOMBRE
+        vehImgUrl:
             type: string
             nullable: true
             length: 45
             options:
                 fixed: false
-            column: MAR_OBSERVACION
+            column: VEH_IMG_URL
+        vehId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: VEH_ID
     lifecycleCallbacks: {  }

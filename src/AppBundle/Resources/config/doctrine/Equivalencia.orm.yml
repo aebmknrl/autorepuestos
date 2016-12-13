@@ -1,0 +1,50 @@
+AppBundle\Entity\Equivalencia:
+    type: entity
+    table: equivalencia
+    indexes:
+        fk_parte_eq1_idx:
+            columns:
+                - PART1_ID
+        fk_parte_eq2_idx:
+            columns:
+                - PART2_ID
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        equivalenciaRef:
+            type: string
+            nullable: false
+            length: 15
+            options:
+                fixed: false
+            column: EQUIVALENCIA_REF
+    manyToOne:
+        part1:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PART1_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+        part2:
+            targetEntity: Parte
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PART2_ID:
+                    referencedColumnName: PAR_ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

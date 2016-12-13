@@ -78,7 +78,7 @@ AppBundle\Entity\Parte:
             column: PAR_CODIGO
         parGrupo:
             type: string
-            nullable: false
+            nullable: true
             length: 45
             options:
                 fixed: false
@@ -109,7 +109,7 @@ AppBundle\Entity\Parte:
             column: PAR_ANCHO
         parEspesor:
             type: string
-            nullable: false
+            nullable: true
             length: 45
             options:
                 fixed: false
@@ -140,18 +140,18 @@ AppBundle\Entity\Parte:
             column: PAR_OBSERVACION
         parKit:
             type: boolean
-            nullable: false
+            nullable: true
             column: PAR_KIT
     manyToOne:
         parEq:
-            targetEntity: EquivalenciaV2
+            targetEntity: Equivalencia
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 PAR_EQ_ID:
-                    referencedColumnName: id
+                    referencedColumnName: ID
             orphanRemoval: false
         fabricanteFab:
             targetEntity: Fabricante
@@ -164,13 +164,13 @@ AppBundle\Entity\Parte:
                     referencedColumnName: FAB_ID
             orphanRemoval: false
         kit:
-            targetEntity: ConjuntoV2
+            targetEntity: Conjunto
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 KIT_ID:
-                    referencedColumnName: id
+                    referencedColumnName: ID
             orphanRemoval: false
     lifecycleCallbacks: {  }
