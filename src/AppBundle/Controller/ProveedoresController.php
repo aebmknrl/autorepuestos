@@ -61,9 +61,11 @@ class ProveedoresController extends FOSRestController
                 )  
             ); 
             return $data;
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
         } catch (Exception $e) {
             return $e->getMessage();
-        }
+        } 
     }
 
     /**
