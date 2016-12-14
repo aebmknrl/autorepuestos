@@ -60,9 +60,11 @@ class FabricantesController extends FOSRestController
             );
             return $data;
     
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
         } catch (Exception $e) {
             return $e->getMessage();
-        }
+        } 
     }
 
     /**
@@ -126,9 +128,9 @@ class FabricantesController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'fabricante' => $paginator->getIterator(),
-            'totalModelosReturned' => $paginator->getIterator()->count(),
-            'totalModelos' => $paginator->count()
+            'fabricantes' => $paginator->getIterator(),
+            'totalFabricantesReturned' => $paginator->getIterator()->count(),
+            'totalFabricantes' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -196,7 +198,8 @@ class FabricantesController extends FOSRestController
      */
      public function postUpdateModeloAction(Request $request)
      {
-         $fabricanteid = $request->get('fabricanteid');
+		 try {
+			 $fabricanteid = $request->get('fabricanteid');
          $nombre = $request->get('nombre');
          $descripcion = $request->get('descripcion');
          $pais = $request->get('pais');
@@ -241,6 +244,12 @@ class FabricantesController extends FOSRestController
          );
 
          return $data;
+		 } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
+        } catch (Exception $e) {
+            return $e->getMessage();
+        } 
+         
 
      }
 }   
