@@ -61,7 +61,7 @@ class FabricantesController extends FOSRestController
             return $data;
     
         } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
+            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
         } catch (Exception $e) {
             return $e->getMessage();
         } 
@@ -245,11 +245,37 @@ class FabricantesController extends FOSRestController
 
          return $data;
 		 } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
+            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
         } catch (Exception $e) {
             return $e->getMessage();
         } 
          
 
      }
+	 
+	  /**
+     * @Rest\Delete("/fabricante/delete/{fabid}")
+     */
+    public function deleteRemoveFabricanteAction(Request $request)
+    {
+        $fabid = $request->get('fabid');
+
+        // get EntityManager
+        $em = $this->getDoctrine()->getManager();
+        $fabricantetoremove = $em->getRepository('AppBundle:Fabricante')->find($fabid);
+
+        if ($fabricantetoremove != "") {      
+            // Remove it and flush
+            $em->remove($fabricantetoremove);
+            $em->flush();
+            $data = array(
+                'message' => 'El Fabricante ha sido eliminado',
+                'fabid' => $fabid
+            );
+             return $data;
+        } else{
+            throw new HttpException (400,"No se ha encontrado el fabricante especificado: " .$fabid);
+        }
+        
+    }
 }   
