@@ -201,6 +201,8 @@ class ProveedoresController extends FOSRestController
      */
      public function postUpdateProveedorAction(Request $request)
      {
+         try {
+
          $provid = $request->get('provid');
          $nombre = $request->get('nombre');
          $direccion = $request->get('direccion');
@@ -248,8 +250,14 @@ class ProveedoresController extends FOSRestController
              'nombre' => $nombre,
              'observacion' => $observacion
          );
-
          return $data;
+         }
+         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
+        } catch (Exception $e) {
+            return $e->getMessage();
+        } 
+
 
      }
 
