@@ -88,9 +88,11 @@ class PartesController extends FOSRestController
                 )  
             ); 
             return $data;
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
         } catch (Exception $e) {
             return $e->getMessage();
-        }
+        } 
     }
 
        /**
@@ -237,7 +239,8 @@ class PartesController extends FOSRestController
      */
      public function postUpdateModeloAction(Request $request)
      {
-        $parteid = $request->get('parteid');
+		 try{
+			         $parteid = $request->get('parteid');
         $nombre = $request->get('nombre');
         $nombret = $request->get('nombrepieza');
         $nombreinv = $request->get('nombreinventario');
@@ -310,6 +313,12 @@ class PartesController extends FOSRestController
          );
 
          return $request;
+		 } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
+        } catch (Exception $e) {
+            return $e->getMessage();
+        } 
+
 
      }
 
