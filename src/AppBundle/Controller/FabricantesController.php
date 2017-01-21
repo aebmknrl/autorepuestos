@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use AppBundle\Entity\Fabricante;
-
+use \DateTime;
 class FabricantesController extends FOSRestController
 {
 
@@ -26,7 +26,9 @@ class FabricantesController extends FOSRestController
             $descripcion = $request->get('descripcion');
             $pais = $request->get('pais');
             $tiempo = $request->get('tiempo');
-         
+            $tiempoRaw = $request->get('tiempo');
+            $tiempo = new DateTime($tiempoRaw);
+            
             if($nombre == ""){
                 throw new HttpException (400,"El campo Nombre no puede estar vacío");   
             }
@@ -53,7 +55,7 @@ class FabricantesController extends FOSRestController
 
             $data = array("fabricantes" => array(
                 array(
-                    "fabricante:"   => $nombre,
+                    "fabricante"   => $nombre,
                     "id" => $fabricante->getFabId()
                     )
                 )  
