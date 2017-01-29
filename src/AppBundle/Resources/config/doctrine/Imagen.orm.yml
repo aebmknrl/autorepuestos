@@ -1,10 +1,14 @@
-AppBundle\Entity\Imagenes:
+AppBundle\Entity\Imagen:
     type: entity
-    table: imagenes
+    table: imagen
     indexes:
         fk_IMAGENES_PARTE1_idx:
             columns:
                 - PARTE_PAR_ID
+    uniqueConstraints:
+        IMAGEN_FILE_UNIQUE:
+            columns:
+                - IMG_FILE
     id:
         imgId:
             type: integer
@@ -23,6 +27,13 @@ AppBundle\Entity\Imagenes:
             options:
                 fixed: false
             column: IMG_UBICACION
+        imgFile:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+            column: IMG_FILE
     manyToOne:
         partePar:
             targetEntity: Parte

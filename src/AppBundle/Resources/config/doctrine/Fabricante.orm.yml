@@ -5,6 +5,9 @@ AppBundle\Entity\Fabricante:
         FAB_ID_UNIQUE:
             columns:
                 - FAB_ID
+        FAB_NAME_UNIQUE:
+            columns:
+                - FAB_NOMBRE
     id:
         fabId:
             type: integer
@@ -40,7 +43,5 @@ AppBundle\Entity\Fabricante:
         fabTiempo:
             type: date
             nullable: true
-            options:
-                comment: 'ANIOO EN LA QUE FUE FUNDAD'
             column: FAB_TIEMPO
     lifecycleCallbacks: {  }

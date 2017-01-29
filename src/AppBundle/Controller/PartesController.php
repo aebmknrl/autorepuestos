@@ -36,23 +36,23 @@ class PartesController extends FOSRestController
             $parpeso = $request->get('peso');
             $parcaracter = $request->get('caracteristicas');
             $parobservacion = $request->get('observacion');
-            $parkit = $request->get('kit');
-            $equivalencia = $request->get('equivalencia');
-            $conjunto = $request->get('conjunto');
-            $fabricanteid = $request->get('fabricanteid');
+            $parkit = $request->get('kit'); // OBS ALI --> Julio esto tiene relacion con una tabla... como la de abajo... falta?
+            $equivalencia = $request->get('equivalencia'); // OBS ALI --> Julio esto tiene relacion con una tabla... como la de abajo... Fabricantes falta?
+            $conjunto = $request->get('conjunto');// OBS ALI --> Julio esto tiene relacion con una tabla... como la de abajo... falta?
+            $fabricanteid = $request->get('fabricanteid'); 
             $fabricante = $this->getDoctrine()
                         ->getRepository('AppBundle:Fabricante')
                         ->find($fabricanteid);
 
           
             if($nombre == ""){
-                throw new HttpException (400,"El campo nombre no puede estar vacío");
+                throw new HttpException (400,"El campo nombre no puede estar vacío");   
             }
             if($nombret == ""){
                 throw new HttpException (400,"El campo nombre pieza no puede estar vacío");   
             }
 
-
+//Julito es bueno mantener los nombres de las variables iguales en la entidad y aqui...
             $parte = new Parte();
             $parte -> setParUpc($upc);
             $parte -> setParNombre($nombre);
@@ -71,7 +71,7 @@ class PartesController extends FOSRestController
             $parte -> setParKit($parkit);
             $parte -> setParEq($equivalencia);
             $parte -> setFabricanteFab($fabricante);
-            $parte -> setKit();
+            $parte -> setKit(); //OBS ALI ---> No se llena?
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -88,11 +88,9 @@ class PartesController extends FOSRestController
                 )  
             ); 
             return $data;
-        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
         } catch (Exception $e) {
             return $e->getMessage();
-        } 
+        }
     }
 
        /**
@@ -239,8 +237,7 @@ class PartesController extends FOSRestController
      */
      public function postUpdateModeloAction(Request $request)
      {
-		 try{
-			         $parteid = $request->get('parteid');
+        $parteid = $request->get('parteid');
         $nombre = $request->get('nombre');
         $nombret = $request->get('nombrepieza');
         $nombreinv = $request->get('nombreinventario');
@@ -313,12 +310,6 @@ class PartesController extends FOSRestController
          );
 
          return $request;
-		 } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
-        } catch (Exception $e) {
-            return $e->getMessage();
-        } 
-
 
      }
 

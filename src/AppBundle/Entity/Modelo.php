@@ -15,7 +15,7 @@ class Modelo
     /**
      * @var integer
      *
-     * @ORM\Column(name="MOD_ID", type="integer")
+     * @ORM\Column(name="MOD_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -36,9 +36,9 @@ class Modelo
     private $modObservacion;
 
     /**
-     * @var \AppBundle\Entity\Marca
+     * @var \Marca
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Marca")
+     * @ORM\ManyToOne(targetEntity="Marca")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="MARCA_MAR_ID", referencedColumnName="MAR_ID")
      * })

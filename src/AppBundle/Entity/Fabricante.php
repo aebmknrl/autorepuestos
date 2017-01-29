@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Fabricante
  *
- * @ORM\Table(name="fabricante", uniqueConstraints={@ORM\UniqueConstraint(name="FAB_ID_UNIQUE", columns={"FAB_ID"})})
+ * @ORM\Table(name="fabricante", uniqueConstraints={@ORM\UniqueConstraint(name="FAB_ID_UNIQUE", columns={"FAB_ID"}), @ORM\UniqueConstraint(name="FAB_NAME_UNIQUE", columns={"FAB_NOMBRE"})})
  * @ORM\Entity
  */
 class Fabricante
@@ -15,7 +15,7 @@ class Fabricante
     /**
      * @var integer
      *
-     * @ORM\Column(name="FAB_ID", type="integer")
+     * @ORM\Column(name="FAB_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */

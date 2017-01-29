@@ -1,0 +1,32 @@
+AppBundle\Entity\Grupo:
+    type: entity
+    table: grupo
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        grupoNombre:
+            type: string
+            nullable: false
+            length: 30
+            options:
+                fixed: false
+            column: grupo_nombre
+        descripcion:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        grupoPadre:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: grupo_padre
+    lifecycleCallbacks: {  }

@@ -63,6 +63,7 @@ doctrine:
         mappings:
             AppBundle:
                 type: annotation
+                
 
 # Swiftmailer Configuration
 swiftmailer:

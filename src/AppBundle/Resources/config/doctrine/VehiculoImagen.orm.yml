@@ -1,6 +1,6 @@
-AppBundle\Entity\VehiculoImagenes:
+AppBundle\Entity\VehiculoImagen:
     type: entity
-    table: vehiculo_imagenes
+    table: vehiculo_imagen
     indexes:
         fk_veh_id_idx:
             columns:

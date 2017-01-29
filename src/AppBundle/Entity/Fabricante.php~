@@ -1,0 +1,54 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Fabricante
+ *
+ * @ORM\Table(name="fabricante", uniqueConstraints={@ORM\UniqueConstraint(name="FAB_ID_UNIQUE", columns={"FAB_ID"}), @ORM\UniqueConstraint(name="FAB_NAME_UNIQUE", columns={"FAB_NOMBRE"})})
+ * @ORM\Entity
+ */
+class Fabricante
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="FAB_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $fabId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="FAB_NOMBRE", type="string", length=45, nullable=false)
+     */
+    private $fabNombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="FAB_DESCRIPCION", type="string", length=45, nullable=false)
+     */
+    private $fabDescripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="FAB_PAIS", type="string", length=45, nullable=false)
+     */
+    private $fabPais;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FAB_TIEMPO", type="date", nullable=true)
+     */
+    private $fabTiempo;
+
+
+}
+

@@ -15,7 +15,7 @@ class HistoricoInv
     /**
      * @var integer
      *
-     * @ORM\Column(name="HIS_INV_ID", type="integer")
+     * @ORM\Column(name="HIS_INV_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -36,9 +36,9 @@ class HistoricoInv
     private $hisInvCantidad;
 
     /**
-     * @var \AppBundle\Entity\Inventario
+     * @var \Inventario
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Inventario")
+     * @ORM\ManyToOne(targetEntity="Inventario")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="INVENTARIO_INV_ID", referencedColumnName="INV_ID")
      * })

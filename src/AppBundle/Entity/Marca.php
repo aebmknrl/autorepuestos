@@ -15,7 +15,7 @@ class Marca
     /**
      * @var integer
      *
-     * @ORM\Column(name="MAR_ID", type="integer")
+     * @ORM\Column(name="MAR_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */

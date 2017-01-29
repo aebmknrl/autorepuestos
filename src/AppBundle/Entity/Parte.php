@@ -15,7 +15,7 @@ class Parte
     /**
      * @var integer
      *
-     * @ORM\Column(name="PAR_ID", type="integer")
+     * @ORM\Column(name="PAR_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -127,9 +127,9 @@ class Parte
     private $parKit;
 
     /**
-     * @var \AppBundle\Entity\Equivalencia
+     * @var \Equivalencia
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Equivalencia")
+     * @ORM\ManyToOne(targetEntity="Equivalencia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PAR_EQ_ID", referencedColumnName="ID")
      * })
@@ -137,9 +137,9 @@ class Parte
     private $parEq;
 
     /**
-     * @var \AppBundle\Entity\Fabricante
+     * @var \Fabricante
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Fabricante")
+     * @ORM\ManyToOne(targetEntity="Fabricante")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="FABRICANTE_FAB_ID", referencedColumnName="FAB_ID")
      * })
@@ -147,9 +147,9 @@ class Parte
     private $fabricanteFab;
 
     /**
-     * @var \AppBundle\Entity\Conjunto
+     * @var \Conjunto
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Conjunto")
+     * @ORM\ManyToOne(targetEntity="Conjunto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="KIT_ID", referencedColumnName="ID")
      * })

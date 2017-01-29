@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Modelo
+ *
+ * @ORM\Table(name="modelo", uniqueConstraints={@ORM\UniqueConstraint(name="MAR_ID_UNIQUE", columns={"MOD_ID"}), @ORM\UniqueConstraint(name="MOD_NOMBRE_UNIQUE", columns={"MOD_NOMBRE"})}, indexes={@ORM\Index(name="fk_MODELO_MARCA1_idx", columns={"MARCA_MAR_ID"})})
+ * @ORM\Entity
+ */
+class Modelo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MOD_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $modId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MOD_NOMBRE", type="string", length=45, nullable=false)
+     */
+    private $modNombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MOD_OBSERVACION", type="string", length=45, nullable=true)
+     */
+    private $modObservacion;
+
+    /**
+     * @var \Marca
+     *
+     * @ORM\ManyToOne(targetEntity="Marca")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="MARCA_MAR_ID", referencedColumnName="MAR_ID")
+     * })
+     */
+    private $marcaMar;
+
+
+}
+

@@ -15,7 +15,7 @@ class VehiculoNota
     /**
      * @var integer
      *
-     * @ORM\Column(name="VEH_NOTA_ID", type="integer")
+     * @ORM\Column(name="VEH_NOTA_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -36,9 +36,9 @@ class VehiculoNota
     private $fechaNota;
 
     /**
-     * @var \AppBundle\Entity\Vehiculo
+     * @var \Vehiculo
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehiculo")
+     * @ORM\ManyToOne(targetEntity="Vehiculo")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="VEHICULO_VEH_ID", referencedColumnName="VEH_ID")
      * })

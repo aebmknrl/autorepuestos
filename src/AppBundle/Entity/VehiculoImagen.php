@@ -5,17 +5,17 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VehiculoImagenes
+ * VehiculoImagen
  *
- * @ORM\Table(name="vehiculo_imagenes", uniqueConstraints={@ORM\UniqueConstraint(name="index3", columns={"VEH_IMG_NOMBRE", "VEH_ID"})}, indexes={@ORM\Index(name="fk_veh_id_idx", columns={"VEH_ID"})})
+ * @ORM\Table(name="vehiculo_imagen", uniqueConstraints={@ORM\UniqueConstraint(name="index3", columns={"VEH_IMG_NOMBRE", "VEH_ID"})}, indexes={@ORM\Index(name="fk_veh_id_idx", columns={"VEH_ID"})})
  * @ORM\Entity
  */
-class VehiculoImagenes
+class VehiculoImagen
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="VEH_IMG_ID", type="integer")
+     * @ORM\Column(name="VEH_IMG_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -59,7 +59,7 @@ class VehiculoImagenes
      *
      * @param string $vehImgNombre
      *
-     * @return VehiculoImagenes
+     * @return VehiculoImagen
      */
     public function setVehImgNombre($vehImgNombre)
     {
@@ -83,7 +83,7 @@ class VehiculoImagenes
      *
      * @param string $vehImgUrl
      *
-     * @return VehiculoImagenes
+     * @return VehiculoImagen
      */
     public function setVehImgUrl($vehImgUrl)
     {
@@ -107,7 +107,7 @@ class VehiculoImagenes
      *
      * @param integer $vehId
      *
-     * @return VehiculoImagenes
+     * @return VehiculoImagen
      */
     public function setVehId($vehId)
     {

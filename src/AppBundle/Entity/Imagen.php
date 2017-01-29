@@ -5,17 +5,17 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Imagenes
+ * Imagen
  *
- * @ORM\Table(name="imagenes", indexes={@ORM\Index(name="fk_IMAGENES_PARTE1_idx", columns={"PARTE_PAR_ID"})})
+ * @ORM\Table(name="imagen", uniqueConstraints={@ORM\UniqueConstraint(name="IMAGEN_FILE_UNIQUE", columns={"IMG_FILE"})}, indexes={@ORM\Index(name="fk_IMAGENES_PARTE1_idx", columns={"PARTE_PAR_ID"})})
  * @ORM\Entity
  */
-class Imagenes
+class Imagen
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="IMG_ID", type="integer")
+     * @ORM\Column(name="IMG_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -29,9 +29,16 @@ class Imagenes
     private $imgUbicacion;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\Column(name="IMG_FILE", type="string", length=100, nullable=false)
+     */
+    private $imgFile;
+
+    /**
+     * @var \Parte
+     *
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PARTE_PAR_ID", referencedColumnName="PAR_ID")
      * })
@@ -55,7 +62,7 @@ class Imagenes
      *
      * @param string $imgUbicacion
      *
-     * @return Imagenes
+     * @return Imagen
      */
     public function setImgUbicacion($imgUbicacion)
     {
@@ -75,11 +82,35 @@ class Imagenes
     }
 
     /**
+     * Set imgFile
+     *
+     * @param string $imgFile
+     *
+     * @return Imagen
+     */
+    public function setImgFile($imgFile)
+    {
+        $this->imgFile = $imgFile;
+
+        return $this;
+    }
+
+    /**
+     * Get imgFile
+     *
+     * @return string
+     */
+    public function getImgFile()
+    {
+        return $this->imgFile;
+    }
+
+    /**
      * Set partePar
      *
      * @param \AppBundle\Entity\Parte $partePar
      *
-     * @return Imagenes
+     * @return Imagen
      */
     public function setPartePar(\AppBundle\Entity\Parte $partePar = null)
     {

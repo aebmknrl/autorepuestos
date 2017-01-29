@@ -20,13 +20,14 @@ class ProveedoresController extends FOSRestController
     public function postAddProveedorAction(Request $request)
     {
         try {
+            // Obtaining vars from request
+            $nombre         = $request->get('nombre');
+            $direccion      = $request->get('direccion');
+            $rif            = $request->get('rif');
+            $estatus        = $request->get('estatus');
+            $observacion    = $request->get('observacion');
             
-            $nombre = $request->get('nombre');
-            $direccion = $request->get('direccion');
-            $rif = $request->get('rif');
-            $estatus = $request->get('estatus');
-            $observacion = $request->get('observacion');
-            
+            // Check for mandatory fields
             if($nombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
             }
@@ -39,6 +40,7 @@ class ProveedoresController extends FOSRestController
                 throw new HttpException (400,"El campo estatus no puede estar vacío o debe contener un valor válido");   
             }
 
+            // Create the "Proveedor"
             $proveedor = new Proveedor();
             $proveedor -> setProvNombre($nombre);
             $proveedor -> setProvDireccion($direccion);
@@ -53,45 +55,49 @@ class ProveedoresController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $data = array("proveedor" => array(
+            $response = array("proveedor" => array(
                 array(
-                    "proveedor"   => $nombre,
-                    "id" => $proveedor->getProvId()
+                    "Nuevo proveedor creado:"   => $nombre,
+                    "id"                        => $proveedor->getProvId()
                     )
                 )  
             ); 
-            return $data;
-        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
-        } catch (Exception $e) {
+            return $response;
+        }
+        catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del proveedor ya esxiste."); 
+            } 
+        catch (Exception $e) {
             return $e->getMessage();
-        } 
+            } 
     }
 
-    /**
-     * @Rest\Get("/proveedor/{proveedorid}")
-     */
-    public function getProveedorAction(Request $request)
-    {
-        $proveedorid = $request->get('proveedorid');
 
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Proveedor');
-        $proveedores = $repository->findOneByprovId($proveedorid);
-        return $proveedores;
-    }
-    
     /**
      * @Rest\Get("/proveedor")
      */
     public function getAllProveedorAction()
     {
         // Initialize the 'Proveedor' data repository
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Proveedor');
-        $query = $repository->createQueryBuilder('p')
-            ->getQuery();
-        $proveedores = $query->getResult();
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Proveedor');
+        $query          = $repository->createQueryBuilder('p')->getQuery();
+        $proveedores    = $query->getResult();
         return $proveedores;
     }
+
+
+    /**
+     * @Rest\Get("/proveedor/{proveedorid}")
+     */
+    public function getProveedorAction(Request $request)
+    {
+        $proveedorid    = $request->get('proveedorid');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Proveedor');
+        $proveedores    = $repository->findOneByprovId($proveedorid);
+        return $proveedores;
+    }
+    
+
 
      /**
      * @Rest\Get("/proveedor/{limit}/{page}")
@@ -130,9 +136,9 @@ class ProveedoresController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'proveedores' => $paginator->getIterator(),
-            'totalProveedoresReturned' => $paginator->getIterator()->count(),
-            'totalProveedores' => $paginator->count()
+            'proveedores'                   => $paginator->getIterator(),
+            'total proveedores en página'   => $paginator->getIterator()->count(),
+            'total proveedores'             => $paginator->count()
         );
         // Send the response
         return $response;
@@ -186,10 +192,10 @@ class ProveedoresController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'proveedores' => $paginator->getIterator(),
-            'totalProveedoresReturned' => $paginator->getIterator()->count(),
-            'totalProveedores' => $paginator->count(),
-            'searchedText' => $searchtext
+            'proveedores'                   => $paginator->getIterator(),
+            'total proveedores en página'   => $paginator->getIterator()->count(),
+            'total proveedores encontrados' => $paginator->count(),
+            'busqueda por'                  => $searchtext
         );
         // Send the response
         return $response;
@@ -201,14 +207,14 @@ class ProveedoresController extends FOSRestController
      */
      public function postUpdateProveedorAction(Request $request)
      {
-         try {
-
-         $provid = $request->get('provid');
-         $nombre = $request->get('nombre');
-         $direccion = $request->get('direccion');
-         $rif = $request->get('rif');
-         $estatus = $request->get('estatus');
-         $observacion = $request->get('observacion');
+         try
+         {
+         $provid        = $request->get('provid');
+         $nombre        = $request->get('nombre');
+         $direccion     = $request->get('direccion');
+         $rif           = $request->get('rif');
+         $estatus       = $request->get('estatus');
+         $observacion   = $request->get('observacion');
 
          if($provid == "" || !$provid){
              throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
@@ -226,7 +232,7 @@ class ProveedoresController extends FOSRestController
             if(($estatus == "") || ($estatus != "ACTIVO") && ($estatus != "INACTIVO")){
                 throw new HttpException (400,"El campo estatus no puede estar vacío o debe contener un valor válido");   
             }
-
+         
          $em = $this->getDoctrine()->getManager();
          $proveedor = $em->getRepository('AppBundle:Proveedor')
             ->find($provid);
@@ -236,8 +242,8 @@ class ProveedoresController extends FOSRestController
         throw new HttpException (400,"No se ha encontrado el Proveedor especificado: " .$provid);
          }
 
-        $proveedor->setProvNombre($nombre);
-        $proveedor->setProvObservacion($observacion);
+        $proveedor ->setProvNombre($nombre);
+        $proveedor ->setProvObservacion($observacion);
         $proveedor -> setProvDireccion($direccion);
         $proveedor -> setProvRif($rif);
         $proveedor -> setProvStatus($estatus);
@@ -245,21 +251,23 @@ class ProveedoresController extends FOSRestController
         $em->flush();
 
         $data = array(
-            'message' => 'El Proveedor ha sido actualizado',
-             'proveedorid' => $provid,
-             'nombre' => $nombre,
-             'observacion' => $observacion
+             'message'      => 'El Proveedor'.$proveedor->getProvNombre().' ha sido actualizado',
+             'ID'           => $provid,
+             'estatus'      => $estatus,
+             'nombre'       => $nombre,
+             'observacion'  => $observacion
          );
+
          return $data;
          }
-         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Proveedor ya existe."); 
-        } catch (Exception $e) {
+       catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del proveedor ya esxiste."); 
+            } 
+        catch (Exception $e) {
             return $e->getMessage();
-        } 
-
-
+            } 
      }
+
 
     /**
      * @Rest\Delete("/proveedor/delete/{provid}")
@@ -269,21 +277,21 @@ class ProveedoresController extends FOSRestController
         $provid = $request->get('provid');
 
         // get EntityManager
-        $em = $this->getDoctrine()->getManager();
-        $proveedortoremove = $em->getRepository('AppBundle:Proveedor')->find($provid);
+        $em                 = $this->getDoctrine()->getManager();
+        $proveedortoremove  = $em->getRepository('AppBundle:Proveedor')->find($provid);
 
         if ($proveedortoremove != "") {      
             // Remove it and flush
             $em->remove($proveedortoremove);
             $em->flush();
             $data = array(
-                'message' => 'El proveedor ha sido eliminada',
+                'message' => 'El proveedor '.$proveedortoremove->getProvNombre().' ha sido eliminado',
                 'provid' => $provid
             );
              return $data;
         } else{
             throw new HttpException (400,"No se ha encontrado el proveedor especificado: " .$provid);
         }
-        
-    }
+
+     }
 }   

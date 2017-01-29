@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Imagen
+ *
+ * @ORM\Table(name="imagen", uniqueConstraints={@ORM\UniqueConstraint(name="IMAGEN_FILE_UNIQUE", columns={"IMG_FILE"})}, indexes={@ORM\Index(name="fk_IMAGENES_PARTE1_idx", columns={"PARTE_PAR_ID"})})
+ * @ORM\Entity
+ */
+class Imagen
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="IMG_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $imgId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="IMG_UBICACION", type="string", length=45, nullable=true)
+     */
+    private $imgUbicacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="IMG_FILE", type="string", length=100, nullable=false)
+     */
+    private $imgFile;
+
+    /**
+     * @var \Parte
+     *
+     * @ORM\ManyToOne(targetEntity="Parte")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="PARTE_PAR_ID", referencedColumnName="PAR_ID")
+     * })
+     */
+    private $partePar;
+
+
+}
+

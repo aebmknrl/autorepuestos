@@ -9,53 +9,54 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use AppBundle\Entity\Modelo;
+use AppBundle\Entity\Grupo;
 
-class ModelosController extends FOSRestController
+class GruposController extends FOSRestController
 {
 
      /**
-     * @Rest\Post("/modelo/add")
+     * @Rest\Post("/grupo/add")
      */
-    public function postAddModeloAction(Request $request)
+    public function postAddGrupoAction(Request $request)
     {
         try {       
             // Obtaining vars from request
-            $nombre         = $request->get('nombre');
-            $observacion    = $request->get('observacion');
-            $marcaid        = $request->get('marcaid');
+            $grupoNombre    = $request->get('nombre');
+            $descripcion    = $request->get('descripcion');
+            $grupoPadre     = $request->get('grupoPadre');
 
             // Check for mandatory fields
-            if($nombre == ""){
+            if($grupoNombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");
             }
-            if($marcaid == ""){
-                throw new HttpException (400,"Se necesita proveer de un ID de Marca para relacionar el modelo");   
+
+            // Find the relationship with Grupo Padre
+            if($grupoPadre != ""){
+            $GrupoPadre = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($grupoPadre);        
+            if($GrupoPadre == ""){
+                throw new HttpException (400,"El grupo especificado no existe");   
+            }
+            }else{
+                $GrupoPadre = null;
             }
 
-            // Find the relationship with Marcas
-            $marca = $this->getDoctrine()->getRepository('AppBundle:Marca')->find($marcaid);        
-            if($marca == ""){
-                throw new HttpException (400,"La marca especificada no existe");   
-            }
-
-            // Create the "Model"
-            $modelo     = new Modelo();
-            $modelo     -> setModNombre($nombre);
-            $modelo     -> setModObservacion($observacion);
-            $modelo     -> setMarcaMar($marca);
+            // Create the "Grupo"
+            $grupo     = new Grupo();
+            $grupo     -> setGrupoNombre($grupoNombre);
+            $grupo     -> setDescripcion($descripcion);
+            $grupo     -> setGrupoPadre($GrupoPadre);
             $em         = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save (no queries yet)
-            $em->persist($modelo);         
+            $em->persist($grupo);         
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $response = array("modelos" => array(
+            $response = array("grupos" => array(
                 array(
-                    "Nuevo modelo creado"   => $nombre,
-                    "Observación: "         => $observacion,
-                    "Marca:"                => $marca->getMarNombre(),
+                    "Nuevo grupo creado"    => $grupoNombre,
+                    "Descripción: "         => $descripcion,
+                    "Grupo Padre:"          => $GrupoPadre->getGrupoNombre(),
                     "id"                    => $modelo->getModId()
                     )
                 )  
@@ -63,7 +64,7 @@ class ModelosController extends FOSRestController
             return $response;
         }
         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del modelo ya esxiste."); 
+            throw new HttpException (409,"Error: El nombre del grupo ya esxiste."); 
             } 
         catch (Exception $e) {
             return $e->getMessage();
@@ -72,15 +73,15 @@ class ModelosController extends FOSRestController
 
     
     /**
-     * @Rest\Get("/modelo")
+     * @Rest\Get("/grupo")
      */
-    public function getAllModeloAction()
+    public function getAllGrupoAction()
     {
-        // Initialize the 'MarcaModelo' data repository
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Modelo');
-        $query      = $repository->createQueryBuilder('m')->getQuery();
-        $modelos    = $query->getResult();
-        return $modelos;
+        // Initialize the 'Grupo' data repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Grupo');
+        $query      = $repository->createQueryBuilder('g')->getQuery();
+        $grupos    = $query->getResult();
+        return $grupos;
     }
 
 

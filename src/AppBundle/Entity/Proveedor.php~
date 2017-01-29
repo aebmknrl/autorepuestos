@@ -1,0 +1,61 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Proveedor
+ *
+ * @ORM\Table(name="proveedor", uniqueConstraints={@ORM\UniqueConstraint(name="PROV_NOMBRE_UNIQUE", columns={"PROV_NOMBRE"})})
+ * @ORM\Entity
+ */
+class Proveedor
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="PROV_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $provId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PROV_NOMBRE", type="string", length=45, nullable=false)
+     */
+    private $provNombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PROV_DIRECCION", type="string", length=45, nullable=false)
+     */
+    private $provDireccion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PROV_RIF", type="string", length=45, nullable=true)
+     */
+    private $provRif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PROV_STATUS", type="string", length=45, nullable=false)
+     */
+    private $provStatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PROV_OBSERVACION", type="string", length=45, nullable=true)
+     */
+    private $provObservacion;
+
+
+}
+

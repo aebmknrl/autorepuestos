@@ -15,7 +15,7 @@ class Proveedor
     /**
      * @var integer
      *
-     * @ORM\Column(name="PROV_ID", type="integer")
+     * @ORM\Column(name="PROV_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -47,7 +47,7 @@ class Proveedor
      *
      * @ORM\Column(name="PROV_STATUS", type="string", length=45, nullable=false)
      */
-    private $provStatus = 'ACTIVO';
+    private $provStatus;
 
     /**
      * @var string

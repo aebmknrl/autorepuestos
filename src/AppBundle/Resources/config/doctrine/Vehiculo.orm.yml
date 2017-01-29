@@ -9,10 +9,6 @@ AppBundle\Entity\Vehiculo:
         VEH_ID_UNIQUE:
             columns:
                 - VEH_ID
-        inx_var_mod:
-            columns:
-                - MODELO_MOD_ID
-                - VEH_VARIANTE
     id:
         vehId:
             type: integer
@@ -30,13 +26,6 @@ AppBundle\Entity\Vehiculo:
             options:
                 unsigned: false
             column: ANIO_ANI_ID
-        vehVariante:
-            type: string
-            nullable: false
-            length: 45
-            options:
-                fixed: false
-            column: VEH_VARIANTE
         vehVin:
             type: string
             nullable: true
@@ -44,13 +33,6 @@ AppBundle\Entity\Vehiculo:
             options:
                 fixed: false
             column: VEH_VIN
-        nota:
-            type: string
-            nullable: true
-            length: 250
-            options:
-                fixed: false
-            column: NOTA
         vehFabDesde:
             type: integer
             nullable: true
@@ -63,6 +45,83 @@ AppBundle\Entity\Vehiculo:
             options:
                 unsigned: false
             column: VEH_FAB_HASTA
+        vehVariante:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: VEH_VARIANTE
+        vehCilindros:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_CILINDROS
+        vehLitros:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_LITROS
+        vehValvulas:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_VALVULAS
+        vehLevas:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_LEVAS
+        vehVersion:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_VERSION
+        vehTipo:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_TIPO
+        vehTraccion:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_TRACCION
+        vehCaja:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_CAJA
+        vehObservacion:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_OBSERVACION
+        nota:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: NOTA
     manyToOne:
         modeloMod:
             targetEntity: Modelo

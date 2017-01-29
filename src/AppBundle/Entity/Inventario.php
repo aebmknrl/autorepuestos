@@ -15,7 +15,7 @@ class Inventario
     /**
      * @var integer
      *
-     * @ORM\Column(name="INV_ID", type="integer")
+     * @ORM\Column(name="INV_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -50,9 +50,9 @@ class Inventario
     private $invObservacion;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var \Parte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PARTE_PAR_ID", referencedColumnName="PAR_ID")
      * })
@@ -60,9 +60,9 @@ class Inventario
     private $partePar;
 
     /**
-     * @var \AppBundle\Entity\Proveedor
+     * @var \Proveedor
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Proveedor")
+     * @ORM\ManyToOne(targetEntity="Proveedor")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PROVEEDOR_PROV_ID", referencedColumnName="PROV_ID")
      * })

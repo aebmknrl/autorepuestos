@@ -43,7 +43,6 @@ AppBundle\Entity\Proveedor:
             length: 45
             options:
                 fixed: false
-                default: ACTIVO
             column: PROV_STATUS
         provObservacion:
             type: string

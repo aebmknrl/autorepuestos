@@ -42,3 +42,7 @@ api_inventarios:
     type: rest
     resource: "@AppBundle/Controller/InventariosController.php"
     name_prefix: api_inventarios_
+api_grupos:
+    type: rest
+    resource: "@AppBundle/Controller/GruposController.php"
+    name_prefix: api_grupos_

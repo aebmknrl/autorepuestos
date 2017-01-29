@@ -15,7 +15,7 @@ class Equivalencia
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer")
+     * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -29,9 +29,9 @@ class Equivalencia
     private $equivalenciaRef;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var \Parte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PART1_ID", referencedColumnName="PAR_ID")
      * })
@@ -39,9 +39,9 @@ class Equivalencia
     private $part1;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var \Parte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PART2_ID", referencedColumnName="PAR_ID")
      * })

@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * VehiculoNota
+ *
+ * @ORM\Table(name="vehiculo_nota", indexes={@ORM\Index(name="fk_vehiculo_nota_idx", columns={"VEHICULO_VEH_ID"})})
+ * @ORM\Entity
+ */
+class VehiculoNota
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="VEH_NOTA_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $vehNotaId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="VEH_NOTA", type="string", length=100, nullable=true)
+     */
+    private $vehNota;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FECHA_NOTA", type="date", nullable=true)
+     */
+    private $fechaNota;
+
+    /**
+     * @var \Vehiculo
+     *
+     * @ORM\ManyToOne(targetEntity="Vehiculo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="VEHICULO_VEH_ID", referencedColumnName="VEH_ID")
+     * })
+     */
+    private $vehiculoVeh;
+
+
+}
+

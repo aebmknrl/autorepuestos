@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * HistoricoInv
+ *
+ * @ORM\Table(name="historico_inv", uniqueConstraints={@ORM\UniqueConstraint(name="HIS_INV_ID_UNIQUE", columns={"HIS_INV_ID"})}, indexes={@ORM\Index(name="fk_HISTORICO_INV_INVENTARIO1_idx", columns={"INVENTARIO_INV_ID"})})
+ * @ORM\Entity
+ */
+class HistoricoInv
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="HIS_INV_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $hisInvId;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="HIS_INV_FECHA", type="date", nullable=false)
+     */
+    private $hisInvFecha;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="HIS_INV_CANTIDAD", type="integer", nullable=false)
+     */
+    private $hisInvCantidad;
+
+    /**
+     * @var \Inventario
+     *
+     * @ORM\ManyToOne(targetEntity="Inventario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="INVENTARIO_INV_ID", referencedColumnName="INV_ID")
+     * })
+     */
+    private $inventarioInv;
+
+
+}
+

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use AppBundle\Entity\Fabricante;
+use \DateTime;
 
 class FabricantesController extends FOSRestController
 {
@@ -17,16 +18,17 @@ class FabricantesController extends FOSRestController
      /**
      * @Rest\Post("/fabricante/add")
      */
-
     public function postAddModeloAction(Request $request)
     {
         try {
-            
-            $nombre = $request->get('nombre');
-            $descripcion = $request->get('descripcion');
-            $pais = $request->get('pais');
-            $tiempo = $request->get('tiempo');
+            // Obtaining vars from request
+            $nombre         = $request->get('nombre');
+            $descripcion    = $request->get('descripcion');
+            $pais           = $request->get('pais');
+            $tiempoRaw = $request->get('tiempo');
+            $tiempo = new DateTime($tiempoRaw);
          
+            // Check for mandatory fields
             if($nombre == ""){
                 throw new HttpException (400,"El campo Nombre no puede estar vacío");   
             }
@@ -37,35 +39,49 @@ class FabricantesController extends FOSRestController
                 throw new HttpException (400,"El campo Pais no puede estar vacío");   
             }
 
-
+            // Create the fabricante
             $fabricante = new Fabricante();
             $fabricante -> setFabNombre($nombre);
             $fabricante -> setFabDescripcion($descripcion);
             $fabricante -> setFabPais($pais);
-            $fabricante -> setFabTiempo($tiempo);
+            $fabricante -> setFabTiempo(new \DateTime($tiempo));
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
-            $em->persist($fabricante);
-            
+            $em->persist($fabricante);          
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
 
-            $data = array("fabricantes" => array(
+            $response = array("fabricantes" => array(
                 array(
-                    "fabricante:"   => $nombre,
-                    "id" => $fabricante->getFabId()
+                    "fabricante"   => $nombre,
+                    "fabid" => $fabricante->getFabId()
                     )
                 )  
             );
-            return $data;
-    
-        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
-        } catch (Exception $e) {
+            return $response;   
+        }
+
+        catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del fabricante ya existe.");
+            } 
+        catch (Exception $e) {
             return $e->getMessage();
-        } 
+            }    
     }
+
+
+    /**
+     * @Rest\Get("/fabricante")
+     */
+    public function getAllModeloAction()
+    {        
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Fabricante');
+        $query = $repository->createQueryBuilder('f')->getQuery();
+        $fabricante = $query->getResult();
+        return $fabricante;
+    }
+
 
     /**
      * @Rest\Get("/fabricante/{fabricanteid}")
@@ -73,23 +89,12 @@ class FabricantesController extends FOSRestController
     public function getFabricanteAction(Request $request)
     {
         $fabid = $request->get('fabricanteid');
-
         $repository = $this->getDoctrine()->getRepository('AppBundle:Fabricante');
         $fabricante = $repository->findOneByfabId($fabid);
         return $fabricante;
     }
     
-    /**
-     * @Rest\Get("/fabricante")
-     */
-    public function getAllModeloAction()
-    {        
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Fabricante');
-        $query = $repository->createQueryBuilder('f')
-            ->getQuery();
-        $fabricante = $query->getResult();
-        return $fabricante;
-    }
+
 
      /**
      * @Rest\Get("/fabricante/{limit}/{page}")
@@ -104,6 +109,7 @@ class FabricantesController extends FOSRestController
         if(!is_numeric($page)) {
             throw new HttpException (400,"Por favor use solo números para la página");  
         }
+
         // Check if the limit asked has all or not.
         if (!is_numeric($limit)) {
             if ($limit != 'todos') {
@@ -135,14 +141,16 @@ class FabricantesController extends FOSRestController
         // Send the response
         return $response;
     }
+
+
     /**
      * @Rest\Get("/fabricante/{limit}/{page}/{searchtext}")
      */
     public function getAllFabricantePaginatedSearchAction(Request $request)
     {
         // Set up the limit and page vars from request
-        $limit = $request->get('limit');
-        $page = $request->get('page');
+        $limit      = $request->get('limit');
+        $page       = $request->get('page');
         $searchtext = $request->get('searchtext');
 
         // Check if the params are numbers before continue
@@ -168,10 +176,8 @@ class FabricantesController extends FOSRestController
 
         // Connect with the autoparts db repository
         $repository = $this->getDoctrine()->getRepository('AppBundle:Fabricante');
-    
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('fabricante')
-            ->where('fabricante.fabNombre = :searchtext')
+        $query      = $repository->createQueryBuilder('fabricante')->where('fabricante.fabNombre = :searchtext')
             ->orwhere('fabricante.fabDescripcion LIKE :searchtext')
             ->orWhere('fabricante.fabPais LIKE :searchtext')
             ->orWhere('fabricante.fabTiempo LIKE :searchtext')
@@ -183,10 +189,10 @@ class FabricantesController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'fabricante' => $paginator->getIterator(),
-            'totalFabricantesReturned' => $paginator->getIterator()->count(),
+            'fabricantes'                   => $paginator->getIterator(),
+            'totalFabricantesReturned'   => $paginator->getIterator()->count(),
             'totalFabricantes' => $paginator->count(),
-            'searchedText' => $searchtext
+            'searchedText'                  => $searchtext
         );
         // Send the response
         return $response;
@@ -198,12 +204,15 @@ class FabricantesController extends FOSRestController
      */
      public function postUpdateModeloAction(Request $request)
      {
-		 try {
-			 $fabricanteid = $request->get('fabricanteid');
-         $nombre = $request->get('nombre');
-         $descripcion = $request->get('descripcion');
-         $pais = $request->get('pais');
-         $tiempo = $request->get('tiempo');
+        try
+        {
+        // Obtaining vars from request
+         $fabricanteid  = $request->get('fabricanteid');
+         $nombre        = $request->get('nombre');
+         $descripcion   = $request->get('descripcion');
+         $pais          = $request->get('pais');
+        $tiempoRaw = $request->get('tiempo');
+        $tiempo = new DateTime($tiempoRaw);
 
          
          if($fabricanteid == "" || !$fabricanteid){
@@ -236,46 +245,46 @@ class FabricantesController extends FOSRestController
         $fabricante -> setFabTiempo($tiempo);
         $em->flush();
 
-        $data = array(
-            'message' => 'El fabricante ha sido actualizado',
-             'fabricanteid' => $fabricanteid,
-             'nombre' => $nombre,
-             'descripcion' => $descripcion
+        $response = array(
+            'message'       => 'El fabricante ha sido actualizado',
+            'fabricanteid'  => $fabricanteid,
+            'nombre'        => $nombre,
+            'descripcion'   => $descripcion
          );
-
-         return $data;
-		 } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del Fabricante ya existe."); 
-        } catch (Exception $e) {
+         return $response;
+        }
+        catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: El nombre del fabricante ya esxiste."); 
+            } 
+        catch (Exception $e) {
             return $e->getMessage();
-        } 
-         
-
+            } 
      }
-	 
-	  /**
-     * @Rest\Delete("/fabricante/delete/{fabid}")
+
+    /**
+     * @Rest\Delete("/fabricante/delete/{fabricanteid}")
      */
     public function deleteRemoveFabricanteAction(Request $request)
     {
-        $fabid = $request->get('fabid');
-
+        $fabricanteid = $request->get('fabricanteid');
         // get EntityManager
-        $em = $this->getDoctrine()->getManager();
-        $fabricantetoremove = $em->getRepository('AppBundle:Fabricante')->find($fabid);
+        $em                     = $this->getDoctrine()->getManager();
+        $fabricantetoremove     = $em->getRepository('AppBundle:Fabricante')->find($fabricanteid);
 
-        if ($fabricantetoremove != "") {      
-            // Remove it and flush
+        if ($fabricantetoremove != "") 
+        {      
             $em->remove($fabricantetoremove);
             $em->flush();
-            $data = array(
-                'message' => 'El Fabricante ha sido eliminado',
-                'fabid' => $fabid
+            $response = array(
+                'message'   => 'El fabricante '.$fabricantetoremove->getFabNombre().' ha sido eliminado',
+                'nombre'    => $fabricantetoremove->getFabNombre(),
+                'fabid'        => $fabricanteid
             );
-             return $data;
-        } else{
-            throw new HttpException (400,"No se ha encontrado el fabricante especificado: " .$fabid);
-        }
-        
-    }
-}   
+        return $response;
+        } else
+            {
+            throw new HttpException (400,"No se ha encontrado el fabricante especificado, ID: ".$fabricanteid);
+            }
+     }
+
+}

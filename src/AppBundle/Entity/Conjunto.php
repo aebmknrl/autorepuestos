@@ -15,7 +15,7 @@ class Conjunto
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer")
+     * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -36,9 +36,9 @@ class Conjunto
     private $kitCount;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var \Parte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PARTE_ID", referencedColumnName="PAR_ID")
      * })
@@ -46,9 +46,9 @@ class Conjunto
     private $parte;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var \Parte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PARTEKIT_ID", referencedColumnName="PAR_ID")
      * })
