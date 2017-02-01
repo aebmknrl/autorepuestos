@@ -147,8 +147,8 @@ class ConjuntosController extends FOSRestController
         // Construct the response
         $response = array(
             'conjuntos' => $paginator->getIterator(),
-            'total conjuntos en página' => $paginator->getIterator()->count(),
-            'total conjuntos' => $paginator->count()
+            'totalConjuntosReturned' => $paginator->getIterator()->count(),
+            'totalConjuntos' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -203,9 +203,9 @@ class ConjuntosController extends FOSRestController
         // Construct the response
         $response = array(
             'conjuntos'                     => $paginator->getIterator(),
-            'total conjuntos en página'     => $paginator->getIterator()->count(),
-            'total conjuntos encontrados'   => $paginator->count(),
-            'busqueda por:'                 => $searchtext
+            'totalConjuntosReturned'     => $paginator->getIterator()->count(),
+            'totalConjuntos'   => $paginator->count(),
+            'searchedText:'                 => $searchtext
         );
         // Send the response
         return $response;

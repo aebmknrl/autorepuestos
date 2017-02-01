@@ -18,7 +18,7 @@ class FabricantesController extends FOSRestController
      /**
      * @Rest\Post("/fabricante/add")
      */
-    public function postAddModeloAction(Request $request)
+    public function postAddFabricanteAction(Request $request)
     {
         try {
             // Obtaining vars from request
@@ -74,7 +74,7 @@ class FabricantesController extends FOSRestController
     /**
      * @Rest\Get("/fabricante")
      */
-    public function getAllModeloAction()
+    public function getAllFabricanteAction()
     {        
         $repository = $this->getDoctrine()->getRepository('AppBundle:Fabricante');
         $query = $repository->createQueryBuilder('f')->getQuery();
@@ -202,7 +202,7 @@ class FabricantesController extends FOSRestController
     /**
      * @Rest\Post("/fabricante/edit/{fabricanteid}")
      */
-     public function postUpdateModeloAction(Request $request)
+     public function postUpdateFabricanteAction(Request $request)
      {
         try
         {

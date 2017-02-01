@@ -56,8 +56,7 @@ class GruposController extends FOSRestController
                 array(
                     "Nuevo grupo creado"    => $grupoNombre,
                     "Descripción: "         => $descripcion,
-                    "Grupo Padre:"          => $GrupoPadre->getGrupoNombre(),
-                    "id"                    => $modelo->getModId()
+                    "id"                    => $grupo->getId()
                     )
                 )  
             ); 
@@ -80,27 +79,27 @@ class GruposController extends FOSRestController
         // Initialize the 'Grupo' data repository
         $repository = $this->getDoctrine()->getRepository('AppBundle:Grupo');
         $query      = $repository->createQueryBuilder('g')->getQuery();
-        $grupos    = $query->getResult();
+        $grupos		= $query->getResult();
         return $grupos;
     }
 
 
     /**
-     * @Rest\Get("/modelo/{modeloid}")
+     * @Rest\Get("/grupo/{id}")
      */
-    public function getModeloAction(Request $request)
+    public function getGrupoAction(Request $request)
     {
-        $modeloid       = $request->get('modeloid');
-        $repository     = $this->getDoctrine()->getRepository('AppBundle:Modelo');
-        $modelos        = $repository->findOneBymodId($modeloid);
-        return $modelos;
+        $id             = $request->get('id');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Grupo');
+        $grupo          = $repository->findOneById($id);
+        return $grupo;
     }
 
 
      /**
-     * @Rest\Get("/modelo/{limit}/{page}")
+     * @Rest\Get("/grupo/{limit}/{page}")
      */
-    public function getAllModeloPaginatedAction(Request $request)
+    public function getAllGrupoPaginatedAction(Request $request)
     {
         // Set up the limit and page vars from request
         $limit  = $request->get('limit');
@@ -124,16 +123,16 @@ class GruposController extends FOSRestController
         }
 
         // Connect with the autoparts db repository
-        $repository     = $this->getDoctrine()->getRepository('AppBundle:Modelo');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Grupo');
         // The dsql syntax query
-        $query          = $repository->createQueryBuilder('m')->getQuery()->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
+        $query          = $repository->createQueryBuilder('g')->getQuery()->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
         // Build the paginator
         $paginator      = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'modelos'                   => $paginator->getIterator(),
-            'total modelos en página'   => $paginator->getIterator()->count(),
-            'total modelos'             => $paginator->count()
+            'grupo'                     => $paginator->getIterator(),
+            'total en página'           => $paginator->getIterator()->count(),
+            'total'                     => $paginator->count()
         );
         // Send the response
         return $response;
@@ -141,9 +140,9 @@ class GruposController extends FOSRestController
 
 
     /**
-     * @Rest\Get("/modelo/{limit}/{page}/{searchtext}")
+     * @Rest\Get("/grupo/{limit}/{page}/{searchtext}")
      */
-    public function getAllModeloPaginatedSearchAction(Request $request)
+    public function getAllGrupoPaginatedSearchAction(Request $request)
     {
         // Set up the limit and page vars from request
         $limit = $request->get('limit');
@@ -172,14 +171,13 @@ class GruposController extends FOSRestController
         }
 
         // Connect with the autoparts db repository
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Modelo');
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Grupo');
     
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('modelo')->join('modelo.marcaMar','m')
-            ->where('m.marNombre LIKE :searchtext')
-            ->orwhere('modelo.modObservacion LIKE :searchtext')
-            ->orWhere('modelo.modNombre LIKE :searchtext')
-            ->orWhere('modelo.modId LIKE :searchtext')
+        $query = $repository->createQueryBuilder('grupo')->join('grupo.grupoPadre','g')
+            ->where('g.grupoNombre LIKE :searchtext')
+            ->orwhere('grupo.grupoNombre LIKE :searchtext')
+            ->orWhere('grupo.descripcion LIKE :searchtext')
             ->setParameter('searchtext',"%" .$searchtext ."%")
             ->getQuery()
             ->setFirstResult($limit * ($page - 1))
@@ -188,10 +186,10 @@ class GruposController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'modelos'                   => $paginator->getIterator(),
-            'total modelos en pagina'   => $paginator->getIterator()->count(),
-            'total modelos encontrados' => $paginator->count(),
-            'busqueda por'              => $searchtext
+            'grupos'                => $paginator->getIterator(),
+            'total  en pagina'		=> $paginator->getIterator()->count(),
+            'total  encontrados'	=> $paginator->count(),
+            'busqueda por'          => $searchtext
         );
         // Send the response
         return $response;
@@ -199,60 +197,59 @@ class GruposController extends FOSRestController
 
 
     /**
-     * @Rest\Post("/modelo/edit/{modeloid}")
+     * @Rest\Post("/grupo/edit/{id}")
      */
-     public function postUpdateModeloAction(Request $request)
+     public function postUpdateGrupoAction(Request $request)
      {
         try
         {
-        $modeloid = $request->get('modeloid');
-        $nombre = $request->get('nombre');
-        $observacion = $request->get('observacion');
-        $marcaid = $request->get('marcaid');
-        $marca = $this->getDoctrine()->getRepository('AppBundle:Marca')->find($marcaid);
+        $id = $request->get('id');
+        $grupoNombre = $request->get('nombre');
+        $descripcion = $request->get('descripcion');
+        $grupoPadre = $request->get('grupoPadre');
+        $grupoP = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($grupoPadre);
 
 
-        if($modeloid == "" || !$modeloid)
+        if($id == "" || !$id)
         {
              throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
         }
 
-        if($nombre == "")
+        if($grupoNombre == "")
         {
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
         }
-        if($marcaid == "")
+
+        if ($grupoPadre != ""){
+        if(!$grupoP)
         {
-               throw new HttpException (400,"El campo marca no puede estar vacío");   
+               throw new HttpException (400,"Debe especificar un ID de Grupo válido");   
         }
-        if(!$marcaid)
-        {
-               throw new HttpException (400,"Debe especificar un ID de Marca válido");   
         }
          
         $em = $this->getDoctrine()->getManager();
-        $modelo = $em->getRepository('AppBundle:Modelo')->find($modeloid);
+        $grupo = $em->getRepository('AppBundle:Grupo')->find($id);
 
-        if (!$modelo) 
+        if (!$grupo) 
         {
-            throw new HttpException (400,"No se ha encontrado el modelo especificado: " .$modeloid);
+            throw new HttpException (400,"No se ha encontrado el grupo especificado: " .$id);
         }
 
-        $modelo->setModNombre($nombre);
-        $modelo->setModObservacion($observacion);
-        $modelo->setMarcaMar($marca);
+        $grupo     -> setGrupoNombre($grupoNombre);
+        $grupo     -> setDescripcion($descripcion);
+        $grupo     -> setGrupoPadre($grupoP);
         $em->flush();
 
         $response = array(
-            'message'      => 'El modelo '.$modelo->getModNombre().' ha sido actualizado',
-            'modeloid'     => $modeloid,
-            'observacion'  => $observacion,
-            'marca'        => $marca->getMarNombre()
+            'message'      => 'El grupo '.$grupo->getGrupoNombre().' ha sido actualizado',
+            'grupoid'     => $id,
+            'descripcion'  => $descripcion,
          ); 
          return $response;
         }
+
         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre del modelo ya esxiste."); 
+            throw new HttpException (409,"Error: El nombre del grupo ya existe."); 
             } 
         catch (Exception $e) {
             return $e->getMessage();
@@ -261,26 +258,26 @@ class GruposController extends FOSRestController
 
 
     /**
-     * @Rest\Delete("/modelo/delete/{modeloid}")
+     * @Rest\Delete("/grupo/delete/{id}")
      */
-    public function deleteRemoveModeloAction(Request $request)
+    public function deleteRemoveGrupoAction(Request $request)
     {
-        $modeloid = $request->get('modeloid');
+        $id = $request->get('id');
         // get EntityManager
         $em             = $this->getDoctrine()->getManager();
-        $modelotoremove = $em->getRepository('AppBundle:Modelo')->find($modeloid);
+        $grupotoremove = $em->getRepository('AppBundle:Grupo')->find($id);
 
-        if ($modelotoremove != "") {      
+        if ($grupotoremove != "") {      
             // Remove it and flush
-            $em->remove($modelotoremove);
+            $em->remove($grupotoremove);
             $em->flush();
             $response = array(
-                'message'   => 'El modelo '.$modelotoremove->getModNombre().' ha sido eliminado',
-                'modeloid'  => $modeloid
+                'message'   => 'El grupo '.$grupotoremove->getGrupoNombre().' ha sido eliminado',
+                'id'  => $id
             );
              return $response;
         } else{
-            throw new HttpException (400,"No se ha encontrado el modelo especificado ID: " .$modeloid);
+            throw new HttpException (400,"No se ha encontrado el grupo especificado ID: " .$id);
         }
         
     }

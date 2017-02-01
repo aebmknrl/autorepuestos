@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Grupo
  *
- * @ORM\Table(name="grupo", indexes={@ORM\Index(name="fk_GRUPO_PADRE_idx", columns={"GRUPO_PADRE"})})
+ * @ORM\Table(name="grupo", uniqueConstraints={@ORM\UniqueConstraint(name="grupo_nombre_UNIQUE", columns={"grupo_nombre"})}, indexes={@ORM\Index(name="fk_grupo_padre_idx", columns={"grupo_padre"})})
  * @ORM\Entity
  */
 class Grupo
@@ -15,7 +15,7 @@ class Grupo
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,21 +24,24 @@ class Grupo
     /**
      * @var string
      *
-     * @ORM\Column(name="grupo_nombre", type="string", length=30, nullable=false)
+     * @ORM\Column(name="grupo_nombre", type="string", length=45, nullable=false)
      */
     private $grupoNombre;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="descripcion", type="integer", nullable=true)
+     * @ORM\Column(name="descripcion", type="string", length=240, nullable=true)
      */
     private $descripcion;
 
     /**
-     * @var integer
+     * @var \AppBundle\Entity\Grupo
      *
-     * @ORM\Column(name="grupo_padre", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Grupo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="grupo_padre", referencedColumnName="id")
+     * })
      */
     private $grupoPadre;
 
@@ -81,7 +84,7 @@ class Grupo
     /**
      * Set descripcion
      *
-     * @param integer $descripcion
+     * @param string $descripcion
      *
      * @return Grupo
      */
@@ -95,7 +98,7 @@ class Grupo
     /**
      * Get descripcion
      *
-     * @return integer
+     * @return string
      */
     public function getDescripcion()
     {
@@ -105,11 +108,11 @@ class Grupo
     /**
      * Set grupoPadre
      *
-     * @param integer $grupoPadre
+     * @param \AppBundle\Entity\Grupo $grupoPadre
      *
      * @return Grupo
      */
-    public function setGrupoPadre($grupoPadre)
+    public function setGrupoPadre(\AppBundle\Entity\Grupo $grupoPadre = null)
     {
         $this->grupoPadre = $grupoPadre;
 
@@ -119,7 +122,7 @@ class Grupo
     /**
      * Get grupoPadre
      *
-     * @return integer
+     * @return \AppBundle\Entity\Grupo
      */
     public function getGrupoPadre()
     {

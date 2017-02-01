@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Parte
  *
- * @ORM\Table(name="parte", uniqueConstraints={@ORM\UniqueConstraint(name="PAR_ID_UNIQUE", columns={"PAR_ID"}), @ORM\UniqueConstraint(name="PAR_UPC_UNIQUE", columns={"PAR_UPC"})}, indexes={@ORM\Index(name="fk_PARTE_EQ2_idx", columns={"PAR_EQ_ID"}), @ORM\Index(name="fk_PARTE_FABRICANTE1_idx", columns={"FABRICANTE_FAB_ID"}), @ORM\Index(name="fk_PARTE_KIT2_idx", columns={"KIT_ID"})})
+ * @ORM\Table(name="parte", uniqueConstraints={@ORM\UniqueConstraint(name="PAR_ID_UNIQUE", columns={"PAR_ID"}), @ORM\UniqueConstraint(name="PAR_UPC_UNIQUE", columns={"PAR_UPC"})}, indexes={@ORM\Index(name="fk_PARTE_EQ2_idx", columns={"PAR_EQ_ID"}), @ORM\Index(name="fk_PARTE_FABRICANTE1_idx", columns={"FABRICANTE_FAB_ID"}), @ORM\Index(name="fk_PARTE_KIT2_idx", columns={"KIT_ID"}), @ORM\Index(name="fk_PARTE_GRUPO_idx", columns={"PAR_GRUPO_ID"})})
  * @ORM\Entity
  */
 class Parte
@@ -15,7 +15,7 @@ class Parte
     /**
      * @var integer
      *
-     * @ORM\Column(name="PAR_ID", type="integer", nullable=false)
+     * @ORM\Column(name="PAR_ID", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -62,13 +62,6 @@ class Parte
      * @ORM\Column(name="PAR_CODIGO", type="string", length=45, nullable=false)
      */
     private $parCodigo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PAR_GRUPO", type="string", length=45, nullable=true)
-     */
-    private $parGrupo;
 
     /**
      * @var string
@@ -127,9 +120,9 @@ class Parte
     private $parKit;
 
     /**
-     * @var \Equivalencia
+     * @var \AppBundle\Entity\Equivalencia
      *
-     * @ORM\ManyToOne(targetEntity="Equivalencia")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Equivalencia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PAR_EQ_ID", referencedColumnName="ID")
      * })
@@ -137,9 +130,9 @@ class Parte
     private $parEq;
 
     /**
-     * @var \Fabricante
+     * @var \AppBundle\Entity\Fabricante
      *
-     * @ORM\ManyToOne(targetEntity="Fabricante")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Fabricante")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="FABRICANTE_FAB_ID", referencedColumnName="FAB_ID")
      * })
@@ -147,9 +140,19 @@ class Parte
     private $fabricanteFab;
 
     /**
-     * @var \Conjunto
+     * @var \AppBundle\Entity\Grupo
      *
-     * @ORM\ManyToOne(targetEntity="Conjunto")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Grupo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="PAR_GRUPO_ID", referencedColumnName="id")
+     * })
+     */
+    private $parGrupo;
+
+    /**
+     * @var \AppBundle\Entity\Conjunto
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Conjunto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="KIT_ID", referencedColumnName="ID")
      * })
@@ -310,30 +313,6 @@ class Parte
     public function getParCodigo()
     {
         return $this->parCodigo;
-    }
-
-    /**
-     * Set parGrupo
-     *
-     * @param string $parGrupo
-     *
-     * @return Parte
-     */
-    public function setParGrupo($parGrupo)
-    {
-        $this->parGrupo = $parGrupo;
-
-        return $this;
-    }
-
-    /**
-     * Get parGrupo
-     *
-     * @return string
-     */
-    public function getParGrupo()
-    {
-        return $this->parGrupo;
     }
 
     /**
@@ -574,6 +553,30 @@ class Parte
     public function getFabricanteFab()
     {
         return $this->fabricanteFab;
+    }
+
+    /**
+     * Set parGrupo
+     *
+     * @param \AppBundle\Entity\Grupo $parGrupo
+     *
+     * @return Parte
+     */
+    public function setParGrupo(\AppBundle\Entity\Grupo $parGrupo = null)
+    {
+        $this->parGrupo = $parGrupo;
+
+        return $this;
+    }
+
+    /**
+     * Get parGrupo
+     *
+     * @return \AppBundle\Entity\Grupo
+     */
+    public function getParGrupo()
+    {
+        return $this->parGrupo;
     }
 
     /**

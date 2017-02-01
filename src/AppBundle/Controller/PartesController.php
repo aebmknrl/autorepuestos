@@ -21,30 +21,27 @@ class PartesController extends FOSRestController
     public function postAddParteAction(Request $request)
     {
         try {
-            
-            $nombre = $request->get('nombre');
-            $nombret = $request->get('nombrepieza');
-            $nombreinv = $request->get('nombreinventario');
-            $parasin = $request->get('paramazon');  
-            $parcodigo = $request->get('codigo');          
-            $upc = $request->get('codigoupc');
-            $pargrupo = $request->get('grupo');
-            $parsubgrupo = $request->get('subgrupo');
-            $parlargo = $request->get('largo');
-            $parancho = $request->get('ancho');
-            $parespesor = $request->get('espesor');
-            $parpeso = $request->get('peso');
-            $parcaracter = $request->get('caracteristicas');
-            $parobservacion = $request->get('observacion');
-            $parkit = $request->get('kit'); // OBS ALI --> Julio esto tiene relacion con una tabla... como la de abajo... falta?
-            $equivalencia = $request->get('equivalencia'); // OBS ALI --> Julio esto tiene relacion con una tabla... como la de abajo... Fabricantes falta?
-            $conjunto = $request->get('conjunto');// OBS ALI --> Julio esto tiene relacion con una tabla... como la de abajo... falta?
-            $fabricanteid = $request->get('fabricanteid'); 
-            $fabricante = $this->getDoctrine()
-                        ->getRepository('AppBundle:Fabricante')
-                        ->find($fabricanteid);
+            // Obtaining vars from request
+            $parNombre      = $request->get('nombre');
+            $parNombret     = $request->get('nombrepieza');
+            $parNombrein    = $request->get('nombreinventario');
+            $parAsin        = $request->get('paramazon');  
+            $parCodigo      = $request->get('codigo');          
+            $parUpc         = $request->get('codigoupc');
+            $parSubgrupo    = $request->get('subgrupo');
+            $parLargo       = $request->get('largo');
+            $parAncho       = $request->get('ancho');
+            $parEspesor     = $request->get('espesor');
+            $parPeso        = $request->get('peso');
+            $parCaract      = $request->get('caracteristicas');
+            $parObservacion = $request->get('observacion');
+            $parKit         = $request->get('kit');
+            $parEq          = $request->get('equivalencia');
+            $kit            = $request->get('conjunto');
+            $fabricanteFab  = $request->get('fabricanteid'); 
+            $parGrupo       = $request->get('grupo');
 
-          
+            // Check for mandatory fields
             if($nombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
             }
@@ -52,26 +49,34 @@ class PartesController extends FOSRestController
                 throw new HttpException (400,"El campo nombre pieza no puede estar vacío");   
             }
 
-//Julito es bueno mantener los nombres de las variables iguales en la entidad y aqui...
+            // Find the relationships 
+            $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
+            $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
+            $grupo          = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
+            $kit            = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($kit);
+            
+
+
+            // Create the model
             $parte = new Parte();
-            $parte -> setParUpc($upc);
-            $parte -> setParNombre($nombre);
-            $parte -> setParNombret($nombret);
-            $parte -> setParNombrein($nombreinv);
-            $parte -> setParAsin($parasin);
-            $parte -> setParCodigo($parcodigo);
-            $parte -> setParGrupo($pargrupo);
-            $parte -> setParSubgrupo($parsubgrupo);
-            $parte -> setParLargo($parlargo);
-            $parte -> setParAncho($parancho);
-            $parte -> setParEspesor($parespesor);
-            $parte -> setParPeso($parpeso);
-            $parte -> setParCaract($parcaracter);
-            $parte -> setParObservacion($parobservacion);
+            $parte -> setParUpc($parUpc);
+            $parte -> setParNombre($parNombre);
+            $parte -> setParNombret($parNombret);
+            $parte -> setParNombrein($parNombrein);
+            $parte -> setParAsin($parAsin);
+            $parte -> setParCodigo($parCodigo);
+            $parte -> setParSubgrupo($parSubgrupo);
+            $parte -> setParLargo($parLargo);
+            $parte -> setParAncho($parAncho);
+            $parte -> setParEspesor($parEspesor);
+            $parte -> setParPeso($parPeso);
+            $parte -> setParCaract($parCaract);
+            $parte -> setParObservacion($parObservacion);
             $parte -> setParKit($parkit);
             $parte -> setParEq($equivalencia);
             $parte -> setFabricanteFab($fabricante);
-            $parte -> setKit(); //OBS ALI ---> No se llena?
+            $parte -> setKit($kit);
+            $parte -> setParGrupo($grupo);
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -237,28 +242,26 @@ class PartesController extends FOSRestController
      */
      public function postUpdateModeloAction(Request $request)
      {
-        $parteid = $request->get('parteid');
-        $nombre = $request->get('nombre');
-        $nombret = $request->get('nombrepieza');
-        $nombreinv = $request->get('nombreinventario');
-        $parasin = $request->get('paramazon');  
-        $parcodigo = $request->get('codigo');          
-        $upc = $request->get('codigoupc');
-        $pargrupo = $request->get('grupo');
-        $parsubgrupo = $request->get('subgrupo');
-        $parlargo = $request->get('largo');
-        $parancho = $request->get('ancho');
-        $parespesor = $request->get('espesor');
-        $parpeso = $request->get('peso');
-        $parcaracter = $request->get('caracteristicas');
-        $parobservacion = $request->get('observacion');
-        $parkit = $request->get('kit');
-        $equivalencia = $request->get('equivalencia');
-        $conjunto = $request->get('conjunto');
-        $fabricanteid = $request->get('fabricanteid');
-        $fabricante = $this->getDoctrine()
-                    ->getRepository('AppBundle:Fabricante')
-                    ->find($fabricanteid);
+            // Obtaining vars from request
+            $parId          = $request->get('parteid');
+            $parNombre      = $request->get('nombre');
+            $parNombret     = $request->get('nombrepieza');
+            $parNombrein    = $request->get('nombreinventario');
+            $parAsin        = $request->get('paramazon');  
+            $parCodigo      = $request->get('codigo');          
+            $parUpc         = $request->get('codigoupc');
+            $parSubgrupo    = $request->get('subgrupo');
+            $parLargo       = $request->get('largo');
+            $parAncho       = $request->get('ancho');
+            $parEspesor     = $request->get('espesor');
+            $parPeso        = $request->get('peso');
+            $parCaract      = $request->get('caracteristicas');
+            $parObservacion = $request->get('observacion');
+            $parKit         = $request->get('kit');
+            $parEq          = $request->get('equivalencia');
+            $kit            = $request->get('conjunto');
+            $fabricanteFab  = $request->get('fabricanteid'); 
+            $parGrupo       = $request->get('grupo');
          
 
 
@@ -272,7 +275,14 @@ class PartesController extends FOSRestController
             if($nombret == ""){
                 throw new HttpException (400,"El campo nombre pieza no puede estar vacío");   
             }
-         
+
+            // Find the relationships 
+            $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
+            $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
+            $grupo          = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
+            $kit            = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($kit);
+            
+                     
          $em = $this->getDoctrine()->getManager();
          $parte = $em->getRepository('AppBundle:Parte')
             ->find($parteid);
@@ -282,31 +292,33 @@ class PartesController extends FOSRestController
         throw new HttpException (400,"No se ha encontrado la parte especificada: " .$parteid);
          }
 
-        $parte -> setParUpc($upc);
-        $parte -> setParNombre($nombre);
-        $parte -> setParNombret($nombret);
-        $parte -> setParNombrein($nombreinv);
-        $parte -> setParAsin($parasin);
-        $parte -> setParCodigo($parcodigo);
-        $parte -> setParGrupo($pargrupo);
-        $parte -> setParSubgrupo($parsubgrupo);
-        $parte -> setParLargo($parlargo);
-        $parte -> setParAncho($parancho);
-        $parte -> setParEspesor($parespesor);
-        $parte -> setParPeso($parpeso);
-        $parte -> setParCaract($parcaracter);
-        $parte -> setParObservacion($parobservacion);
-        $parte -> setParKit($parkit);
-        $parte -> setParEq($equivalencia);
-        $parte -> setFabricanteFab($fabricante);
-        $parte -> setKit();
-        $em->flush();
+            // Create the model
+            $parte = new Parte();
+            $parte -> setParUpc($parUpc);
+            $parte -> setParNombre($parNombre);
+            $parte -> setParNombret($parNombret);
+            $parte -> setParNombrein($parNombrein);
+            $parte -> setParAsin($parAsin);
+            $parte -> setParCodigo($parCodigo);
+            $parte -> setParSubgrupo($parSubgrupo);
+            $parte -> setParLargo($parLargo);
+            $parte -> setParAncho($parAncho);
+            $parte -> setParEspesor($parEspesor);
+            $parte -> setParPeso($parPeso);
+            $parte -> setParCaract($parCaract);
+            $parte -> setParObservacion($parObservacion);
+            $parte -> setParKit($parkit);
+            $parte -> setParEq($equivalencia);
+            $parte -> setFabricanteFab($fabricante);
+            $parte -> setKit($kit);
+            $parte -> setParGrupo($grupo);
+            $em->flush();
 
         $data = array(
             'message' => 'La parte ha sido actualizada',
-             'parteid' => $parteid,
-             'nombre' => $nombre,
-             'observacion' => $observacion
+             'parteid' => $parId,
+             'nombre' => $parNombre,
+             'observacion' => $parObservacion
          );
 
          return $request;

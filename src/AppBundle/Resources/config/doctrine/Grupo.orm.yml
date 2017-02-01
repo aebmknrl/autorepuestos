@@ -1,6 +1,14 @@
 AppBundle\Entity\Grupo:
     type: entity
     table: grupo
+    indexes:
+        fk_grupo_padre_idx:
+            columns:
+                - grupo_padre
+    uniqueConstraints:
+        grupo_nombre_UNIQUE:
+            columns:
+                - grupo_nombre
     id:
         id:
             type: integer
@@ -14,19 +22,25 @@ AppBundle\Entity\Grupo:
         grupoNombre:
             type: string
             nullable: false
-            length: 30
+            length: 45
             options:
                 fixed: false
             column: grupo_nombre
         descripcion:
-            type: integer
+            type: string
             nullable: true
+            length: 240
             options:
-                unsigned: false
+                fixed: false
+    manyToOne:
         grupoPadre:
-            type: integer
-            nullable: true
-            options:
-                unsigned: false
-            column: grupo_padre
+            targetEntity: Grupo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                grupo_padre:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

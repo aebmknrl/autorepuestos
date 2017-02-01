@@ -11,6 +11,9 @@ AppBundle\Entity\Parte:
         fk_PARTE_KIT2_idx:
             columns:
                 - KIT_ID
+        fk_PARTE_GRUPO_idx:
+            columns:
+                - PAR_GRUPO_ID
     uniqueConstraints:
         PAR_ID_UNIQUE:
             columns:
@@ -35,6 +38,7 @@ AppBundle\Entity\Parte:
             length: 45
             options:
                 fixed: false
+                comment: 'CODIGO UPC 12 DIGITOS'
             column: PAR_UPC
         parNombre:
             type: string
@@ -42,6 +46,7 @@ AppBundle\Entity\Parte:
             length: 100
             options:
                 fixed: false
+                comment: 'NOMBRE INTERNACIONAL TRADUCIDO DEL INGLES'
             column: PAR_NOMBRE
         parNombret:
             type: string
@@ -49,6 +54,7 @@ AppBundle\Entity\Parte:
             length: 100
             options:
                 fixed: false
+                comment: 'NOMBRE COLOQUIAL DE LA PIEZA'
             column: PAR_NOMBRET
         parNombrein:
             type: string
@@ -63,6 +69,7 @@ AppBundle\Entity\Parte:
             length: 45
             options:
                 fixed: false
+                comment: 'CODIGO EN AMAZON'
             column: PAR_ASIN
         parCodigo:
             type: string
@@ -70,20 +77,15 @@ AppBundle\Entity\Parte:
             length: 45
             options:
                 fixed: false
+                comment: 'CODIGO INTERNO DEL FABRICANTE'
             column: PAR_CODIGO
-        parGrupo:
-            type: string
-            nullable: true
-            length: 45
-            options:
-                fixed: false
-            column: PAR_GRUPO
         parSubgrupo:
             type: string
             nullable: true
             length: 45
             options:
                 fixed: false
+                comment: 'SUBCATEGORIA DENTRO DE PARTES, SUSPENCION NORMAL REFORZADOS EXTRAREFORZADOS'
             column: PAR_SUBGRUPO
         parLargo:
             type: string
@@ -91,6 +93,7 @@ AppBundle\Entity\Parte:
             length: 45
             options:
                 fixed: false
+                comment: 'EMPAQUE CM'
             column: PAR_LARGO
         parAncho:
             type: string
@@ -112,6 +115,7 @@ AppBundle\Entity\Parte:
             length: 45
             options:
                 fixed: false
+                comment: KILOS
             column: PAR_PESO
         parCaract:
             type: string
@@ -119,6 +123,7 @@ AppBundle\Entity\Parte:
             length: 200
             options:
                 fixed: false
+                comment: 'MEDIADAS, POSICION O UBICACION EN EL VEHICULO'
             column: PAR_CARACT
         parObservacion:
             type: string
@@ -126,6 +131,7 @@ AppBundle\Entity\Parte:
             length: 200
             options:
                 fixed: false
+                comment: 'TIPS, RECOMENDACIONES '
             column: PAR_OBSERVACION
         parKit:
             type: boolean
@@ -151,6 +157,16 @@ AppBundle\Entity\Parte:
             joinColumns:
                 FABRICANTE_FAB_ID:
                     referencedColumnName: FAB_ID
+            orphanRemoval: false
+        parGrupo:
+            targetEntity: Grupo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PAR_GRUPO_ID:
+                    referencedColumnName: id
             orphanRemoval: false
         kit:
             targetEntity: Conjunto
