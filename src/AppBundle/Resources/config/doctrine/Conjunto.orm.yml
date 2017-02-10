@@ -5,9 +5,6 @@ AppBundle\Entity\Conjunto:
         fk_parte_id_idx:
             columns:
                 - PARTE_ID
-        fk_partekit_id_idx:
-            columns:
-                - PARTEKIT_ID
     id:
         id:
             type: integer
@@ -19,13 +16,12 @@ AppBundle\Entity\Conjunto:
             generator:
                 strategy: IDENTITY
     fields:
-        kitRef:
-            type: string
-            nullable: false
-            length: 15
+        parteKitId:
+            type: integer
+            nullable: true
             options:
-                fixed: false
-            column: KIT_REF
+                unsigned: false
+            column: PARTE_KIT_ID
         kitCount:
             type: integer
             nullable: true
@@ -41,16 +37,6 @@ AppBundle\Entity\Conjunto:
             inversedBy: null
             joinColumns:
                 PARTE_ID:
-                    referencedColumnName: PAR_ID
-            orphanRemoval: false
-        partekit:
-            targetEntity: Parte
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                PARTEKIT_ID:
                     referencedColumnName: PAR_ID
             orphanRemoval: false
     lifecycleCallbacks: {  }

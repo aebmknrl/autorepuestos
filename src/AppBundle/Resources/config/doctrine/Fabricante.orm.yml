@@ -44,4 +44,11 @@ AppBundle\Entity\Fabricante:
             type: date
             nullable: true
             column: FAB_TIEMPO
+        fabImagen:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: FAB_IMAGEN
     lifecycleCallbacks: {  }

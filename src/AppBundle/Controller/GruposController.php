@@ -130,9 +130,9 @@ class GruposController extends FOSRestController
         $paginator      = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'grupo'                     => $paginator->getIterator(),
-            'total en página'           => $paginator->getIterator()->count(),
-            'total'                     => $paginator->count()
+            'grupos' => $paginator->getIterator(),
+            'totalGruposReturned' => $paginator->getIterator()->count(),
+            'totalGrupos' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -186,10 +186,10 @@ class GruposController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'grupos'                => $paginator->getIterator(),
-            'total  en pagina'		=> $paginator->getIterator()->count(),
-            'total  encontrados'	=> $paginator->count(),
-            'busqueda por'          => $searchtext
+            'grupos' => $paginator->getIterator(),
+            'totalGruposReturned' => $paginator->getIterator()->count(),
+            'totalGrupos' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;

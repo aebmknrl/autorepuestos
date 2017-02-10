@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Parte
  *
- * @ORM\Table(name="parte", uniqueConstraints={@ORM\UniqueConstraint(name="PAR_ID_UNIQUE", columns={"PAR_ID"}), @ORM\UniqueConstraint(name="PAR_UPC_UNIQUE", columns={"PAR_UPC"})}, indexes={@ORM\Index(name="fk_PARTE_EQ2_idx", columns={"PAR_EQ_ID"}), @ORM\Index(name="fk_PARTE_FABRICANTE1_idx", columns={"FABRICANTE_FAB_ID"}), @ORM\Index(name="fk_PARTE_KIT2_idx", columns={"KIT_ID"}), @ORM\Index(name="fk_PARTE_GRUPO_idx", columns={"PAR_GRUPO_ID"})})
+ * @ORM\Table(name="parte", uniqueConstraints={@ORM\UniqueConstraint(name="PAR_ID_UNIQUE", columns={"PAR_ID"}), @ORM\UniqueConstraint(name="PAR_UPC_UNIQUE", columns={"PAR_UPC"})}, indexes={@ORM\Index(name="fk_PARTE_FABRICANTE1_idx", columns={"FABRICANTE_FAB_ID"}), @ORM\Index(name="fk_PARTE_NOMBRE_idx", columns={"PAR_NOMBRE_ID"}), @ORM\Index(name="fk_PARTE_EQ_idx", columns={"PAR_EQ_ID"})})
  * @ORM\Entity
  */
 class Parte
@@ -15,46 +15,11 @@ class Parte
     /**
      * @var integer
      *
-     * @ORM\Column(name="PAR_ID", type="integer")
+     * @ORM\Column(name="PAR_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $parId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PAR_UPC", type="string", length=45, nullable=true)
-     */
-    private $parUpc;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PAR_NOMBRE", type="string", length=100, nullable=false)
-     */
-    private $parNombre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PAR_NOMBRET", type="string", length=100, nullable=false)
-     */
-    private $parNombret;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PAR_NOMBREIN", type="string", length=45, nullable=true)
-     */
-    private $parNombrein;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="PAR_ASIN", type="string", length=45, nullable=true)
-     */
-    private $parAsin;
 
     /**
      * @var string
@@ -66,9 +31,16 @@ class Parte
     /**
      * @var string
      *
-     * @ORM\Column(name="PAR_SUBGRUPO", type="string", length=45, nullable=true)
+     * @ORM\Column(name="PAR_UPC", type="string", length=45, nullable=true)
      */
-    private $parSubgrupo;
+    private $parUpc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PAR_SKU", type="string", length=20, nullable=true)
+     */
+    private $parSku;
 
     /**
      * @var string
@@ -101,6 +73,13 @@ class Parte
     /**
      * @var string
      *
+     * @ORM\Column(name="PARTE_ORIGEN", type="string", length=30, nullable=true)
+     */
+    private $parteOrigen;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="PAR_CARACT", type="string", length=200, nullable=true)
      */
     private $parCaract;
@@ -113,16 +92,30 @@ class Parte
     private $parObservacion;
 
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="PAR_KIT", type="boolean", nullable=true)
+     * @ORM\Column(name="PAR_ASIN", type="string", length=45, nullable=true)
+     */
+    private $parAsin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PAR_SUBGRUPO", type="string", length=45, nullable=true)
+     */
+    private $parSubgrupo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="PAR_KIT", type="integer", nullable=true)
      */
     private $parKit;
 
     /**
-     * @var \AppBundle\Entity\Equivalencia
+     * @var \Equivalencia
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Equivalencia")
+     * @ORM\ManyToOne(targetEntity="Equivalencia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PAR_EQ_ID", referencedColumnName="ID")
      * })
@@ -130,9 +123,9 @@ class Parte
     private $parEq;
 
     /**
-     * @var \AppBundle\Entity\Fabricante
+     * @var \Fabricante
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Fabricante")
+     * @ORM\ManyToOne(targetEntity="Fabricante")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="FABRICANTE_FAB_ID", referencedColumnName="FAB_ID")
      * })
@@ -140,24 +133,14 @@ class Parte
     private $fabricanteFab;
 
     /**
-     * @var \AppBundle\Entity\Grupo
+     * @var \NombreParte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Grupo")
+     * @ORM\ManyToOne(targetEntity="NombreParte")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PAR_GRUPO_ID", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="PAR_NOMBRE_ID", referencedColumnName="PAR_NOMBRE_ID")
      * })
      */
-    private $parGrupo;
-
-    /**
-     * @var \AppBundle\Entity\Conjunto
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Conjunto")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="KIT_ID", referencedColumnName="ID")
-     * })
-     */
-    private $kit;
+    private $parNombre;
 
 
 
@@ -169,126 +152,6 @@ class Parte
     public function getParId()
     {
         return $this->parId;
-    }
-
-    /**
-     * Set parUpc
-     *
-     * @param string $parUpc
-     *
-     * @return Parte
-     */
-    public function setParUpc($parUpc)
-    {
-        $this->parUpc = $parUpc;
-
-        return $this;
-    }
-
-    /**
-     * Get parUpc
-     *
-     * @return string
-     */
-    public function getParUpc()
-    {
-        return $this->parUpc;
-    }
-
-    /**
-     * Set parNombre
-     *
-     * @param string $parNombre
-     *
-     * @return Parte
-     */
-    public function setParNombre($parNombre)
-    {
-        $this->parNombre = $parNombre;
-
-        return $this;
-    }
-
-    /**
-     * Get parNombre
-     *
-     * @return string
-     */
-    public function getParNombre()
-    {
-        return $this->parNombre;
-    }
-
-    /**
-     * Set parNombret
-     *
-     * @param string $parNombret
-     *
-     * @return Parte
-     */
-    public function setParNombret($parNombret)
-    {
-        $this->parNombret = $parNombret;
-
-        return $this;
-    }
-
-    /**
-     * Get parNombret
-     *
-     * @return string
-     */
-    public function getParNombret()
-    {
-        return $this->parNombret;
-    }
-
-    /**
-     * Set parNombrein
-     *
-     * @param string $parNombrein
-     *
-     * @return Parte
-     */
-    public function setParNombrein($parNombrein)
-    {
-        $this->parNombrein = $parNombrein;
-
-        return $this;
-    }
-
-    /**
-     * Get parNombrein
-     *
-     * @return string
-     */
-    public function getParNombrein()
-    {
-        return $this->parNombrein;
-    }
-
-    /**
-     * Set parAsin
-     *
-     * @param string $parAsin
-     *
-     * @return Parte
-     */
-    public function setParAsin($parAsin)
-    {
-        $this->parAsin = $parAsin;
-
-        return $this;
-    }
-
-    /**
-     * Get parAsin
-     *
-     * @return string
-     */
-    public function getParAsin()
-    {
-        return $this->parAsin;
     }
 
     /**
@@ -316,27 +179,51 @@ class Parte
     }
 
     /**
-     * Set parSubgrupo
+     * Set parUpc
      *
-     * @param string $parSubgrupo
+     * @param string $parUpc
      *
      * @return Parte
      */
-    public function setParSubgrupo($parSubgrupo)
+    public function setParUpc($parUpc)
     {
-        $this->parSubgrupo = $parSubgrupo;
+        $this->parUpc = $parUpc;
 
         return $this;
     }
 
     /**
-     * Get parSubgrupo
+     * Get parUpc
      *
      * @return string
      */
-    public function getParSubgrupo()
+    public function getParUpc()
     {
-        return $this->parSubgrupo;
+        return $this->parUpc;
+    }
+
+    /**
+     * Set parSku
+     *
+     * @param string $parSku
+     *
+     * @return Parte
+     */
+    public function setParSku($parSku)
+    {
+        $this->parSku = $parSku;
+
+        return $this;
+    }
+
+    /**
+     * Get parSku
+     *
+     * @return string
+     */
+    public function getParSku()
+    {
+        return $this->parSku;
     }
 
     /**
@@ -436,6 +323,30 @@ class Parte
     }
 
     /**
+     * Set parteOrigen
+     *
+     * @param string $parteOrigen
+     *
+     * @return Parte
+     */
+    public function setParteOrigen($parteOrigen)
+    {
+        $this->parteOrigen = $parteOrigen;
+
+        return $this;
+    }
+
+    /**
+     * Get parteOrigen
+     *
+     * @return string
+     */
+    public function getParteOrigen()
+    {
+        return $this->parteOrigen;
+    }
+
+    /**
      * Set parCaract
      *
      * @param string $parCaract
@@ -484,9 +395,57 @@ class Parte
     }
 
     /**
+     * Set parAsin
+     *
+     * @param string $parAsin
+     *
+     * @return Parte
+     */
+    public function setParAsin($parAsin)
+    {
+        $this->parAsin = $parAsin;
+
+        return $this;
+    }
+
+    /**
+     * Get parAsin
+     *
+     * @return string
+     */
+    public function getParAsin()
+    {
+        return $this->parAsin;
+    }
+
+    /**
+     * Set parSubgrupo
+     *
+     * @param string $parSubgrupo
+     *
+     * @return Parte
+     */
+    public function setParSubgrupo($parSubgrupo)
+    {
+        $this->parSubgrupo = $parSubgrupo;
+
+        return $this;
+    }
+
+    /**
+     * Get parSubgrupo
+     *
+     * @return string
+     */
+    public function getParSubgrupo()
+    {
+        return $this->parSubgrupo;
+    }
+
+    /**
      * Set parKit
      *
-     * @param boolean $parKit
+     * @param integer $parKit
      *
      * @return Parte
      */
@@ -500,7 +459,7 @@ class Parte
     /**
      * Get parKit
      *
-     * @return boolean
+     * @return integer
      */
     public function getParKit()
     {
@@ -556,50 +515,26 @@ class Parte
     }
 
     /**
-     * Set parGrupo
+     * Set parNombre
      *
-     * @param \AppBundle\Entity\Grupo $parGrupo
+     * @param \AppBundle\Entity\NombreParte $parNombre
      *
      * @return Parte
      */
-    public function setParGrupo(\AppBundle\Entity\Grupo $parGrupo = null)
+    public function setParNombre(\AppBundle\Entity\NombreParte $parNombre = null)
     {
-        $this->parGrupo = $parGrupo;
+        $this->parNombre = $parNombre;
 
         return $this;
     }
 
     /**
-     * Get parGrupo
+     * Get parNombre
      *
-     * @return \AppBundle\Entity\Grupo
+     * @return \AppBundle\Entity\NombreParte
      */
-    public function getParGrupo()
+    public function getParNombre()
     {
-        return $this->parGrupo;
-    }
-
-    /**
-     * Set kit
-     *
-     * @param \AppBundle\Entity\Conjunto $kit
-     *
-     * @return Parte
-     */
-    public function setKit(\AppBundle\Entity\Conjunto $kit = null)
-    {
-        $this->kit = $kit;
-
-        return $this;
-    }
-
-    /**
-     * Get kit
-     *
-     * @return \AppBundle\Entity\Conjunto
-     */
-    public function getKit()
-    {
-        return $this->kit;
+        return $this->parNombre;
     }
 }

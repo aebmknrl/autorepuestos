@@ -2,7 +2,7 @@ AppBundle\Entity\VehiculoImagen:
     type: entity
     table: vehiculo_imagen
     indexes:
-        fk_veh_id_idx:
+        fk_vehiculo_idx:
             columns:
                 - VEH_ID
     uniqueConstraints:
@@ -35,10 +35,15 @@ AppBundle\Entity\VehiculoImagen:
             options:
                 fixed: false
             column: VEH_IMG_URL
-        vehId:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: VEH_ID
+    manyToOne:
+        veh:
+            targetEntity: Vehiculo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                VEH_ID:
+                    referencedColumnName: VEH_ID
+            orphanRemoval: false
     lifecycleCallbacks: {  }

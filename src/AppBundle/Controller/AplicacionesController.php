@@ -135,9 +135,9 @@ class AplicacionesController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'aplicacion'                    => $paginator->getIterator(),
-            'total aplicaciones en pagina'  => $paginator->getIterator()->count(),
-            'total aplicaciones'            => $paginator->count()
+            'aplicaciones' => $paginator->getIterator(),
+            'totalAplicacionesReturned' => $paginator->getIterator()->count(),
+            'totalAplicaciones' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -191,10 +191,10 @@ class AplicacionesController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'aplicaciones'                  => $paginator->getIterator(),
-            'total aplicaciones en pagina'  => $paginator->getIterator()->count(),
-            'total aplicaciones encontradas'=> $paginator->count(),
-            'busqueda por'                  => $searchtext
+            'aplicaciones' => $paginator->getIterator(),
+            'totalAplicacionesReturned' => $paginator->getIterator()->count(),
+            'totalAplicaciones' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;

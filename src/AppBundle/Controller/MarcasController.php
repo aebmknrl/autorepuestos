@@ -23,16 +23,17 @@ class MarcasController extends FOSRestController
             // Obtaining vars from request        
             $nombre         = $request->get('nombre');
             $observacion    = $request->get('observacion');
-
+            $marImagen      = $request->get('marImagen');
             // Check for mandatory fields          
             if($nombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
             }
 
-            // Create the model
+            // Create the Marca
             $marca          = new Marca();
-            $marca -> setMarNombre($nombre);
-            $marca -> setMarObservacion($observacion);
+            $marca          -> setMarNombre($nombre);
+            $marca          -> setMarObservacion($observacion);
+            $marca          -> setMarImagen($marImagen);
             $em = $this->getDoctrine()->getManager();
 
             // tells Doctrine you want to (eventually) save (no queries yet)
@@ -118,9 +119,9 @@ class MarcasController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'marcas'                    => $paginator->getIterator(),
-            'total marcas en página'    => $paginator->getIterator()->count(),
-            'total marcas'              => $paginator->count()
+            'marcas' => $paginator->getIterator(),
+            'totalMarcasReturned' => $paginator->getIterator()->count(),
+            'totalMarcas' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -170,10 +171,10 @@ class MarcasController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'marcas'                    => $paginator->getIterator(),
-            'total marcas en página'    => $paginator->getIterator()->count(),
-            'total marcas encontradas'  => $paginator->count(),
-            'busqueda por'              => $searchtext
+            'marcas' => $paginator->getIterator(),
+            'totalMarcasReturned' => $paginator->getIterator()->count(),
+            'totalMarcas' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;
@@ -191,6 +192,7 @@ class MarcasController extends FOSRestController
          $marcaid       = $request->get('marcaid');
          $nombre        = $request->get('nombre');
          $observacion   = $request->get('observacion');
+         $marImagen     = $request->get('marImagen');
 
         // Check for mandatory fields 
         if($marcaid == "" || !$marcaid)
@@ -210,9 +212,10 @@ class MarcasController extends FOSRestController
                 throw new HttpException (400,"No se ha encontrado la marca especificada: " .$marcaid);
          }
 
-        // Create the model
+        // Create the Marca
         $marca->setMarNombre($nombre);
         $marca->setMarObservacion($observacion);
+        $marca-> setMarImagen($marImagen);
         $em->flush();
 
         $response = array(

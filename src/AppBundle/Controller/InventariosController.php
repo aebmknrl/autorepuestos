@@ -22,19 +22,15 @@ class InventariosController extends FOSRestController
     {
         try {
             
-            $cantidad = $request->get('cantidad');
-            $precio = $request->get('precio');
-            $empaque = $request->get('empaque');
-            $observacion = $request->get('observacion');
-            $parteid = $request->get('parteid');
-            $parte = $this->getDoctrine()
-                ->getRepository('AppBundle:Parte')
-                ->find($parteid);
-                        $parteid = $request->get('parteid');
-            $provid = $request->get('proveedorid');
-            $proveedor = $this->getDoctrine()
-                ->getRepository('AppBundle:Proveedor')
-                ->find($provid);
+            $cantidad       = $request->get('cantidad');
+            $precio         = $request->get('precio');
+            $empaque        = $request->get('empaque');
+            $observacion    = $request->get('observacion');
+            $parteid        = $request->get('parteid');
+            $parte          = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteid);
+            $parteid        = $request->get('parteid');
+            $provid         = $request->get('proveedorid');
+            $proveedor      = $this->getDoctrine()->getRepository('AppBundle:Proveedor')->find($provid);
             
             if($empaque == ""){
                 throw new HttpException (400,"El campo empaque no puede estar vacío");   
@@ -176,8 +172,14 @@ class InventariosController extends FOSRestController
         $repository = $this->getDoctrine()->getRepository('AppBundle:Inventario');
     
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('inventario')
+        $query = $repository->createQueryBuilder('inventario')->join('inventario.partePar','par')->join('inventario.proveedorProv','prov')
             ->where('inventario.invObservacion LIKE :searchtext')
+            ->orwhere('par.parNombre LIKE :searchtext')
+            ->orwhere('prov.provNombre LIKE :searchtext')
+            ->orwhere('inventario.invCantidad LIKE :searchtext')
+            ->orwhere('inventario.invPrecio LIKE :searchtext')
+            ->orwhere('inventario.invEmpaque LIKE :searchtext')
+            ->orwhere('inventario.invObservacion LIKE :searchtext')
             ->setParameter('searchtext',"%" .$searchtext ."%")
             ->getQuery()
             ->setFirstResult($limit * ($page - 1))
@@ -233,7 +235,7 @@ class InventariosController extends FOSRestController
 
 
         if (!$inventario) {
-        throw new HttpException (400,"No se ha encontrado el modelo especificado: " .$inventarioid);
+        throw new HttpException (400,"No se ha encontrado el inventario especificado: " .$inventarioid);
          }
 
             $inventario -> setInvCantidad($cantidad);

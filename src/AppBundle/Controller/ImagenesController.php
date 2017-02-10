@@ -17,7 +17,7 @@ class ImagenesController extends FOSRestController
      /**
      * @Rest\Post("/imagen/add")
      */
-    public function postAddModeloAction(Request $request)
+    public function postAddImagenAction(Request $request)
     {
         try {       
             // Obtaining vars from request
@@ -92,7 +92,7 @@ class ImagenesController extends FOSRestController
     /**
      * @Rest\Get("/imagen/{imagenid}")
      */
-    public function getModeloAction(Request $request)
+    public function getImagenAction(Request $request)
     {
         $imagenid       = $request->get('imagenid');
         $repository     = $this->getDoctrine()->getRepository('AppBundle:Imagen');
@@ -135,9 +135,9 @@ class ImagenesController extends FOSRestController
         $paginator      = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'imagenes'                   => $paginator->getIterator(),
-            'total imagenes en pagina'   => $paginator->getIterator()->count(),
-            'total imagenes'             => $paginator->count()
+            'imagenes' => $paginator->getIterator(),
+            'totalImagenesReturned' => $paginator->getIterator()->count(),
+            'totalImagenes' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -191,10 +191,10 @@ class ImagenesController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'imágenes'                   => $paginator->getIterator(),
-            'total imágenes en pagina'   => $paginator->getIterator()->count(),
-            'total imágenes encontrados' => $paginator->count(),
-            'busqueda por'               => $searchtext
+            'imagenes' => $paginator->getIterator(),
+            'totalImagenesReturned' => $paginator->getIterator()->count(),
+            'totalImagenes' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;

@@ -35,6 +35,13 @@ class Marca
      */
     private $marObservacion;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_IMAGEN", type="string", length=250, nullable=true)
+     */
+    private $marImagen;
+
 
 
     /**
@@ -93,5 +100,29 @@ class Marca
     public function getMarObservacion()
     {
         return $this->marObservacion;
+    }
+
+    /**
+     * Set marImagen
+     *
+     * @param string $marImagen
+     *
+     * @return Marca
+     */
+    public function setMarImagen($marImagen)
+    {
+        $this->marImagen = $marImagen;
+
+        return $this;
+    }
+
+    /**
+     * Get marImagen
+     *
+     * @return string
+     */
+    public function getMarImagen()
+    {
+        return $this->marImagen;
     }
 }

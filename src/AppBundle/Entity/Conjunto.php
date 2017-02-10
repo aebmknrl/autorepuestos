@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Conjunto
  *
- * @ORM\Table(name="conjunto", indexes={@ORM\Index(name="fk_parte_id_idx", columns={"PARTE_ID"}), @ORM\Index(name="fk_partekit_id_idx", columns={"PARTEKIT_ID"})})
+ * @ORM\Table(name="conjunto", indexes={@ORM\Index(name="fk_parte_id_idx", columns={"PARTE_ID"})})
  * @ORM\Entity
  */
 class Conjunto
@@ -22,11 +22,11 @@ class Conjunto
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="KIT_REF", type="string", length=15, nullable=false)
+     * @ORM\Column(name="PARTE_KIT_ID", type="integer", nullable=true)
      */
-    private $kitRef;
+    private $parteKitId;
 
     /**
      * @var integer
@@ -45,16 +45,6 @@ class Conjunto
      */
     private $parte;
 
-    /**
-     * @var \Parte
-     *
-     * @ORM\ManyToOne(targetEntity="Parte")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PARTEKIT_ID", referencedColumnName="PAR_ID")
-     * })
-     */
-    private $partekit;
-
 
 
     /**
@@ -68,27 +58,27 @@ class Conjunto
     }
 
     /**
-     * Set kitRef
+     * Set parteKitId
      *
-     * @param string $kitRef
+     * @param integer $parteKitId
      *
      * @return Conjunto
      */
-    public function setKitRef($kitRef)
+    public function setParteKitId($parteKitId)
     {
-        $this->kitRef = $kitRef;
+        $this->parteKitId = $parteKitId;
 
         return $this;
     }
 
     /**
-     * Get kitRef
+     * Get parteKitId
      *
-     * @return string
+     * @return integer
      */
-    public function getKitRef()
+    public function getParteKitId()
     {
-        return $this->kitRef;
+        return $this->parteKitId;
     }
 
     /**
@@ -137,29 +127,5 @@ class Conjunto
     public function getParte()
     {
         return $this->parte;
-    }
-
-    /**
-     * Set partekit
-     *
-     * @param \AppBundle\Entity\Parte $partekit
-     *
-     * @return Conjunto
-     */
-    public function setPartekit(\AppBundle\Entity\Parte $partekit = null)
-    {
-        $this->partekit = $partekit;
-
-        return $this;
-    }
-
-    /**
-     * Get partekit
-     *
-     * @return \AppBundle\Entity\Parte
-     */
-    public function getPartekit()
-    {
-        return $this->partekit;
     }
 }

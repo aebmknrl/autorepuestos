@@ -1,0 +1,54 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * NombreParte
+ *
+ * @ORM\Table(name="nombre_parte")
+ * @ORM\Entity
+ */
+class NombreParte
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="PAR_NOMBRE_ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $parNombreId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PAR_NOMBRE", type="string", length=100, nullable=true)
+     */
+    private $parNombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PAR_NOMBRE_INGLES", type="string", length=100, nullable=true)
+     */
+    private $parNombreIngles;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PAR_NOMBRE_OTROS", type="string", length=250, nullable=true)
+     */
+    private $parNombreOtros;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PAR_GRUPO_ID", type="string", length=45, nullable=true)
+     */
+    private $parGrupoId;
+
+
+}
+

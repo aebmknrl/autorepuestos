@@ -15,30 +15,34 @@ class ConjuntosController extends FOSRestController
 {
 
      /**
-     * @Rest\Post("/conjunto/add")
+     * @Rest\Post("/conjunto/add/{id}")
      */
     public function postAddConjuntoAction(Request $request)
     {
-        try {
+            $counter=0;
+            $limit = count($_REQUEST);
+            $data = array_count_values($_REQUEST);
+            //$data = $request.$_GET;
+            $ID = $request->get('Nombre');
+            return $data;
+
+/*        try {
             // Obtaining vars from request            
-            $referencia     = $request->get('referencia');
-            $cantidad       = $request->get('cantidad');
-            $parteid        = $request->get('parteid');
-            $partekitid     = $request->get('partekitid');
+            $parteKitId     = $request->get('parteKitId');
+            $parte          = $request->get('cantparteidad');
+            $kitCount       = $request->get('kitCount');
 
             // Check for mandatory fields             
-            if($referencia == ""){
-                throw new HttpException (400,"El campo referencia no puede estar vacío");   
+            if($parteKitId == ""){
+                throw new HttpException (400,"El campo kit no puede estar vacío");   
             }
-            if($parteid == ""){
+            if($parte == ""){
                 throw new HttpException (400,"El campo parte no puede estar vacío");   
             }
-            if($partekitid == ""){
-                throw new HttpException (400,"El campo parte kit no puede estar vacío");   
-            }
 
-            // Find the relationship with Modelo
-            $parte          = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteid);
+
+            // Find the relationship with Parte
+            $parte          = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteKitId);
             if($parte == "")
             {
                 throw new HttpException (400,"La parte especificada no existe");   
@@ -81,7 +85,7 @@ class ConjuntosController extends FOSRestController
         catch (Exception $e) {
             return $e->getMessage();
             }
- }
+*/ }
 
 
     /**
@@ -146,7 +150,7 @@ class ConjuntosController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'conjuntos' => $paginator->getIterator(),
+            'conjunto' => $paginator->getIterator(),
             'totalConjuntosReturned' => $paginator->getIterator()->count(),
             'totalConjuntos' => $paginator->count()
         );

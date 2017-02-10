@@ -1,43 +1,43 @@
-AppBundle\Entity\Marca:
+AppBundle\Entity\NombreParte:
     type: entity
-    table: marca
-    uniqueConstraints:
-        MAR_ID_UNIQUE:
-            columns:
-                - MAR_ID
-        MAR_NOMBRE_UNIQUE:
-            columns:
-                - MAR_NOMBRE
+    table: nombre_parte
     id:
-        marId:
+        parNombreId:
             type: integer
             nullable: false
             options:
                 unsigned: false
             id: true
-            column: MAR_ID
+            column: PAR_NOMBRE_ID
             generator:
                 strategy: IDENTITY
     fields:
-        marNombre:
-            type: string
-            nullable: false
-            length: 45
-            options:
-                fixed: false
-            column: MAR_NOMBRE
-        marObservacion:
+        parNombre:
             type: string
             nullable: true
-            length: 45
+            length: 100
             options:
                 fixed: false
-            column: MAR_OBSERVACION
-        marImagen:
+            column: PAR_NOMBRE
+        parNombreIngles:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: PAR_NOMBRE_INGLES
+        parNombreOtros:
             type: string
             nullable: true
             length: 250
             options:
                 fixed: false
-            column: MAR_IMAGEN
+            column: PAR_NOMBRE_OTROS
+        parGrupoId:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: PAR_GRUPO_ID
     lifecycleCallbacks: {  }

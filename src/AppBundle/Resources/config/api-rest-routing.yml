@@ -46,3 +46,7 @@ api_grupos:
     type: rest
     resource: "@AppBundle/Controller/GruposController.php"
     name_prefix: api_grupos_
+api_nombre_partes:
+    type: rest
+    resource: "@AppBundle/Controller/NombrePartesController.php"
+    name_prefix: api_nombre_partes_

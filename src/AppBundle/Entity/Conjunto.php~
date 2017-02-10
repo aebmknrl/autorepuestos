@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Conjunto
+ *
+ * @ORM\Table(name="conjunto", indexes={@ORM\Index(name="fk_parte_id_idx", columns={"PARTE_ID"})})
+ * @ORM\Entity
+ */
+class Conjunto
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="PARTE_KIT_ID", type="integer", nullable=true)
+     */
+    private $parteKitId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="KIT_COUNT", type="integer", nullable=true)
+     */
+    private $kitCount;
+
+    /**
+     * @var \Parte
+     *
+     * @ORM\ManyToOne(targetEntity="Parte")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="PARTE_ID", referencedColumnName="PAR_ID")
+     * })
+     */
+    private $parte;
+
+
+}
+

@@ -130,9 +130,9 @@ class ModelosController extends FOSRestController
         $paginator      = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'modelos'                   => $paginator->getIterator(),
-            'total modelos en página'   => $paginator->getIterator()->count(),
-            'total modelos'             => $paginator->count()
+            'modelo' => $paginator->getIterator(),
+            'totalModelosReturned' => $paginator->getIterator()->count(),
+            'totalModelos' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -187,10 +187,10 @@ class ModelosController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'modelos'                   => $paginator->getIterator(),
-            'total modelos en pagina'   => $paginator->getIterator()->count(),
-            'total modelos encontrados' => $paginator->count(),
-            'busqueda por'              => $searchtext
+            'modelos' => $paginator->getIterator(),
+            'totalModelosReturned' => $paginator->getIterator()->count(),
+            'totalModelos' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;

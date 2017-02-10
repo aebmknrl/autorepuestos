@@ -144,9 +144,9 @@ class EquivalenciasController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'equivalencias'                 => $paginator->getIterator(),
-            'total equivalencias en página' => $paginator->getIterator()->count(),
-            'total equivalencias'           => $paginator->count()
+            'equivalencia'              => $paginator->getIterator(),
+            'totalEquivalenciaReturned'    => $paginator->getIterator()->count(),
+            'totalEquivalencia'            => $paginator->count()        
         );
         // Send the response
         return $response;
@@ -197,10 +197,10 @@ class EquivalenciasController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'equivalencias'                     => $paginator->getIterator(),
-            'total equivalencias en página'     => $paginator->getIterator()->count(),
-            'total equivalencias encontradas'   => $paginator->count(),
-            'busqueda por'                      => $searchtext
+            'equivalencia'              => $paginator->getIterator(),
+            'totalEquivalenciaReturned' => $paginator->getIterator()->count(),
+            'totalEquivalencia'         => $paginator->count(),
+            'searchedText'              => $searchtext        
         );
         // Send the response
         return $response;

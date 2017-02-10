@@ -40,7 +40,7 @@ class VehiculoNotasController extends FOSRestController
                 throw new HttpException (400,"El vehiculo especificado no existe");   
             }
 
-            // Create the model
+            // Create the Vehiculo Nota
             $vehnota = new VehiculoNota();
             $vehnota -> setVehiculoVeh($vehiculo);
             $vehnota -> setVehNota($nota);
@@ -131,9 +131,9 @@ class VehiculoNotasController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'notas vehiculo'        => $paginator->getIterator(),
-            'total notas en pagina' => $paginator->getIterator()->count(),
-            'total notas'           => $paginator->count()
+            'notasVehiculo' => $paginator->getIterator(),
+            'totalNotasVehiculoReturned' => $paginator->getIterator()->count(),
+            'totalNotasVehiculo' => $paginator->count()
         );
         // Send the response
         return $response;
@@ -185,11 +185,11 @@ class VehiculoNotasController extends FOSRestController
         // Build the paginator
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
-        $response = array(
-            'notas vehiculo'            => $paginator->getIterator(),
-            'total notas en página'     => $paginator->getIterator()->count(),
-            'total notas encontradas'   => $paginator->count(),
-            'buscado por'               => $searchtext
+       $response = array(
+            'notasVehiculo' => $paginator->getIterator(),
+            'totalNotasVehiculoReturned' => $paginator->getIterator()->count(),
+            'totalNotasVehiculo' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;

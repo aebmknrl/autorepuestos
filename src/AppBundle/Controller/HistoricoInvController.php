@@ -18,7 +18,7 @@ class HistoricoInvController extends FOSRestController
      * @Rest\Post("/historico_inv/add")
      */
 
-    public function postAddModeloAction(Request $request)
+    public function postAddHistoricoInvAction(Request $request)
     {
         try {
             
@@ -82,7 +82,7 @@ class HistoricoInvController extends FOSRestController
      */
     public function getAllHistoricoInvAction()
     {
-        // Initialize the 'MarcaModelo' data repository
+        // Initialize the 'Historico' data repository
         $repository = $this->getDoctrine()->getRepository('AppBundle:HistoricoInv');
         $query = $repository->createQueryBuilder('h')
             ->getQuery();
@@ -134,7 +134,7 @@ class HistoricoInvController extends FOSRestController
         return $response;
     }
     /**
-     * @Rest\Get("/modelo/{limit}/{page}/{searchtext}")
+     * @Rest\Get("/historico_inv/{limit}/{page}/{searchtext}")
      */
     public function getAllHistoricoInvPaginatedSearchAction(Request $request)
     {
@@ -168,9 +168,9 @@ class HistoricoInvController extends FOSRestController
         $repository = $this->getDoctrine()->getRepository('AppBundle:HistoricoInv');
     
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('historico_inv')//->join('modelo.Marca','m')
-            //->where('m.marNombre = :searchtext')
+        $query = $repository->createQueryBuilder('historico_inv')->join('historico_inv.inventarioInv','i')
             ->where('historico_inv.hisInvFecha LIKE :searchtext')
+            ->orWhere('i.invId LIKE :searchtext')
             ->orWhere('historico_inv.hisInvCantidad LIKE :searchtext')
             ->setParameter('searchtext',"%" .$searchtext ."%")
             ->getQuery()
@@ -224,7 +224,7 @@ class HistoricoInvController extends FOSRestController
 
 
         if (!$historico) {
-        throw new HttpException (400,"No se ha encontrado el modelo especificado: " .$hisInvId);
+        throw new HttpException (400,"No se ha encontrado el Registro especificado: " .$hisInvId);
          }
 
         $historico -> setHisInvFecha(new \DateTime($fecha));

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * VehiculoImagen
  *
- * @ORM\Table(name="vehiculo_imagen", uniqueConstraints={@ORM\UniqueConstraint(name="index3", columns={"VEH_IMG_NOMBRE", "VEH_ID"})}, indexes={@ORM\Index(name="fk_veh_id_idx", columns={"VEH_ID"})})
+ * @ORM\Table(name="vehiculo_imagen", uniqueConstraints={@ORM\UniqueConstraint(name="index3", columns={"VEH_IMG_NOMBRE", "VEH_ID"})}, indexes={@ORM\Index(name="fk_vehiculo_idx", columns={"VEH_ID"})})
  * @ORM\Entity
  */
 class VehiculoImagen
@@ -36,11 +36,14 @@ class VehiculoImagen
     private $vehImgUrl;
 
     /**
-     * @var integer
+     * @var \Vehiculo
      *
-     * @ORM\Column(name="VEH_ID", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Vehiculo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="VEH_ID", referencedColumnName="VEH_ID")
+     * })
      */
-    private $vehId;
+    private $veh;
 
 
 
@@ -103,26 +106,26 @@ class VehiculoImagen
     }
 
     /**
-     * Set vehId
+     * Set veh
      *
-     * @param integer $vehId
+     * @param \AppBundle\Entity\Vehiculo $veh
      *
      * @return VehiculoImagen
      */
-    public function setVehId($vehId)
+    public function setVeh(\AppBundle\Entity\Vehiculo $veh = null)
     {
-        $this->vehId = $vehId;
+        $this->veh = $veh;
 
         return $this;
     }
 
     /**
-     * Get vehId
+     * Get veh
      *
-     * @return integer
+     * @return \AppBundle\Entity\Vehiculo
      */
-    public function getVehId()
+    public function getVeh()
     {
-        return $this->vehId;
+        return $this->veh;
     }
 }

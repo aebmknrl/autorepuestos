@@ -54,7 +54,7 @@ class VehiculosController extends FOSRestController
                 throw new HttpException (400,"El modelo especificado no existe");   
             }
 
-            // Create the model
+            // Create the Vehiculo
             $vehiculo = new Vehiculo();
             $vehiculo -> setAnioAniId($anio);
             $vehiculo -> setVehVariante($variante);
@@ -160,8 +160,8 @@ class VehiculosController extends FOSRestController
         // Construct the response
         $response = array(
             'vehiculos'                 => $paginator->getIterator(),
-            'total vehiculos en pagina' => $paginator->getIterator()->count(),
-            'total vehiculos'           => $paginator->count()
+            'totalVehiculosReturned'    => $paginator->getIterator()->count(),
+            'totalVehiculos'            => $paginator->count()
         );
         // Send the response
         return $response;
@@ -225,10 +225,10 @@ class VehiculosController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'vehiculos'                     => $paginator->getIterator(),
-            'total vehiculos en página'     => $paginator->getIterator()->count(),
-            'total vehiculos encontrados'   => $paginator->count(),
-            'busqueda por'                  => $searchtext
+            'vehiculos' => $paginator->getIterator(),
+            'totalVehiculosReturned' => $paginator->getIterator()->count(),
+            'totalVehiculos' => $paginator->count(),
+            'searchedText' => $searchtext
         );
         // Send the response
         return $response;

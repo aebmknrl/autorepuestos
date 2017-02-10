@@ -25,7 +25,8 @@ class FabricantesController extends FOSRestController
             $nombre         = $request->get('nombre');
             $descripcion    = $request->get('descripcion');
             $pais           = $request->get('pais');
-            $tiempoRaw = $request->get('tiempo');
+            $tiempoRaw      = $request->get('tiempo');
+            $fabImagen      = $request->get('fabImagen');
             $tiempo = new DateTime($tiempoRaw);
          
             // Check for mandatory fields
@@ -45,6 +46,7 @@ class FabricantesController extends FOSRestController
             $fabricante -> setFabDescripcion($descripcion);
             $fabricante -> setFabPais($pais);
             $fabricante -> setFabTiempo(new \DateTime($tiempo));
+            $fabricante -> setFabImagen($fabImagen);
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -207,10 +209,11 @@ class FabricantesController extends FOSRestController
         try
         {
         // Obtaining vars from request
-         $fabricanteid  = $request->get('fabricanteid');
-         $nombre        = $request->get('nombre');
-         $descripcion   = $request->get('descripcion');
-         $pais          = $request->get('pais');
+        $fabricanteid  = $request->get('fabricanteid');
+        $nombre        = $request->get('nombre');
+        $descripcion   = $request->get('descripcion');
+        $pais          = $request->get('pais');
+        $fabImagen     = $request->get('fabImagen');
         $tiempoRaw = $request->get('tiempo');
         $tiempo = new DateTime($tiempoRaw);
 
@@ -243,6 +246,7 @@ class FabricantesController extends FOSRestController
         $fabricante -> setFabDescripcion($descripcion);
         $fabricante -> setFabPais($pais);
         $fabricante -> setFabTiempo($tiempo);
+        $fabricante -> setFabImagen($fabImagen);
         $em->flush();
 
         $response = array(
