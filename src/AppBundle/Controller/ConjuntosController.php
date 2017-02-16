@@ -21,8 +21,8 @@ class ConjuntosController extends FOSRestController
     {
             $counter=0;
             $limit = count($_REQUEST);
-            $data = array_count_values($_REQUEST);
-            //$data = $request.$_GET;
+            //$data = array_count_values($_REQUEST);
+            $data = arra
             $ID = $request->get('Nombre');
             return $data;
 

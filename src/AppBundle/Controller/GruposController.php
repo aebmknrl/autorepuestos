@@ -54,8 +54,9 @@ class GruposController extends FOSRestController
             
             $response = array("grupos" => array(
                 array(
-                    "Nuevo grupo creado"    => $grupoNombre,
-                    "Descripción: "         => $descripcion,
+                    'message' => 'Nuevo grupo creado',
+                    "grupo"    => $grupoNombre,
+                    "descripción: "         => $descripcion,
                     "id"                    => $grupo->getId()
                     )
                 )  
@@ -207,8 +208,6 @@ class GruposController extends FOSRestController
         $grupoNombre = $request->get('nombre');
         $descripcion = $request->get('descripcion');
         $grupoPadre = $request->get('grupoPadre');
-        $grupoP = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($grupoPadre);
-
 
         if($id == "" || !$id)
         {
@@ -221,11 +220,12 @@ class GruposController extends FOSRestController
         }
 
         if ($grupoPadre != ""){
-        if(!$grupoP)
-        {
-               throw new HttpException (400,"Debe especificar un ID de Grupo válido");   
+            // Julio: el throw solo debe hacerlo cuando el campo es obligatorio.
+            // Comente la linea siguiente por eso:
+            // throw new HttpException (400,"Debe especificar un ID de Grupo válido"); 
+            $grupoP = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($grupoPadre);
         }
-        }
+
          
         $em = $this->getDoctrine()->getManager();
         $grupo = $em->getRepository('AppBundle:Grupo')->find($id);
@@ -233,6 +233,11 @@ class GruposController extends FOSRestController
         if (!$grupo) 
         {
             throw new HttpException (400,"No se ha encontrado el grupo especificado: " .$id);
+        }
+
+        if(!$grupoP)
+        {
+            throw new HttpException (400,"No se ha encontrado el grupo especificado para grupo padre: " .$id);
         }
 
         $grupo     -> setGrupoNombre($grupoNombre);

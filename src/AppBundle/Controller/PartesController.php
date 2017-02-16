@@ -293,6 +293,7 @@ class PartesController extends FOSRestController
         $data = array(
             'message' => 'La parte ha sido actualizada',
              'parteid' => $parId,
+             'parte' => $parCodigo
          );
 
          return $request;
