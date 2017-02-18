@@ -224,8 +224,11 @@ class GruposController extends FOSRestController
             // Comente la linea siguiente por eso:
             // throw new HttpException (400,"Debe especificar un ID de Grupo válido"); 
             $grupoP = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($grupoPadre);
-        }
-
+            if(!$grupoP)
+            {
+                throw new HttpException (400,"No se ha encontrado el grupo especificado para grupo padre: " .$id);
+            }
+        } 
          
         $em = $this->getDoctrine()->getManager();
         $grupo = $em->getRepository('AppBundle:Grupo')->find($id);
@@ -235,10 +238,7 @@ class GruposController extends FOSRestController
             throw new HttpException (400,"No se ha encontrado el grupo especificado: " .$id);
         }
 
-        if(!$grupoP)
-        {
-            throw new HttpException (400,"No se ha encontrado el grupo especificado para grupo padre: " .$id);
-        }
+
 
         $grupo     -> setGrupoNombre($grupoNombre);
         $grupo     -> setDescripcion($descripcion);
