@@ -208,6 +208,7 @@ class GruposController extends FOSRestController
         $grupoNombre = $request->get('nombre');
         $descripcion = $request->get('descripcion');
         $grupoPadre = $request->get('grupoPadre');
+        $grupoP = NULL;
 
         if($id == "" || !$id)
         {
