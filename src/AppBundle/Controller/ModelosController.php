@@ -130,7 +130,7 @@ class ModelosController extends FOSRestController
         $paginator      = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'modelo' => $paginator->getIterator(),
+            'modelos' => $paginator->getIterator(),
             'totalModelosReturned' => $paginator->getIterator()->count(),
             'totalModelos' => $paginator->count()
         );
