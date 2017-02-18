@@ -136,7 +136,7 @@ class ProveedoresController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'Proveedores' => $paginator->getIterator(),
+            'proveedores' => $paginator->getIterator(),
             'totalProveedoresReturned' => $paginator->getIterator()->count(),
             'totalProveedores' => $paginator->count()
         );
@@ -195,7 +195,7 @@ class ProveedoresController extends FOSRestController
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         // Construct the response
         $response = array(
-            'Proveedores' => $paginator->getIterator(),
+            'proveedores' => $paginator->getIterator(),
             'totalProveedoresReturned' => $paginator->getIterator()->count(),
             'totalProveedores' => $paginator->count(),
             'searchedText' => $searchtext
