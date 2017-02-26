@@ -43,7 +43,7 @@ class NombrePartesController extends FOSRestController
             $nombreParte     -> setParNombre($parNombre);
             $nombreParte     -> setParNombreIngles($parNombreIngles);
             $nombreParte     -> setParNombreOtros($parNombreOtros);
-            $nombreParte     -> setParGrupo($parGrupo);
+            $nombreParte     -> setParGrupoId($parGrupo);
             $em         = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save (no queries yet)
@@ -233,7 +233,7 @@ class NombrePartesController extends FOSRestController
             $nombreParte     -> setParNombre($parNombre);
             $nombreParte     -> setParNombreIngles($parNombreIngles);
             $nombreParte     -> setParNombreOtros($parNombreOtros);
-            $nombreParte     -> setParGrupo($parGrupo);
+            $nombreParte     -> setParGrupoId($parGrupo);
 
         $em->flush();
 
