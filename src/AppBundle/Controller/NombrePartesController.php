@@ -54,7 +54,7 @@ class NombrePartesController extends FOSRestController
             $response = array("nombrePartes" => array(
                 array(
                     'message' => 'Nuevo nombre creado',
-                    "nombre"   => $nombre
+                    "nombre"   => $parNombre
                     )
                 )  
             ); 
