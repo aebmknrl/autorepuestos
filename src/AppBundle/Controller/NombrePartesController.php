@@ -33,7 +33,8 @@ class NombrePartesController extends FOSRestController
 
 
             // Find the relationship with Grupo
-            $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);        
+            $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);  
+
             if($grupo == ""){
                 throw new HttpException (400,"El grupo especificado no existe");   
             }
@@ -43,7 +44,7 @@ class NombrePartesController extends FOSRestController
             $nombreParte     -> setParNombre($parNombre);
             $nombreParte     -> setParNombreIngles($parNombreIngles);
             $nombreParte     -> setParNombreOtros($parNombreOtros);
-            $nombreParte     -> setParGrupoId($parGrupo);
+            $nombreParte     -> setParGrupo($grupo);
             $em         = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save (no queries yet)
@@ -53,15 +54,15 @@ class NombrePartesController extends FOSRestController
             
             $response = array("nombrePartes" => array(
                 array(
-                    'message' => 'Nuevo nombre creado',
-                    "nombre"   => $parNombre
+                    "message"   => "Nuevo nombre creado",
+                    "nombre" => $parNombre
                     )
                 )  
             ); 
             return $response;
         }
         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre de la parte ya esxiste."); 
+            throw new HttpException (409,"Error: El nombre de la parte ya esxiste para el grupo indicado."); 
             } 
         catch (Exception $e) {
             return $e->getMessage();
@@ -227,13 +228,13 @@ class NombrePartesController extends FOSRestController
 
         if (!$nombreParte) 
         {
-            throw new HttpException (400,"No se ha encontrado el grupo especificado: " .$parNombreId);
+            throw new HttpException (400,"No se ha encontrado el nombre especificado: " .$parNombreId);
         }
 
             $nombreParte     -> setParNombre($parNombre);
             $nombreParte     -> setParNombreIngles($parNombreIngles);
             $nombreParte     -> setParNombreOtros($parNombreOtros);
-            $nombreParte     -> setParGrupoId($parGrupo);
+            $nombreParte     -> setParGrupo($grupo);
 
         $em->flush();
 
@@ -243,7 +244,7 @@ class NombrePartesController extends FOSRestController
          return $response;
         }
         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre de la parte ya esxiste."); 
+            throw new HttpException (409,"Error: El nombre de la parte ya esxiste para el grupo indicado."); 
             } 
         catch (Exception $e) {
             return $e->getMessage();

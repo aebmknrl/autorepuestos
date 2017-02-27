@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * NombreParte
  *
- * @ORM\Table(name="nombre_parte")
+ * @ORM\Table(name="nombre_parte", uniqueConstraints={@ORM\UniqueConstraint(name="nombre_grupo_unique", columns={"PAR_NOMBRE", "PAR_GRUPO_ID"})}, indexes={@ORM\Index(name="fk_grupo_idx", columns={"PAR_GRUPO_ID"})})
  * @ORM\Entity
  */
 class NombreParte
@@ -24,7 +24,7 @@ class NombreParte
     /**
      * @var string
      *
-     * @ORM\Column(name="PAR_NOMBRE", type="string", length=100, nullable=true)
+     * @ORM\Column(name="PAR_NOMBRE", type="string", length=100, nullable=false)
      */
     private $parNombre;
 
@@ -43,11 +43,14 @@ class NombreParte
     private $parNombreOtros;
 
     /**
-     * @var string
+     * @var \Grupo
      *
-     * @ORM\Column(name="PAR_GRUPO_ID", type="string", length=45, nullable=true)
+     * @ORM\ManyToOne(targetEntity="Grupo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="PAR_GRUPO_ID", referencedColumnName="id")
+     * })
      */
-    private $parGrupoId;
+    private $parGrupo;
 
 
 
@@ -134,26 +137,26 @@ class NombreParte
     }
 
     /**
-     * Set parGrupoId
+     * Set parGrupo
      *
-     * @param string $parGrupoId
+     * @param \AppBundle\Entity\Grupo $parGrupo
      *
      * @return NombreParte
      */
-    public function setParGrupoId($parGrupoId)
+    public function setParGrupo(\AppBundle\Entity\Grupo $parGrupo = null)
     {
-        $this->parGrupoId = $parGrupoId;
+        $this->parGrupo = $parGrupo;
 
         return $this;
     }
 
     /**
-     * Get parGrupoId
+     * Get parGrupo
      *
-     * @return string
+     * @return \AppBundle\Entity\Grupo
      */
-    public function getParGrupoId()
+    public function getParGrupo()
     {
-        return $this->parGrupoId;
+        return $this->parGrupo;
     }
 }

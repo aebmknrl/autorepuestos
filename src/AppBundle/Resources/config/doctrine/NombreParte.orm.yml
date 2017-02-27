@@ -1,6 +1,15 @@
 AppBundle\Entity\NombreParte:
     type: entity
     table: nombre_parte
+    indexes:
+        fk_grupo_idx:
+            columns:
+                - PAR_GRUPO_ID
+    uniqueConstraints:
+        nombre_grupo_unique:
+            columns:
+                - PAR_NOMBRE
+                - PAR_GRUPO_ID
     id:
         parNombreId:
             type: integer
@@ -14,7 +23,7 @@ AppBundle\Entity\NombreParte:
     fields:
         parNombre:
             type: string
-            nullable: true
+            nullable: false
             length: 100
             options:
                 fixed: false
@@ -33,11 +42,15 @@ AppBundle\Entity\NombreParte:
             options:
                 fixed: false
             column: PAR_NOMBRE_OTROS
-        parGrupoId:
-            type: string
-            nullable: true
-            length: 45
-            options:
-                fixed: false
-            column: PAR_GRUPO_ID
+    manyToOne:
+        parGrupo:
+            targetEntity: Grupo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PAR_GRUPO_ID:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }
