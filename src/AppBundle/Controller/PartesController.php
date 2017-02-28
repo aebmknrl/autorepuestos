@@ -98,7 +98,7 @@ class PartesController extends FOSRestController
             
             $data = array("parte" => array(
                 array(
-                    "parte:"   => $nombre,
+                    "parte:"   => $parCodigo,
                     "id" => $parte->getParId()
                     )
                 )  
