@@ -22,21 +22,21 @@ class PartesController extends FOSRestController
     {
         try {
             // Obtaining vars from request
-            $parCodigo      = $request->get('codigo');
-            $parUpc         = $request->get('codigoupc');
+            $parCodigo      = $request->get('parCodigo');
+            $parUpc         = $request->get('parUpc');
             $parSku         = $request->get('parSku');
-            $parLargo       = $request->get('largo');
-            $parAncho       = $request->get('ancho');
-            $parEspesor     = $request->get('espesor');
-            $parPeso        = $request->get('peso');
+            $parLargo       = $request->get('parLargo');
+            $parAncho       = $request->get('parAncho');
+            $parEspesor     = $request->get('parEspesor');
+            $parPeso        = $request->get('parPeso');
             $parteOrigen    = $request->get('parteOrigen');
-            $parCaract      = $request->get('caracteristicas');
-            $parObservacion = $request->get('observacion');
-            $parAsin        = $request->get('paramazon');          
-            $parSubgrupo    = $request->get('subgrupo');
-            $parKit         = $request->get('kit');
+            $parCaract      = $request->get('parCaract');
+            $parObservacion = $request->get('parObservacion');
+            $parAsin        = $request->get('parAsin');          
+            $parSubgrupo    = $request->get('parSubgrupo');
+            $parKit         = $request->get('parKit');
             $parEq          = $request->get('parEq');
-            $fabricanteFab  = $request->get('fabricanteid'); 
+            $fabricanteFab  = $request->get('fabricanteFab'); 
             $parNombre       = $request->get('parNombre');
 
             // Check for mandatory fields
@@ -232,22 +232,22 @@ class PartesController extends FOSRestController
      public function postUpdateParteAction(Request $request)
      {
             // Obtaining vars from request
-            $parId          = $request->get('parteid');
-            $parCodigo      = $request->get('codigo');
-            $parUpc         = $request->get('codigoupc');
+            $parId          = $request->get('parId');
+            $parCodigo      = $request->get('parCodigo');
+            $parUpc         = $request->get('parUpc');
             $parSku         = $request->get('parSku');
-            $parLargo       = $request->get('largo');
-            $parAncho       = $request->get('ancho');
-            $parEspesor     = $request->get('espesor');
-            $parPeso        = $request->get('peso');
+            $parLargo       = $request->get('parLargo');
+            $parAncho       = $request->get('parAncho');
+            $parEspesor     = $request->get('parEspesor');
+            $parPeso        = $request->get('parPeso');
             $parteOrigen    = $request->get('parteOrigen');
-            $parCaract      = $request->get('caracteristicas');
-            $parObservacion = $request->get('observacion');
-            $parAsin        = $request->get('paramazon');          
-            $parSubgrupo    = $request->get('subgrupo');
-            $parKit         = $request->get('kit');
+            $parCaract      = $request->get('parCaract');
+            $parObservacion = $request->get('parObservacion');
+            $parAsin        = $request->get('parAsin');          
+            $parSubgrupo    = $request->get('parSubgrupo');
+            $parKit         = $request->get('parKit');
             $parEq          = $request->get('parEq');
-            $fabricanteFab  = $request->get('fabricanteid'); 
+            $fabricanteFab  = $request->get('fabricanteFab'); 
             $parNombre       = $request->get('parNombre');
 
          if($parId == "" || !$parId){
