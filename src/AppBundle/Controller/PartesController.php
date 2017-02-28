@@ -33,7 +33,7 @@ class PartesController extends FOSRestController
             $parCaract      = $request->get('parCaract');
             $parObservacion = $request->get('parObservacion');
             $parAsin        = $request->get('parAsin');          
-            $parSubgrupo    = $request->get('parSubgrupo');
+            $parSubgrupo    = $request->get('parSubgrupo'); // CREO QUE ESTO NO SE USARA
             $parKit         = $request->get('parKit');
             $parEq          = $request->get('parEq');
             $fabricanteFab  = $request->get('fabricanteFab'); 
@@ -44,13 +44,14 @@ class PartesController extends FOSRestController
             throw new HttpException (400,"El campo nombre no puede estar vacío");   }
 
             // Find the relationships 
+            //JULIO LAS RELACIONES LAS DEBE BUSCAR SOLO CUANDO SEAN OBLIGATORIOS LOS CAMPOS!!
             $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
             if (!$parEq == ""){
                 $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
             }
-            if (!$parGrupo == ""){
-                $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
-            }            
+            //if (!$parGrupo == ""){ ESTO NO VA JULIO
+            //    $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo); 
+            //}            
             if (!$parKit == ""){
                 $kit = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($parKit);
             }
@@ -69,10 +70,24 @@ class PartesController extends FOSRestController
             $parte -> setParObservacion($parObservacion);
             $parte -> setParAsin($parAsin);
             $parte -> setParSubgrupo($parSubgrupo);
-            $parte -> setParKit($parkit);
-            $parte -> setParEq($equivalencia);
             $parte -> setFabricanteFab($fabricante);
-            $parte -> setParGrupo($grupo);
+            // JULIO HAY QUE PONER LAS VALIDACIONES EN CASO DE QUE EL USUARIO NO PASE CORRECTAMENTE DATOS
+            if($parKit != ""){
+                if(!$kit) {
+                    throw new HttpException (400,"La parte para el kit no existe.");
+                } else{
+                    $parte -> setParKit($kit);
+                }
+            }
+            if($parEq != ""){
+                if(!$equivalencia) {
+                    throw new HttpException (400,"La parte señalada para equivalencia no existe.");
+                } else{
+                    $parte -> setParEq($equivalencia); 
+                }
+            }
+          
+            //$parte -> setParGrupo($grupo); // JULIO DE DONDE SALIO ESTO?? NO EXISTE EN LA ENTIDAD!!!!!
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -293,10 +308,22 @@ class PartesController extends FOSRestController
             $parte -> setParObservacion($parObservacion);
             $parte -> setParAsin($parAsin);
             $parte -> setParSubgrupo($parSubgrupo);
-            $parte -> setParKit($parkit);
-            $parte -> setParEq($equivalencia);
+            if($parKit != ""){
+                if(!$kit) {
+                    throw new HttpException (400,"La parte para el kit no existe.");
+                } else{
+                    $parte -> setParKit($kit);
+                }
+            }
+            if($parEq != ""){
+                if(!$equivalencia) {
+                    throw new HttpException (400,"La parte señalada para equivalencia no existe.");
+                } else{
+                    $parte -> setParEq($equivalencia); 
+                }
+            }
             $parte -> setFabricanteFab($fabricante);
-            $parte -> setParGrupo($grupo);
+            // NO SE DE DONDE SALIO ESTO ---> $parte -> setParGrupo($grupo);
             $em->flush();
 
         $data = array(
