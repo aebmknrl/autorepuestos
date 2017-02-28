@@ -45,11 +45,15 @@ class PartesController extends FOSRestController
 
             // Find the relationships 
             $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
-            $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
-            $parNombre      = $this->getDoctrine()->getRepository('AppBundle:NombreParte')->find($parNombre);
-            $kit            = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($kit);
-            
-
+            if (!$parEq == ""){
+                $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
+            }
+            if (!$parGrupo == ""){
+                $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
+            }            
+            if (!$parKit == ""){
+                $kit = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($parKit);
+            }
 
             // Create the Parte
             $parte = new Parte();
@@ -256,10 +260,15 @@ class PartesController extends FOSRestController
 
             // Find the relationships 
             $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
-            $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
-            $grupo          = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
-            $kit            = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($kit);
-            
+            if (!$parEq == ""){
+                $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
+            }
+            if (!$parGrupo == ""){
+                $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
+            }            
+            if (!$parKit == ""){
+                $kit = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($parKit);
+            }
                      
          $em = $this->getDoctrine()->getManager();
          $parte = $em->getRepository('AppBundle:Parte')
