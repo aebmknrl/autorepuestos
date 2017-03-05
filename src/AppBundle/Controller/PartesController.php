@@ -350,7 +350,7 @@ class PartesController extends FOSRestController
          }
 
             // Create the parte
-            $parte = new Parte();
+            //$parte = new Parte(); <-- esto e te colo julio
             $parte -> setParCodigo($parCodigo);
             $parte -> setParUpc($parUpc);
             $parte -> setParSku($parSku);
