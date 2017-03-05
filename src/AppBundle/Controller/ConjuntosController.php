@@ -19,73 +19,47 @@ class ConjuntosController extends FOSRestController
      */
     public function postAddConjuntoAction(Request $request)
     {
-            $counter=0;
-            $limit = count($_REQUEST);
-            //$data = array_count_values($_REQUEST);
-            //$data = arra
-            //$ID = $request->get('Nombre');
-            return $data;
+        try{
+            $parteKitId = $request->get('id');  // obtengo id de kit   
+            $parteKit   = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteKitId);            
+             
+            foreach ($_REQUEST as $key => $value) { // para cada parte del kit
 
-/*        try {
-            // Obtaining vars from request            
-            $parteKitId     = $request->get('parteKitId');
-            $parte          = $request->get('cantparteidad');
-            $kitCount       = $request->get('kitCount');
-
-            // Check for mandatory fields             
-            if($parteKitId == ""){
-                throw new HttpException (400,"El campo kit no puede estar vacío");   
-            }
+            $parte = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($value); // obtengo parte  y guardo
             if($parte == ""){
-                throw new HttpException (400,"El campo parte no puede estar vacío");   
+                throw new HttpException (400,"La parte especificada no existe");
+                exit ; 
             }
 
-
-            // Find the relationship with Parte
-            $parte          = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteKitId);
-            if($parte == "")
-            {
-                throw new HttpException (400,"La parte especificada no existe");   
-            }
-
-            $partekit       = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($partekitid);
-            if($partekit == "")
-            {
-                throw new HttpException (400,"La parte especificada para el kit no existe");   
-            }
-
-            // Create the "Conjunto"
             $conjunto = new Conjunto();
-            $conjunto -> setKitRef($referencia);
-            $conjunto -> setKitCount($cantidad);
-            $conjunto -> setParte($parte);
-            $conjunto -> setPartekit($partekit);
+            $conjunto -> setParteKitId($parteKitId);
+            $conjunto -> setPartePar($parte);
             $em = $this->getDoctrine()->getManager();
-            
-            // tells Doctrine you want to (eventually) save the Product (no queries yet)
+
             $em->persist($conjunto);
-            
-            // actually executes the queries (i.e. the INSERT query)
-            $em->flush();
-            
+            $em->flush();           
+
+            }
+
             $response = array("Conjunto" => array(
                 array(
-                    "Nuevo conjunto creado:"   => $referencia,
-                    "Parte:"                   => $parte->getParNombre(),
-                    "Parte Kit"                => $partekit->getParNombre(),
-                    "ID"                       => $conjunto->getId()
+                    'message'   => 'Nuevo conjunto creado',
+                    "conjunto"  => $parteKit->getParCodigo(),
+                    "ID"        => $parteKitId
                     )
                 )  
             ); 
             return $response;
         }
+
         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: La referencia ya existe para el conjunto indicado."); 
+            throw new HttpException (409,"Error: La parte para el conjunto ya esxiste."); 
             } 
         catch (Exception $e) {
             return $e->getMessage();
-            }
-*/ }
+            } 
+
+ }
 
 
     /**

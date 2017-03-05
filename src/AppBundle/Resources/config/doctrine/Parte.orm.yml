@@ -2,15 +2,15 @@ AppBundle\Entity\Parte:
     type: entity
     table: parte
     indexes:
-        fk_PARTE_FABRICANTE1_idx:
-            columns:
-                - FABRICANTE_FAB_ID
         fk_PARTE_NOMBRE_idx:
             columns:
                 - PAR_NOMBRE_ID
         fk_PARTE_EQ_idx:
             columns:
                 - PAR_EQ_ID
+        fk_PARTE_FABRICANTE_idx:
+            columns:
+                - FABRICANTE_FAB_ID
     uniqueConstraints:
         PAR_ID_UNIQUE:
             columns:

@@ -21,8 +21,8 @@ class PartesController extends FOSRestController
     public function postAddParteAction(Request $request)
     {
         try {
-            // Obtaining vars from request
-            $parCodigo      = $request->get('parCodigo');
+            // Obtaining vars from request  
+            $parCodigo      = $request->get('parCodigo');          
             $parUpc         = $request->get('parUpc');
             $parSku         = $request->get('parSku');
             $parLargo       = $request->get('parLargo');
@@ -32,31 +32,34 @@ class PartesController extends FOSRestController
             $parteOrigen    = $request->get('parteOrigen');
             $parCaract      = $request->get('parCaract');
             $parObservacion = $request->get('parObservacion');
-            $parAsin        = $request->get('parAsin');          
-            $parSubgrupo    = $request->get('parSubgrupo'); // CREO QUE ESTO NO SE USARA
+            $parAsin        = $request->get('parAsin');
+            $parSubgrupo    = $request->get('parSubgrupo');
             $parKit         = $request->get('parKit');
-            $parEq          = $request->get('parEq');
+            //$parEq          = $request->get('equivalenciaref');
             $fabricanteFab  = $request->get('fabricanteFab'); 
             $parNombre       = $request->get('parNombre');
 
             // Check for mandatory fields
             if($parCodigo == ""){
-            throw new HttpException (400,"El campo nombre no puede estar vacío");   }
+                throw new HttpException (400,"El campo código no puede estar vacío");   
+            }
+
+            if($fabricanteFab == ""){
+                throw new HttpException (400,"El campo fabricante no puede estar vacío");   
+            }
+
+            if($parNombre == ""){
+                throw new HttpException (400,"El campo nombre no puede estar vacío");   
+            }
 
             // Find the relationships 
-            //JULIO LAS RELACIONES LAS DEBE BUSCAR SOLO CUANDO SEAN OBLIGATORIOS LOS CAMPOS!!
             $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
-            if (!$parEq == ""){
-                $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
-            }
-            //if (!$parGrupo == ""){ ESTO NO VA JULIO
-            //    $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo); 
-            //}            
-            if (!$parKit == ""){
-                $kit = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($parKit);
-            }
+            //$equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
+            $nombre         = $this->getDoctrine()->getRepository('AppBundle:NombreParte')->find($parNombre);
+            
 
-            // Create the Parte
+
+            // Create the parte
             $parte = new Parte();
             $parte -> setParCodigo($parCodigo);
             $parte -> setParUpc($parUpc);
@@ -70,24 +73,10 @@ class PartesController extends FOSRestController
             $parte -> setParObservacion($parObservacion);
             $parte -> setParAsin($parAsin);
             $parte -> setParSubgrupo($parSubgrupo);
+            $parte -> setParKit($parKit);
+            //$parte -> setParEq($equivalencia);
             $parte -> setFabricanteFab($fabricante);
-            // JULIO HAY QUE PONER LAS VALIDACIONES EN CASO DE QUE EL USUARIO NO PASE CORRECTAMENTE DATOS
-            if($parKit != ""){
-                if(!$kit) {
-                    throw new HttpException (400,"La parte para el kit no existe.");
-                } else{
-                    $parte -> setParKit($kit);
-                }
-            }
-            if($parEq != ""){
-                if(!$equivalencia) {
-                    throw new HttpException (400,"La parte señalada para equivalencia no existe.");
-                } else{
-                    $parte -> setParEq($equivalencia); 
-                }
-            }
-          
-            //$parte -> setParGrupo($grupo); // JULIO DE DONDE SALIO ESTO?? NO EXISTE EN LA ENTIDAD!!!!!
+            $parte -> setParNombre($nombre);
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -213,11 +202,14 @@ class PartesController extends FOSRestController
         $repository = $this->getDoctrine()->getRepository('AppBundle:Parte');
     
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('parte')->join('parte.parEq','e')
-        ->join('parte.fabricanteFab','f')->join('parte.parNombre','n')                                                            
-            ->where('parte.parCodigo LIKE :searchtext')
+        $query = $repository->createQueryBuilder('parte')///->join('modelo.Marca','m')
+           // ->where('m.marNombre = :searchtext')
+            ->where('parte.parNombre LIKE :searchtext')
+            ->orWhere('parte.parNombret LIKE :searchtext')
+            ->orWhere('parte.parNombrein LIKE :searchtext')
             ->orWhere('parte.parUpc LIKE :searchtext')
             ->orWhere('parte.parAsin LIKE :searchtext')
+            ->orWhere('parte.parCodigo LIKE :searchtext')
             ->orWhere('parte.parGrupo LIKE :searchtext')
             ->orWhere('parte.parSubgrupo LIKE :searchtext')
             ->orWhere('parte.parLargo LIKE :searchtext')
@@ -246,13 +238,68 @@ class PartesController extends FOSRestController
 
 
     /**
+     * @Rest\Get("/parte/eq/{limit}/{page}/{nombre}/{grupo}")
+     */
+    public function getParteEquivalente(Request $request)
+    {
+        // Set up the limit and page vars from request
+        $limit      = $request->get('limit');
+        $page       = $request->get('page');
+        $searchtext = $request->get('searchtext');
+        $nombre     = $request->get('nombre');
+        $grupo      = $request->get('grupo');
+
+        // Check if the params are numbers before continue
+        if(!is_numeric($page)) {
+            throw new HttpException (400,"Por favor use solo números para la página");  
+        }
+        // Check if the limit asked has all or not.
+        if (!is_numeric($limit)) {
+            if ($limit != 'todos') {
+                if ($limit != 'Todos') {
+                    throw new HttpException (400,"Por favor use solo números para el límite o indique si son 'todos'");  
+                } else {
+                    $limit = 10000;
+                }
+            } else {
+                $limit = 10000;
+            }
+        }
+
+
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Parte');
+    
+        // The dsql syntax query
+        $query = $repository->createQueryBuilder('parte')->join('parte.parNombre','nom')->join('nom.parGrupo','grp')
+            ->where('nom.parNombre LIKE :nombre')
+            ->andWhere('grp.grupoNombre LIKE :grupo')
+            ->setParameter('nombre',"%" .$nombre ."%")
+            ->setParameter('grupo',"%" .$grupo ."%")
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        // Build the paginator
+        $paginator = new Paginator($query, $fetchJoinCollection = true);
+        // Construct the response
+        $response = array(
+            'partes' => $paginator->getIterator(),
+            'totalPartesReturned' => $paginator->getIterator()->count(),
+            'totalPartes' => $paginator->count(),
+            'searchedText' => $searchtext
+        );
+        // Send the response
+        return $response;
+    }
+
+    /**
      * @Rest\Post("/parte/edit/{parteid}")
      */
      public function postUpdateParteAction(Request $request)
      {
             // Obtaining vars from request
-            $parId          = $request->get('parId');
-            $parCodigo      = $request->get('parCodigo');
+            $parId          = $request->get('parteid');
+            $parCodigo      = $request->get('parCodigo');          
             $parUpc         = $request->get('parUpc');
             $parSku         = $request->get('parSku');
             $parLargo       = $request->get('parLargo');
@@ -262,39 +309,47 @@ class PartesController extends FOSRestController
             $parteOrigen    = $request->get('parteOrigen');
             $parCaract      = $request->get('parCaract');
             $parObservacion = $request->get('parObservacion');
-            $parAsin        = $request->get('parAsin');          
+            $parAsin        = $request->get('parAsin');
             $parSubgrupo    = $request->get('parSubgrupo');
             $parKit         = $request->get('parKit');
-            $parEq          = $request->get('parEq');
+            //$parEq          = $request->get('equivalenciaref');
             $fabricanteFab  = $request->get('fabricanteFab'); 
             $parNombre       = $request->get('parNombre');
+         
+
 
          if($parId == "" || !$parId){
              throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
          }
 
+            // Check for mandatory fields
+            if($parCodigo == ""){
+                throw new HttpException (400,"El campo código no puede estar vacío");   
+            }
+
+            if($fabricanteFab == ""){
+                throw new HttpException (400,"El campo fabricante no puede estar vacío");   
+            }
+
+            if($parNombre == ""){
+                throw new HttpException (400,"El campo nombre no puede estar vacío");   
+            }
+
             // Find the relationships 
             $fabricante     = $this->getDoctrine()->getRepository('AppBundle:Fabricante')->find($fabricanteFab);
-            if (!$parEq == ""){
-                $equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
-            }
-            if (!$parGrupo == ""){
-                $grupo = $this->getDoctrine()->getRepository('AppBundle:Grupo')->find($parGrupo);
-            }            
-            if (!$parKit == ""){
-                $kit = $this->getDoctrine()->getRepository('AppBundle:Conjunto')->find($parKit);
-            }
+            //$equivalencia   = $this->getDoctrine()->getRepository('AppBundle:Equivalencia')->find($parEq);
+            $nombre         = $this->getDoctrine()->getRepository('AppBundle:NombreParte')->find($parNombre);
+            
                      
          $em = $this->getDoctrine()->getManager();
-         $parte = $em->getRepository('AppBundle:Parte')
-            ->find($parteid);
+         $parte = $em->getRepository('AppBundle:Parte')->find($parId);
 
 
         if (!$parte) {
         throw new HttpException (400,"No se ha encontrado la parte especificada: " .$parteid);
          }
 
-            // Create the Parte
+            // Create the parte
             $parte = new Parte();
             $parte -> setParCodigo($parCodigo);
             $parte -> setParUpc($parUpc);
@@ -308,32 +363,45 @@ class PartesController extends FOSRestController
             $parte -> setParObservacion($parObservacion);
             $parte -> setParAsin($parAsin);
             $parte -> setParSubgrupo($parSubgrupo);
-            if($parKit != ""){
-                if(!$kit) {
-                    throw new HttpException (400,"La parte para el kit no existe.");
-                } else{
-                    $parte -> setParKit($kit);
-                }
-            }
-            if($parEq != ""){
-                if(!$equivalencia) {
-                    throw new HttpException (400,"La parte señalada para equivalencia no existe.");
-                } else{
-                    $parte -> setParEq($equivalencia); 
-                }
-            }
+            $parte -> setParKit($parKit);
+            //$parte -> setParEq($equivalencia);
             $parte -> setFabricanteFab($fabricante);
-            // NO SE DE DONDE SALIO ESTO ---> $parte -> setParGrupo($grupo);
-            $em->flush();
+            $parte -> setParNombre($nombre);            $em->flush();
 
         $data = array(
             'message' => 'La parte ha sido actualizada',
              'parteid' => $parId,
-             'parte' => $parCodigo
+             'codigo' => $parCodigo,
          );
 
-         return $request;
+         return $data;
 
      }
+
+
+    /**
+     * @Rest\Delete("/parte/delete/{parid}")
+     */
+    public function deleteRemoveParteAction(Request $request)
+    {
+        $parId = $request->get('parid');
+        // get EntityManager
+        $em             = $this->getDoctrine()->getManager();
+        $partoremove = $em->getRepository('AppBundle:Parte')->find($parId);
+
+        if ($partoremove != "") {      
+            // Remove it and flush
+            $em->remove($partoremove);
+            $em->flush();
+            $response = array(
+                'message'   => 'La Parte '.$partoremove->getParCodigo().' ha sido eliminado',
+                'parnombreid'  => $parId
+            );
+             return $response;
+        } else{
+            throw new HttpException (400,"No se ha encontrado la parte especificada. ID: " .$parId);
+        }
+        
+    }
 
 }

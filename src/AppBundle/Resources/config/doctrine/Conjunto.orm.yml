@@ -4,7 +4,7 @@ AppBundle\Entity\Conjunto:
     indexes:
         fk_parte_id_idx:
             columns:
-                - PARTE_ID
+                - PARTE_PAR_ID
     id:
         id:
             type: integer
@@ -29,14 +29,14 @@ AppBundle\Entity\Conjunto:
                 unsigned: false
             column: KIT_COUNT
     manyToOne:
-        parte:
+        partePar:
             targetEntity: Parte
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                PARTE_ID:
+                PARTE_PAR_ID:
                     referencedColumnName: PAR_ID
             orphanRemoval: false
     lifecycleCallbacks: {  }

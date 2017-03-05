@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Parte
  *
- * @ORM\Table(name="parte", uniqueConstraints={@ORM\UniqueConstraint(name="PAR_ID_UNIQUE", columns={"PAR_ID"}), @ORM\UniqueConstraint(name="PAR_UPC_UNIQUE", columns={"PAR_UPC"})}, indexes={@ORM\Index(name="fk_PARTE_FABRICANTE1_idx", columns={"FABRICANTE_FAB_ID"}), @ORM\Index(name="fk_PARTE_NOMBRE_idx", columns={"PAR_NOMBRE_ID"}), @ORM\Index(name="fk_PARTE_EQ_idx", columns={"PAR_EQ_ID"})})
+ * @ORM\Table(name="parte", uniqueConstraints={@ORM\UniqueConstraint(name="PAR_ID_UNIQUE", columns={"PAR_ID"}), @ORM\UniqueConstraint(name="PAR_UPC_UNIQUE", columns={"PAR_UPC"})}, indexes={@ORM\Index(name="fk_PARTE_NOMBRE_idx", columns={"PAR_NOMBRE_ID"}), @ORM\Index(name="fk_PARTE_EQ_idx", columns={"PAR_EQ_ID"}), @ORM\Index(name="fk_PARTE_FABRICANTE_idx", columns={"FABRICANTE_FAB_ID"})})
  * @ORM\Entity
  */
 class Parte

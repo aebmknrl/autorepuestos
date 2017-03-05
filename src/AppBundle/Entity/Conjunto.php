@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Conjunto
  *
- * @ORM\Table(name="conjunto", indexes={@ORM\Index(name="fk_parte_id_idx", columns={"PARTE_ID"})})
+ * @ORM\Table(name="conjunto", indexes={@ORM\Index(name="fk_parte_id_idx", columns={"PARTE_PAR_ID"})})
  * @ORM\Entity
  */
 class Conjunto
@@ -40,10 +40,10 @@ class Conjunto
      *
      * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PARTE_ID", referencedColumnName="PAR_ID")
+     *   @ORM\JoinColumn(name="PARTE_PAR_ID", referencedColumnName="PAR_ID")
      * })
      */
-    private $parte;
+    private $partePar;
 
 
 
@@ -106,26 +106,26 @@ class Conjunto
     }
 
     /**
-     * Set parte
+     * Set partePar
      *
-     * @param \AppBundle\Entity\Parte $parte
+     * @param \AppBundle\Entity\Parte $partePar
      *
      * @return Conjunto
      */
-    public function setParte(\AppBundle\Entity\Parte $parte = null)
+    public function setPartePar(\AppBundle\Entity\Parte $partePar = null)
     {
-        $this->parte = $parte;
+        $this->partePar = $partePar;
 
         return $this;
     }
 
     /**
-     * Get parte
+     * Get partePar
      *
      * @return \AppBundle\Entity\Parte
      */
-    public function getParte()
+    public function getPartePar()
     {
-        return $this->parte;
+        return $this->partePar;
     }
 }
