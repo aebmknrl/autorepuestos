@@ -19,11 +19,12 @@ class ConjuntosController extends FOSRestController
      */
     public function postAddConjuntoAction(Request $request)
     {
+        $params = $request->request->all();
         try{
             $parteKitId = $request->get('id');  // obtengo id de kit   
             $parteKit   = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteKitId);            
              
-            foreach ($_REQUEST as $key => $value) { // para cada parte del kit
+            foreach ($params as $key => $value) { // para cada parte del kit
 
             $parte = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($value); // obtengo parte  y guardo
             if($parte == ""){
