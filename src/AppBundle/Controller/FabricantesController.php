@@ -45,7 +45,7 @@ class FabricantesController extends FOSRestController
             $fabricante -> setFabNombre($nombre);
             $fabricante -> setFabDescripcion($descripcion);
             $fabricante -> setFabPais($pais);
-            $fabricante -> setFabTiempo(new \DateTime($tiempo));
+            $fabricante -> setFabTiempo($tiempo);
             $fabricante -> setFabImagen($fabImagen);
             $em = $this->getDoctrine()->getManager();
             
