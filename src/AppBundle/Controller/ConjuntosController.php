@@ -80,14 +80,23 @@ class ConjuntosController extends FOSRestController
      */
     public function getConjuntoAction(Request $request)
     {
+
         $id = $request->get('conjuntoid');
         $repository = $this->getDoctrine()->getRepository('AppBundle:Conjunto');
         $conjunto = $repository->findOneById($id);
         return $conjunto;
     }
     
-
-
+   /**
+     * @Rest\Get("/conjunto/bypart/{parteKitId}")
+    */
+    public function getConjuntoByPartAction(Request $request)
+    {
+        $parteKitId = $request->get('parteKitId');
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Conjunto');
+        $conjunto = $repository->findByparteKitId($parteKitId);
+        return $conjunto;
+    }
      /**
      * @Rest\Get("/conjunto/{limit}/{page}")
      */
