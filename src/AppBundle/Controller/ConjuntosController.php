@@ -278,5 +278,48 @@ class ConjuntosController extends FOSRestController
             throw new HttpException (400,"No se ha encontrado el conjunto especificado: " .$conjuntoid);
         }     
     }
+     /**
+     * @Rest\Delete("/conjunto/delete/allPartsOfKit/{parteKitId}")
+     */
+      public function deleteRemoveAllPartsOfKitAction(Request $request)
+    {
+        $parteKitId  = $request->get('parteKitId');
 
+       if ($parteKitId == "")
+        {        
+            throw new HttpException (400,"Debe especificar un ID de Kit de Partes");
+        }
+
+        // get EntityManager
+        $em  = $this->getDoctrine()->getManager();
+        $conjuntosToRemove = $em->getRepository('AppBundle:Conjunto')->findByparteKitId($parteKitId);
+       
+       if (empty($conjuntosToRemove))
+        {        
+            $response = array(
+            // throw new HttpException (400,"No se han encontrado partes para el kit especificado" .$parteKitId);        $response = array(
+                'message' => 'La parte ' .$parteKitId .' no contiene partes como kit.',
+                'hasPartesAsKit' => false
+            );
+        return $response;  
+        }
+
+        try{
+
+            foreach ($conjuntosToRemove as $key => $value) {
+            $conjuntoToRemove = $value;
+            // Remove it and flush
+            $em->remove($conjuntoToRemove);
+            $em->flush();
+            }
+        }
+        catch (Exception $e) {
+            return $e->getMessage();
+        } 
+        $response = array(
+            'message'   => 'Las partes para el Kit ' .$parteKitId .' han sido eliminados',
+            'hasPartesAsKit' => true
+            );
+        return $response;   
+    }
 }   
