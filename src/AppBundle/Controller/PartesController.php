@@ -403,5 +403,51 @@ class PartesController extends FOSRestController
         }
         
     }
+    /**
+     * @Rest\Post("/parte/findEqualsExcludePart/{nombreid}/{grupoid}/{partid}")
+     */
+    public function postFindEqualsExcludePartAction(Request $request)
+    {
+        //This method return all equivalent part of a part
+        $nombreid = $request->get('nombreid');
+        $grupoid = $request->get('grupoid');
+        $partid = $request->get('partid');
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Parte');
+           // The dsql syntax query
+        $query = $repository->createQueryBuilder('parte')->join('parte.parNombre','nom')->join('nom.parGrupo','grp')
+            ->where('nom.parNombreId = :nombreid')
+            ->andWhere('grp.id = :grupoid')
+            ->andWhere('parte.parId != :partid')
+            ->setParameter('nombreid',$nombreid)
+            ->setParameter('grupoid',$grupoid)
+            ->setParameter('partid',$partid)
+            ->getQuery();
+        // Build the paginator
+        $partesEquivalentes = $query->getResult();
+        return $partesEquivalentes;
 
+    }
+
+    /**
+     * @Rest\Post("/parte/findEqualsParts/{nombreid}/{grupoid}")
+     */
+    public function postFindEqualsPartsAction(Request $request)
+    {
+        //This method return all equivalent part of a part
+        $nombreid = $request->get('nombreid');
+        $grupoid = $request->get('grupoid');
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Parte');
+           // The dsql syntax query
+        $query = $repository->createQueryBuilder('parte')->join('parte.parNombre','nom')->join('nom.parGrupo','grp')
+            ->where('nom.parNombreId = :nombreid AND grp.id = :grupoid')
+            ->setParameter('nombreid',$nombreid)
+            ->setParameter('grupoid',$grupoid)
+            ->getQuery();
+        // Build the paginator
+        $partesEquivalentes = $query->getResult();
+        return $partesEquivalentes;
+
+    }
 }
