@@ -21,26 +21,26 @@ class VehiculosController extends FOSRestController
     {
         try {
             // Obtaining vars from request
-            $anio           = $request->get('anio');
-            $variante       = $request->get('variante');
-            $vehCilindros   = $request->get('cilindros');
-            $vehLitros      = $request->get('litros');
-            $vehValvulas    = $request->get('valvulas');
-            $vehLevas       = $request->get('levas');
-            $vehVersion     = $request->get('version');
-            $vehTipo        = $request->get('tipo');
-            $vehTraccion    = $request->get('traccion');
-            $vehCaja        = $request->get('caja');
-            $vehObservacion = $request->get('observacion');            
-            $vin            = $request->get('vin');
+            $anioAniId           = $request->get('anioAniId');
+            $vehVariante       = $request->get('vehVariante');
+            $vehCilindros   = $request->get('vehCilindros');
+            $vehLitros      = $request->get('vehLitros');
+            $vehValvulas    = $request->get('vehValvulas');
+            $vehLevas       = $request->get('vehLevas');
+            $vehVersion     = $request->get('vehVersion');
+            $vehTipo        = $request->get('vehTipo');
+            $vehTraccion    = $request->get('vehTraccion');
+            $vehCaja        = $request->get('vehCaja');
+            $vehObservacion = $request->get('vehObservacion');            
+            $vehVin         = $request->get('vehVin');
             $nota           = $request->get('nota');
-            $desde          = $request->get('desde');
-            $hasta          = $request->get('hasta');
-            $modeloid       = $request->get('modeloid');
+            $vehFabDesde    = $request->get('vehFabDesde');
+            $vehFabHasta          = $request->get('vehFabHasta');
+            $modeloMod       = $request->get('modeloMod');
 
 
             // Check for mandatory fields          
-            if($anio == ""){
+            if($anioAniId == ""){
                 throw new HttpException (400,"El campo año no puede estar vacío");   
             }
             if($modeloid == ""){
@@ -56,8 +56,8 @@ class VehiculosController extends FOSRestController
 
             // Create the Vehiculo
             $vehiculo = new Vehiculo();
-            $vehiculo -> setAnioAniId($anio);
-            $vehiculo -> setVehVariante($variante);
+            $vehiculo -> setAnioAniId($anioAniId);
+            $vehiculo -> setVehVariante($vehVariante);
             $vehiculo -> setVehCilindros($vehCilindros);
             $vehiculo -> setVehLitros($vehLitros);
             $vehiculo -> setVehValvulas($vehValvulas);
@@ -67,11 +67,11 @@ class VehiculosController extends FOSRestController
             $vehiculo -> setVehTraccion($vehTraccion);
             $vehiculo -> setVehCaja($vehCaja);
             $vehiculo -> setVehObservacion($vehObservacion);
-            $vehiculo -> setVehVin($vin);
+            $vehiculo -> setVehVin($vehVin);
             $vehiculo -> setNota($nota);
-            $vehiculo -> setVehFabDesde($desde);
-            $vehiculo -> setVehFabHasta($hasta);
-            $vehiculo -> setModeloMod($modelo);
+            $vehiculo -> setVehFabDesde($vehFabDesde);
+            $vehiculo -> setVehFabHasta($vehFabHasta);
+            $vehiculo -> setModeloMod($modeloMod);
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -79,11 +79,10 @@ class VehiculosController extends FOSRestController
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
             
-            $response = array("Vehiculo" => array(
+            $response = array("vehiculo" => array(
                 array(
-                    "nuevo vehiculo creado"     => $vehCilindros.', '.$vehValvulas,
-                    "modelo"                    => $modelo->getModNombre(),
-                    "id"                        => $vehiculo->getVehId()
+                    "vehiculoid"     => $vehiculo->getVehId(),
+                    "modelo"         => $modelo->getModNombre()
                     )
                 )  
             ); 
@@ -236,56 +235,56 @@ class VehiculosController extends FOSRestController
 
 
     /**
-     * @Rest\Post("/vehiculo/edit/{vehiculoid}")
+     * @Rest\Post("/vehiculo/edit/{vehId}")
      */
      public function postUpdateVehiculoAction(Request $request)
      {
          try
          {
-         $vehiculoid        = $request->get('vehiculoid');
-         $anio              = $request->get('anio');
-         $variante          = $request->get('variante');
-         $vehCilindros      = $request->get('cilindros');
-         $vehLitros         = $request->get('litros');
-         $vehValvulas       = $request->get('valvulas');
-         $vehLevas          = $request->get('levas');
-         $vehVersion        = $request->get('version');
-         $vehTipo           = $request->get('tipo');
-         $vehTraccion       = $request->get('traccion');
-         $vehCaja           = $request->get('caja');
-         $vehObservacion    = $request->get('observacion');            
-         $vin               = $request->get('vin');
+         $vehId        = $request->get('vehId');
+         $anioAniId              = $request->get('anioAniId');
+         $vehVariante          = $request->get('vehVariante');
+         $vehCilindros      = $request->get('vehCilindros');
+         $vehLitros         = $request->get('vehLitros');
+         $vehValvulas       = $request->get('vehValvulas');
+         $vehLevas          = $request->get('vehLevas');
+         $vehVersion        = $request->get('vehVersion');
+         $vehTipo           = $request->get('vehTipo');
+         $vehTraccion       = $request->get('vehTraccion');
+         $vehCaja           = $request->get('vehCaja');
+         $vehObservacion    = $request->get('vehObservacion');            
+         $vehVin               = $request->get('vehVin');
          $nota              = $request->get('nota');
-         $desde             = $request->get('desde');
-         $hasta             = $request->get('hasta');
-         $modeloid          = $request->get('modeloid');
-         $modelo            = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloid);
+         $vehFabDesde             = $request->get('vehFabDesde');
+         $vehFabHasta             = $request->get('vehFabHasta');
+         $modeloMod          = $request->get('modeloMod');
+         $modelo            = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloMod);
          
 
-         if($vehiculoid == "" || !$vehiculoid)
+         if($vehId == "" || !$vehId)
          {
              throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
          }
-         if($anio == "")
+         if($anioAniId == "")
          {
                 throw new HttpException (400,"El campo año no puede estar vacío");   
          }
-         if($variante == "")
+         if($vehVariante == "")
          {
                 throw new HttpException (400,"El campo variante no puede estar vacío");   
          }
          
          $em = $this->getDoctrine()->getManager();
-         $vehiculo = $em->getRepository('AppBundle:Vehiculo')->find($vehiculoid);
+         $vehiculo = $em->getRepository('AppBundle:Vehiculo')->find($vehId);
 
 
-        if (!$vehiculoid)
+        if (!$vehId)
         {
-        throw new HttpException (400,"No se ha encontrado el vehiculo especificado: " .$vehiculoid);
+        throw new HttpException (400,"No se ha encontrado el vehiculo especificado: " .$vehId);
         }
 
-        $vehiculo -> setAnioAniId($anio);
-        $vehiculo -> setVehVariante($variante);
+        $vehiculo -> setAnioAniId($anioAniId);
+        $vehiculo -> setVehVariante($vehVariante);
         $vehiculo -> setVehCilindros($vehCilindros);
         $vehiculo -> setVehLitros($vehLitros);
         $vehiculo -> setVehValvulas($vehValvulas);
@@ -295,16 +294,16 @@ class VehiculosController extends FOSRestController
         $vehiculo -> setVehTraccion($vehTraccion);
         $vehiculo -> setVehCaja($vehCaja);
         $vehiculo -> setVehObservacion($vehObservacion);
-        $vehiculo -> setVehVin($vin);
+        $vehiculo -> setVehVin($vehVin);
         $vehiculo -> setNota($nota);
-        $vehiculo -> setVehFabDesde($desde);
-        $vehiculo -> setVehFabHasta($hasta);
-        $vehiculo -> setModeloMod($modelo);
+        $vehiculo -> setVehFabDesde($vehFabDesde);
+        $vehiculo -> setVehFabHasta($vehFabHasta);
+        $vehiculo -> setModeloMod($modeloMod);
         $em->flush();
 
         $response = array(
-            'message'       => 'El Vehiculo '.$vehCilindros.'  ha sido actualizado',
-            'vehiculoid'    => $vehiculoid,
+            'message'       => 'El Vehiculo ha sido actualizado',
+            'vehiculoid'    => $vehId,
             "modelo"        => $modelo->getModNombre(),
             'nota'          => $nota
          );        
