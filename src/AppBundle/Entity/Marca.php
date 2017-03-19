@@ -31,7 +31,7 @@ class Marca
     /**
      * @var string
      *
-     * @ORM\Column(name="MAR_OBSERVACION", type="string", length=45, nullable=true)
+     * @ORM\Column(name="MAR_OBSERVACION", type="string", length=250, nullable=true)
      */
     private $marObservacion;
 

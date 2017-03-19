@@ -15,63 +15,57 @@ class AplicacionesController extends FOSRestController
 {
 
     /**
-    * @Rest\Post("/aplicacion/add")
+    * @Rest\Post("/aplicacion/add/{id}")
     */
     public function postAddAplicacionAction(Request $request)
     {
+        $params = $request->request->all();
+        try{
+            $parteParId = $request->get('id');  // obtengo id de kit   
+            $partePar   = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteParId);
+            $aplCantidad = '1';
+            
+            foreach ($params as $key => $value) { // para cada vehiculo de la aplicacion
+
             // Obtaining vars from request         
-            $aplcantidad    = $request->get('cantidad');
-            $observacion    = $request->get('observacion');        
-            $vehiculo       = $request->get('vehiculoid');
-            $parte          = $request->get('parteid');
-
-            // Check for mandatory fields            
-            if($aplcantidad == ""){
-                throw new HttpException (400,"El campo cantidad no puede estar vacío");   
-            }
-            if($vehiculo == ""){
-                throw new HttpException (400,"El campo Vehiculo no puede estar vacío");   
-            }
-            if($parte == ""){
-                throw new HttpException (400,"El campo Parte no puede estar vacío");   
-            }
-
+            //$aplcantidad    = $request->get('cantidad');
+            //$observacion    = $request->get('observacion');        
             // Find the relationship with Vehiculo
-            $vehiculo = $this->getDoctrine()->getRepository('AppBundle:Vehiculo')->find($vehiculo);
+            $vehiculo = $this->getDoctrine()->getRepository('AppBundle:Vehiculo')->find($value);// obtengo vehiculo  y guardo
             if($vehiculo == ""){
                 throw new HttpException (400,"El vehiculo especificado no existe");   
             }
-            // Find the relationship with Parte
-            $parte = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parte);
-            if($parte == ""){
-                throw new HttpException (400,"La parte especificada no existe");   
-            }
 
-            // Create the model
+            // Create the Aplication
             $aplicacion = new Aplicacion();
-            $aplicacion -> setAplCantidad($aplcantidad);
-            $aplicacion -> setAplObservacion($observacion);
+            //$aplicacion -> setAplObservacion($observacion);
             $aplicacion -> setVehiculoVeh($vehiculo);
-            $aplicacion -> setPartePar($parte);
+            $aplicacion -> setPartePar($partePar);
+            $aplicacion -> setAplCantidad($aplCantidad);
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
             $em->persist($aplicacion);        
             // actually executes the queries (i.e. the INSERT query)
             $em->flush();
-            
+            }
+
             $response = array("Aplicacion" => array(
                 array(
                     "message"       => "Nueva aplicación creada",
                     "ID"            => $aplicacion->getAplId(),
-                    "vehiculo"      => $vehiculo->getVehVariante(),
-                    "parte"         => $parte->getParNombre(),
-                    "cantidad"      => $aplcantidad,
-                    "observacion"   => $observacion
                     )
                 )  
             );
-            return $response;           
+            return $response;
+            }  
+
+              catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
+            throw new HttpException (409,"Error: ."); 
+            } 
+        catch (Exception $e) {
+            return $e->getMessage();
+            }         
     }
 
 
