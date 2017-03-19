@@ -53,7 +53,7 @@ class ModelosController extends FOSRestController
             
             $response = array("modelos" => array(
                 array(
-                    "Nuevo modelo creado"   => $nombre,
+                    "modelo"   => $nombre,
                     "Observación: "         => $observacion,
                     "Marca:"                => $marca->getMarNombre(),
                     "id"                    => $modelo->getModId()
