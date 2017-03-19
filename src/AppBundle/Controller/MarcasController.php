@@ -43,7 +43,7 @@ class MarcasController extends FOSRestController
         
             $response = array("marca" => array(
                     array(
-                    "Nueva marca creada"   => $nombre,
+                    "marca"   => $nombre,
                     "observación" => $observacion,
                     "id" => $marca->getMarId()
                     )
