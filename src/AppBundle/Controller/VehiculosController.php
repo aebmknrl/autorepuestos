@@ -44,6 +44,10 @@ class VehiculosController extends FOSRestController
                 throw new HttpException (400,"Se necesita proveer de un ID de Modelo para relacionar el vehiculo");   
             }
 
+            if($anioAniId == ""){
+                throw new HttpException (400,"Se necesita proveer el año del vehiculo");   
+            }
+
             // Find the relationship with Modelo
             $modelo = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloMod);
             if($modelo == "")
@@ -255,14 +259,17 @@ class VehiculosController extends FOSRestController
          $vehFabDesde             = $request->get('vehFabDesde');
          $vehFabHasta             = $request->get('vehFabHasta');
          $modeloMod          = $request->get('modeloMod');
-         $modelo            = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloMod);
          
+        if($anioAniId == ""){
+                throw new HttpException (400,"Se necesita proveer el año del vehiculo");   
+        }
 
          if($vehId == "" || !$vehId)
          {
              throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
          }
-        if($modeloid == ""){
+
+        if($modeloMod == "" || !$modeloMod){
             throw new HttpException (400,"Se necesita proveer de un ID de Modelo para relacionar el vehiculo");   
         }
          
@@ -273,7 +280,8 @@ class VehiculosController extends FOSRestController
         {
         throw new HttpException (400,"No se ha encontrado el vehiculo especificado: " .$vehId);
         }
-
+        
+         $modelo = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloMod);
         if($modelo == "")
         {
             throw new HttpException (400,"El modelo especificado no existe");   
