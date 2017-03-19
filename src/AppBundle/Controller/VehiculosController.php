@@ -40,15 +40,12 @@ class VehiculosController extends FOSRestController
 
 
             // Check for mandatory fields          
-            if($anioAniId == ""){
-                throw new HttpException (400,"El campo año no puede estar vacío");   
-            }
-            if($modeloid == ""){
+            if($modeloMod == ""){
                 throw new HttpException (400,"Se necesita proveer de un ID de Modelo para relacionar el vehiculo");   
             }
 
             // Find the relationship with Modelo
-            $modelo = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloid);
+            $modelo = $this->getDoctrine()->getRepository('AppBundle:Modelo')->find($modeloMod);
             if($modelo == "")
             {
                 throw new HttpException (400,"El modelo especificado no existe");   
@@ -265,22 +262,21 @@ class VehiculosController extends FOSRestController
          {
              throw new HttpException (400,"Debe proveer un id para modificar el registro.");  
          }
-         if($anioAniId == "")
-         {
-                throw new HttpException (400,"El campo año no puede estar vacío");   
-         }
-         if($vehVariante == "")
-         {
-                throw new HttpException (400,"El campo variante no puede estar vacío");   
-         }
+        if($modeloid == ""){
+            throw new HttpException (400,"Se necesita proveer de un ID de Modelo para relacionar el vehiculo");   
+        }
          
          $em = $this->getDoctrine()->getManager();
          $vehiculo = $em->getRepository('AppBundle:Vehiculo')->find($vehId);
 
-
-        if (!$vehId)
+        if (!$vehiculo || $vehiculo == "")
         {
         throw new HttpException (400,"No se ha encontrado el vehiculo especificado: " .$vehId);
+        }
+
+        if($modelo == "")
+        {
+            throw new HttpException (400,"El modelo especificado no existe");   
         }
 
         $vehiculo -> setAnioAniId($anioAniId);
