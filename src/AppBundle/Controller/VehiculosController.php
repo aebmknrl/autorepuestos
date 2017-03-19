@@ -68,7 +68,7 @@ class VehiculosController extends FOSRestController
             $vehiculo -> setNota($nota);
             $vehiculo -> setVehFabDesde($vehFabDesde);
             $vehiculo -> setVehFabHasta($vehFabHasta);
-            $vehiculo -> setModeloMod($modeloMod);
+            $vehiculo -> setModeloMod($modelo);
             $em = $this->getDoctrine()->getManager();
             
             // tells Doctrine you want to (eventually) save the Product (no queries yet)
@@ -294,7 +294,7 @@ class VehiculosController extends FOSRestController
         $vehiculo -> setNota($nota);
         $vehiculo -> setVehFabDesde($vehFabDesde);
         $vehiculo -> setVehFabHasta($vehFabHasta);
-        $vehiculo -> setModeloMod($modeloMod);
+        $vehiculo -> setModeloMod($modelo);
         $em->flush();
 
         $response = array(
