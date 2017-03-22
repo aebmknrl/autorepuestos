@@ -175,7 +175,7 @@ class GruposController extends FOSRestController
         $repository = $this->getDoctrine()->getRepository('AppBundle:Grupo');
     
         // The dsql syntax query
-        $query = $repository->createQueryBuilder('grupo')->join('grupo.grupoPadre','g')
+        $query = $repository->createQueryBuilder('grupo')->leftJoin('grupo.grupoPadre','g')
             ->where('g.grupoNombre LIKE :searchtext')
             ->orwhere('grupo.grupoNombre LIKE :searchtext')
             ->orWhere('grupo.descripcion LIKE :searchtext')
