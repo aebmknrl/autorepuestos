@@ -25,6 +25,9 @@ class AplicacionesController extends FOSRestController
             $partePar   = $this->getDoctrine()->getRepository('AppBundle:Parte')->find($parteParId);
             $aplCantidad = '1';
             
+            $workResume;
+
+
             foreach ($params as $key => $value) { // para cada vehiculo de la aplicacion
 
             // Obtaining vars from request         
@@ -33,7 +36,7 @@ class AplicacionesController extends FOSRestController
             // Find the relationship with Vehiculo
             $vehiculo = $this->getDoctrine()->getRepository('AppBundle:Vehiculo')->find($value);// obtengo vehiculo  y guardo
             if($vehiculo == ""){
-                throw new HttpException (400,"El vehiculo especificado no existe");   
+                throw new HttpException (400,"El vehiculo " .$value ." no existe");   
             }
 
             // Create the Aplication
