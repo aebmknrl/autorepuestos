@@ -293,4 +293,24 @@ class AplicacionesController extends FOSRestController
             }      
     }
  
+
+    /**
+    * @Rest\Post("/aplicacion/aplicationbypart/{partid}")
+    */
+    public function postGetAplicationByPartAction(Request $request)
+    {
+        $partid   = $request->get('partid');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Aplicacion');
+
+    // The dsql syntax query
+        $query = $repository->createQueryBuilder('aplicacion')->join('aplicacion.partePar','par')//->join('aplicacion.vehiculoVeh','veh')
+            ->where('par.parId = :partid')
+            ->setParameter('partid',$partid)
+            ->getQuery();
+        // Build the paginator
+        $aplicacionesDeParte = $query->getResult();
+        return $aplicacionesDeParte;
+    }
+
+
 }   
