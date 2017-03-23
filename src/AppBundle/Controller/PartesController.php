@@ -448,4 +448,25 @@ class PartesController extends FOSRestController
         return $partesEquivalentes;
 
     }
+
+    /**
+     * @Rest\Post("/parte/findPartsByGroup/{groupid}")
+     */
+    public function postFindPartsByGroupAction(Request $request)
+    {
+        //This method return all equivalent part of a part
+        $groupid = $request->get('groupid');
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Parte');
+           // The dsql syntax query
+        $query = $repository->createQueryBuilder('parte')->join('parte.parNombre','nom')->join('nom.parGrupo','grp')
+            ->where('grp.id = :groupid')
+            ->setParameter('groupid',$groupid)
+            ->getQuery();
+        // Build the paginator
+        $partesDelGrupo = $query->getResult();
+        return $partesDelGrupo;
+
+    }
+
 }
