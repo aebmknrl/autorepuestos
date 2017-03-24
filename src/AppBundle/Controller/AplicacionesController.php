@@ -283,7 +283,7 @@ class AplicacionesController extends FOSRestController
             $em->remove($aplicaciontoremove);
             $em->flush();
             $data = array(
-                'message' => 'La aplicacion '.$aplicaciontoremove->getAplObservacion().' ha sido eliminada',
+                'message' => 'La aplicacion '.$aplicaciontoremove->getAplId().' ha sido eliminada',
                 'aplid' => $aplid
             );
              return $data;
@@ -311,6 +311,25 @@ class AplicacionesController extends FOSRestController
         $aplicacionesDeParte = $query->getResult();
         return $aplicacionesDeParte;
     }
+
+    /**
+    * @Rest\Post("/aplicacion/getqtyappbypartaction/{partid}")
+    */
+    public function postGetQtyAppByPartAction(Request $request)
+    {
+        $partid   = $request->get('partid');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Aplicacion');
+
+    // The dsql syntax query
+        $query = $repository->createQueryBuilder('aplicacion')->join('aplicacion.partePar','par')//->join('aplicacion.vehiculoVeh','veh')
+            ->where('par.parId = :partid')
+            ->setParameter('partid',$partid)
+            ->getQuery();
+        // Build the paginator
+        $aplicacionesDeParte = $query->getResult();
+        return count($aplicacionesDeParte);
+    }
+
 
 
 }   
