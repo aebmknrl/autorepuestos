@@ -330,6 +330,65 @@ class AplicacionesController extends FOSRestController
         return count($aplicacionesDeParte);
     }
 
+    /**
+    * @Rest\Post("/aplicacion/vehiculohasappl/{vehId}")
+    */
+    public function postVehHasApplAction(Request $request)
+    {
+        $vehId   = $request->get('vehId');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Aplicacion');
 
+    // The dsql syntax query
+        $query = $repository->createQueryBuilder('aplicacion')->join('aplicacion.vehiculoVeh','veh')
+            ->where('veh.vehId = :vehId')
+            ->setParameter('vehId',$vehId)
+            ->getQuery();
+        // Build the paginator
+        $aplicacionesDeParte = $query->getResult();
+        if (count($aplicacionesDeParte) > 0) {
+            return true;
+        } else {
+            return false;
+        }
 
+    }
+
+    /**
+    * @Rest\Delete("/aplicacion/delete/allpartapp/{partId}")
+    */
+    public function postDeleteAllPartAppAction(Request $request)
+    {
+        $partId   = $request->get('partId');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Aplicacion');
+
+    // The dsql syntax query
+        $query = $repository->createQueryBuilder('aplicacion')->join('aplicacion.partePar','par')
+            ->where('par.parId = :partId')
+            ->setParameter('partId',$partId)
+            ->getQuery();
+        $aplicacionesDeParte = $query->getResult();
+ 
+        foreach ($aplicacionesDeParte as $key => $value) {
+            $em = $this->getDoctrine()->getManager();
+            $aplicaciontoremove = $em->getRepository('AppBundle:Aplicacion')->find($value->getAplId());
+
+                if ($aplicaciontoremove != "") {      
+                    // Remove it and flush
+                    $em->remove($aplicaciontoremove);
+                    $em->flush();
+                } 
+                else
+                {
+                    throw new HttpException (400,"No se ha encontrado la aplicacion especificada: " .$aplid);
+                }      
+        
+            }
+
+        $data = array(
+                'message' => 'Todas las aplicaciones de la parte '.$partId .' han sido eliminadas',
+                'partId' => $partId
+            );
+        
+        return $data;
+    }
 }   
