@@ -303,11 +303,12 @@ class MarcasController extends FOSRestController
             throw new HttpException (400,"No se ha encontrado la marca especificada: " .$marcaid);
         }
 
+ 
         // Process every file
         foreach($request->files as $uploadedFile) {
+            
              // Get the file from request
             $uploadedfile = $request->files->get('file');
-        
             // Obtain the original name of the file uploaded
             $originalFileName = $uploadedFile->getClientOriginalName();
             // Obtain the original extension of the file uploaded. Apply strtolower to remove 
@@ -318,6 +319,18 @@ class MarcasController extends FOSRestController
                 // Is not a permited image file, error
                 throw new HttpException (400,"Debe subir un archivo de imagen válido. (Extenciones permitidas: jpg, gif, png). Archivo subido: " .$originalFileExt);
             }
+
+            // Obtain the size of the file uploaded
+            $fileSize = $uploadedfile->getSize();
+            return $fileSize;  //$_SERVER['CONTENT_LENGTH'];
+            // Obtain the max file size that can be uploaded by the PHP.INI
+            $maxFileSizeAllowed = $uploadedfile->getMaxFilesize();
+            // If the size of the uploaded file exceds the max value permited, error
+            if($fileSize > $maxFileSizeAllowed){
+                 throw new HttpException (400,"El archivo excede el máximo en tamaño permitido. Tamaño del archivo: " .$fileSize .", Límite: " .$maxFileSizeAllowed);
+            }
+
+
             // Rename the file with the id of the entity and save on the folder
             $file = $uploadedFile->move($directory, $marcaid ."." .$originalFileExt);
             
