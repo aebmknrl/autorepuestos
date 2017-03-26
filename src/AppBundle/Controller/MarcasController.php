@@ -260,4 +260,106 @@ class MarcasController extends FOSRestController
             throw new HttpException (400,"No se ha encontrado la marca especificada ID: ".$marcaid);
             }
      }
+
+     /**
+     * @Rest\Post("/marca/uploadImage/{marcaid}")
+     */
+    public function postUploadImageAction(Request $request)
+    {   
+        // Obtain marcaid
+        $marcaid = $request->get('marcaid');
+
+        // Check for mandatory fields 
+        if($marcaid == "" || !$marcaid)
+        {
+            throw new HttpException (400,"Debe proveer un id para subir el archivo.");  
+        }
+
+        // Obtain default image upload parameter
+        $ruta = $this->container->getParameter('img_upload_route');
+        $direcorioUploads = $this->container->getParameter('img_upload_folder');
+        // Construct the folder route for this Entity
+        $directory = __DIR__ .$ruta .$direcorioUploads ."/marcas/";
+
+        // Check if the file exist previously
+        foreach (glob($directory .$marcaid ."*") as $nombre_fichero) {
+            //if exists, delete the file 
+            unlink($nombre_fichero);
+        }
+
+        // Count the file qty that is receive
+        if(count($request->files) <= 0)
+        {
+            // If don't have any file, then error
+            throw new HttpException (400,"Debe adjuntar un archivo");   
+        }
+
+        // Get the DB entity
+        $em = $this->getDoctrine()->getManager();
+        $marca = $em->getRepository('AppBundle:Marca')->find($marcaid);
+
+        // If the entity value given does not exists, error
+        if (!$marca) {
+            throw new HttpException (400,"No se ha encontrado la marca especificada: " .$marcaid);
+        }
+
+        // Process every file
+        foreach($request->files as $uploadedFile) {
+             // Get the file from request
+            $uploadedfile = $request->files->get('file');
+        
+            // Obtain the original name of the file uploaded
+            $originalFileName = $uploadedFile->getClientOriginalName();
+            // Obtain the original extension of the file uploaded. Apply strtolower to remove 
+            // the caps of the extension to check
+            $originalFileExt =  strtolower($uploadedFile->getClientOriginalExtension());
+            // Check if the file extension has a permited extension
+            if($originalFileExt != 'jpg' && $originalFileExt != 'jepg' && $originalFileExt != 'png' && $originalFileExt != 'gif'){
+                // Is not a permited image file, error
+                throw new HttpException (400,"Debe subir un archivo de imagen válido. (Extenciones permitidas: jpg, gif, png). Archivo subido: " .$originalFileExt);
+            }
+            // Rename the file with the id of the entity and save on the folder
+            $file = $uploadedFile->move($directory, $marcaid ."." .$originalFileExt);
+            
+            // If any error uploading... throw error
+           if ($uploadedfile->getError() != 0) {
+                throw new HttpException (400,"Ha ocurrido un error subiendo los archivos: " .$uploadedfile->getError());
+            }
+            // Update the image of the entity
+            $marca-> setMarImagen($marcaid ."." .$originalFileExt);
+            $em->flush();  
+        }
+        // Finish
+        return "Archivos cargados";
+    }
+
+     /**
+     * @Rest\Post("/marca/getImageUrl/{marcaid}")
+     */
+    public function postGetImageUrlAction(Request $request)
+    {   
+        // Obtain the entity to get the URL
+        $marcaid = $request->get('marcaid');
+        // If no id of entity provided, error
+        if($marcaid == "" || !$marcaid)
+        {
+            throw new HttpException (400,"Debe proveer un id para obtener las imagenes.");  
+        }
+        // Connect with the autoparts db repository
+        // Get the entity by id and select the image name
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Marca');
+        $query          = $repository->createQueryBuilder('marca')
+            ->select('marca.marImagen')
+            ->where('marca.marId = :marcaid')
+            ->setParameter('marcaid',$marcaid)
+            ->getQuery();
+        $image = $query->getResult();
+        // Get de default image folder parameter
+        $direcorioUploads = $this->container->getParameter('img_upload_folder');
+        // Generate the URL
+        $imageUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() .'/' .$direcorioUploads .'/marcas/'.$image[0]["marImagen"];
+        // Return the URL
+        return $imageUrl;
+    }
+
 }   

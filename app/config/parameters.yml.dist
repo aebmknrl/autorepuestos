@@ -17,3 +17,10 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # Notes of upload configuration (by Sanbric Designs):
+    # The route must to include at the end the '/' character
+    # The folder must NOT contain any '/' character
+
+    img_upload_route: '../../../../web/'
+    img_upload_folder: 'uploads'
