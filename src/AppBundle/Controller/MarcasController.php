@@ -362,12 +362,18 @@ class MarcasController extends FOSRestController
             ->setParameter('marcaid',$marcaid)
             ->getQuery();
         $image = $query->getResult();
-        // Get de default image folder parameter
-        $direcorioUploads = $this->container->getParameter('img_upload_folder');
-        // Generate the URL
-        $imageUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() .'/' .$direcorioUploads .'/marcas/'.$image[0]["marImagen"];
-        // Return the URL
-        return $imageUrl;
+        
+        if(count($image) <= 0) {
+            throw new HttpException (400,"No existe el registro con el ID especificado.");  
+        } else {
+            // Get de default image folder parameter
+            $direcorioUploads = $this->container->getParameter('img_upload_folder');
+            // Generate the URL
+            $imageUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() .'/' .$direcorioUploads .'/marcas/'.$image[0]["marImagen"];
+            // Return the URL
+            return $imageUrl;
+        }
+
     }
 
      /**
@@ -382,5 +388,54 @@ class MarcasController extends FOSRestController
         // Return the URL
         return $imageUrl;
     }
+
+
+    /**
+     * @Rest\Delete("/marca/removeimage/{marcaid}")
+     */
+    public function deleteRemoveImageAction(Request $request)
+    {
+        $marcaid = $request->get('marcaid');
+        
+        // Check for mandatory fields 
+        if($marcaid == "" || !$marcaid)
+        {
+            throw new HttpException (400,"Debe proveer un id para eliminar el archivo.");  
+        }
+
+        // Obtain default image upload parameter
+        $ruta = $this->container->getParameter('img_upload_route');
+        $direcorioUploads = $this->container->getParameter('img_upload_folder');
+        // Construct the folder route for this Entity
+        $directory = __DIR__ .$ruta .$direcorioUploads ."/marcas/";
+
+        // Check if the file exist previously
+        foreach (glob($directory .$marcaid ."*") as $nombre_fichero) {
+            //if exists, delete the file 
+            unlink($nombre_fichero);
+        }
+
+
+
+        // get EntityManager
+        $em             = $this->getDoctrine()->getManager();
+        $marcatoremove  = $em->getRepository('AppBundle:Marca')->find($marcaid);
+
+        if ($marcatoremove != "") 
+        {      
+            $em->remove($marcatoremove);
+            $em->flush();
+            $response = array(
+                'message'   => 'La marca '.$marcatoremove->getMarNombre().' ha sido eliminada',
+                'nombre'    => $marcatoremove->getMarNombre(),
+                'id'        => $marcaid
+            );
+        return $response;
+        } else
+            {
+            throw new HttpException (400,"No se ha encontrado la marca especificada ID: ".$marcaid);
+            }
+     }
+
 
 }   
