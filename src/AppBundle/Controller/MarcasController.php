@@ -338,7 +338,11 @@ class MarcasController extends FOSRestController
             $em->flush();  
         }
         // Finish
-        return "Archivos cargados";
+        $response = array(
+            "message" => "Se han cargado los archivos correctamente",
+            "marcaid" => $marcaid
+        );
+        return $response;
     }
 
      /**
@@ -391,7 +395,7 @@ class MarcasController extends FOSRestController
 
 
     /**
-     * @Rest\Delete("/marca/removeimage/{marcaid}")
+     * @Rest\Delete("/marca/delete/removeimage/{marcaid}")
      */
     public function deleteRemoveImageAction(Request $request)
     {
@@ -402,6 +406,18 @@ class MarcasController extends FOSRestController
         {
             throw new HttpException (400,"Debe proveer un id para eliminar el archivo.");  
         }
+
+
+        // Get the DB entity
+        $em = $this->getDoctrine()->getManager();
+        $marca = $em->getRepository('AppBundle:Marca')->find($marcaid);
+        // If the entity value given does not exists, error
+        if (!$marca) {
+            throw new HttpException (400,"No se ha encontrado la marca especificada: " .$marcaid);
+        }
+            // Update the image of the entity
+            $marca-> setMarImagen("");
+            $em->flush();  
 
         // Obtain default image upload parameter
         $ruta = $this->container->getParameter('img_upload_route');
@@ -414,27 +430,11 @@ class MarcasController extends FOSRestController
             //if exists, delete the file 
             unlink($nombre_fichero);
         }
-
-
-
-        // get EntityManager
-        $em             = $this->getDoctrine()->getManager();
-        $marcatoremove  = $em->getRepository('AppBundle:Marca')->find($marcaid);
-
-        if ($marcatoremove != "") 
-        {      
-            $em->remove($marcatoremove);
-            $em->flush();
-            $response = array(
-                'message'   => 'La marca '.$marcatoremove->getMarNombre().' ha sido eliminada',
-                'nombre'    => $marcatoremove->getMarNombre(),
-                'id'        => $marcaid
-            );
+        $response = array(
+            "message" => "Se han eliminado los archivos correctamente",
+            "marcaid" => $marcaid
+        );
         return $response;
-        } else
-            {
-            throw new HttpException (400,"No se ha encontrado la marca especificada ID: ".$marcaid);
-            }
      }
 
 
