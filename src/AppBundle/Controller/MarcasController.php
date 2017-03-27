@@ -245,6 +245,21 @@ class MarcasController extends FOSRestController
         {      
             $em->remove($marcatoremove);
             $em->flush();
+
+        //Delete the image (if are any)
+
+        // Obtain default image upload parameter
+        $ruta = $this->container->getParameter('img_upload_route');
+        $direcorioUploads = $this->container->getParameter('img_upload_folder');
+        // Construct the folder route for this Entity
+        $directory = __DIR__ .$ruta .$direcorioUploads ."/marcas/";
+
+        // Check if the file exist previously
+        foreach (glob($directory .$marcaid ."*") as $nombre_fichero) {
+            //if exists, delete the file 
+            unlink($nombre_fichero);
+        }
+
             $response = array(
                 'message'   => 'La marca '.$marcatoremove->getMarNombre().' ha sido eliminada',
                 'nombre'    => $marcatoremove->getMarNombre(),
@@ -436,6 +451,5 @@ class MarcasController extends FOSRestController
         );
         return $response;
      }
-
 
 }   
