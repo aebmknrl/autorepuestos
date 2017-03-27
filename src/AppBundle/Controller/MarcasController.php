@@ -23,7 +23,6 @@ class MarcasController extends FOSRestController
             // Obtaining vars from request        
             $nombre         = $request->get('nombre');
             $observacion    = $request->get('observacion');
-            $marImagen      = $request->get('marImagen');
             // Check for mandatory fields          
             if($nombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
@@ -33,7 +32,6 @@ class MarcasController extends FOSRestController
             $marca          = new Marca();
             $marca          -> setMarNombre($nombre);
             $marca          -> setMarObservacion($observacion);
-            $marca          -> setMarImagen($marImagen);
             $em = $this->getDoctrine()->getManager();
 
             // tells Doctrine you want to (eventually) save (no queries yet)
@@ -192,7 +190,6 @@ class MarcasController extends FOSRestController
          $marcaid       = $request->get('marcaid');
          $nombre        = $request->get('nombre');
          $observacion   = $request->get('observacion');
-         $marImagen     = $request->get('marImagen');
 
         // Check for mandatory fields 
         if($marcaid == "" || !$marcaid)
@@ -215,7 +212,6 @@ class MarcasController extends FOSRestController
         // Create the Marca
         $marca->setMarNombre($nombre);
         $marca->setMarObservacion($observacion);
-        $marca-> setMarImagen($marImagen);
         $em->flush();
 
         $response = array(
@@ -227,7 +223,7 @@ class MarcasController extends FOSRestController
         return $response;
         }
         catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e){
-            throw new HttpException (409,"Error: El nombre de la marca ya esxiste."); 
+            throw new HttpException (409,"Error: El nombre de la marca ya existe."); 
             } 
         catch (Exception $e) {
             return $e->getMessage();
@@ -321,8 +317,7 @@ class MarcasController extends FOSRestController
             }
 
             // Obtain the size of the file uploaded
-            $fileSize = $uploadedfile->getSize();
-            return $fileSize;  //$_SERVER['CONTENT_LENGTH'];
+            $fileSize = $uploadedfile->getClientSize();  //$_SERVER['CONTENT_LENGTH'];
             // Obtain the max file size that can be uploaded by the PHP.INI
             $maxFileSizeAllowed = $uploadedfile->getMaxFilesize();
             // If the size of the uploaded file exceds the max value permited, error
@@ -371,6 +366,19 @@ class MarcasController extends FOSRestController
         $direcorioUploads = $this->container->getParameter('img_upload_folder');
         // Generate the URL
         $imageUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() .'/' .$direcorioUploads .'/marcas/'.$image[0]["marImagen"];
+        // Return the URL
+        return $imageUrl;
+    }
+
+     /**
+     * @Rest\Post("/marca/getImagesRoute")
+     */
+    public function postGetImagesRouteAction(Request $request)
+    {   
+        // Get de default image folder parameter
+        $direcorioUploads = $this->container->getParameter('img_upload_folder');
+        // Generate the URL
+        $imageUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() .'/' .$direcorioUploads .'/marcas/';
         // Return the URL
         return $imageUrl;
     }
