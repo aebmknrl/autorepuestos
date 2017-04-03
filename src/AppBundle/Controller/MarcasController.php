@@ -23,6 +23,8 @@ class MarcasController extends FOSRestController
             // Obtaining vars from request        
             $nombre         = $request->get('nombre');
             $observacion    = $request->get('observacion');
+            $marPais        = $request->get('pais');
+            $marValor       = $request->get('valor');
             // Check for mandatory fields          
             if($nombre == ""){
                 throw new HttpException (400,"El campo nombre no puede estar vacío");   
@@ -32,6 +34,8 @@ class MarcasController extends FOSRestController
             $marca          = new Marca();
             $marca          -> setMarNombre($nombre);
             $marca          -> setMarObservacion($observacion);
+            $marca          -> setMarPais($marPais);
+            $marca          -> setMarValor($marValor);
             $em = $this->getDoctrine()->getManager();
 
             // tells Doctrine you want to (eventually) save (no queries yet)
@@ -161,6 +165,8 @@ class MarcasController extends FOSRestController
             ->where('marca.marObservacion LIKE :searchtext')
             ->orWhere('marca.marNombre LIKE :searchtext')
             ->orWhere('marca.marId LIKE :searchtext')
+            ->orWhere('marca.marPais LIKE :searchtext')
+            ->orWhere('marca.marValor LIKE :searchtext')
             ->setParameter('searchtext',"%" .$searchtext ."%")
             ->getQuery()
             ->setFirstResult($limit * ($page - 1))
@@ -190,6 +196,8 @@ class MarcasController extends FOSRestController
          $marcaid       = $request->get('marcaid');
          $nombre        = $request->get('nombre');
          $observacion   = $request->get('observacion');
+         $marPais       = $request->get('pais');
+         $marValor      = $request->get('valor');
 
         // Check for mandatory fields 
         if($marcaid == "" || !$marcaid)
@@ -210,8 +218,10 @@ class MarcasController extends FOSRestController
          }
 
         // Create the Marca
-        $marca->setMarNombre($nombre);
-        $marca->setMarObservacion($observacion);
+        $marca          -> setMarNombre($nombre);
+        $marca          -> setMarObservacion($observacion);
+        $marca          -> setMarPais($marPais);
+        $marca          -> setMarValor($marValor);
         $em->flush();
 
         $response = array(

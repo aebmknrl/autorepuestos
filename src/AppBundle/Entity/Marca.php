@@ -42,6 +42,20 @@ class Marca
      */
     private $marImagen;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_PAIS", type="string", length=45, nullable=true)
+     */
+    private $marPais;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_VALOR", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $marValor;
+
 
 
     /**
@@ -124,5 +138,53 @@ class Marca
     public function getMarImagen()
     {
         return $this->marImagen;
+    }
+
+    /**
+     * Set marPais
+     *
+     * @param string $marPais
+     *
+     * @return Marca
+     */
+    public function setMarPais($marPais)
+    {
+        $this->marPais = $marPais;
+
+        return $this;
+    }
+
+    /**
+     * Get marPais
+     *
+     * @return string
+     */
+    public function getMarPais()
+    {
+        return $this->marPais;
+    }
+
+    /**
+     * Set marValor
+     *
+     * @param string $marValor
+     *
+     * @return Marca
+     */
+    public function setMarValor($marValor)
+    {
+        $this->marValor = $marValor;
+
+        return $this;
+    }
+
+    /**
+     * Get marValor
+     *
+     * @return string
+     */
+    public function getMarValor()
+    {
+        return $this->marValor;
     }
 }

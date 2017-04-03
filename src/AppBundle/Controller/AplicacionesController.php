@@ -352,6 +352,33 @@ class AplicacionesController extends FOSRestController
         }
 
     }
+    
+
+    /**
+    * @Rest\Post("/aplicacion/partevehiculoeq/{parId}/{vehId}")
+    */
+    public function postParteVehiculoEq(request $request)
+    {
+        $partePar    = $request->get('parId');
+        $vehiculoVeh = $request->get('vehId');
+        $repository     = $this->getDoctrine()->getRepository('AppBundle:Aplicacion');
+        
+        //sql query
+        $query = $repository->createQueryBuilder('aplicacion')->join('aplicacion.vehiculoVeh','veh')->join('aplicacion.partePar','par')
+            ->where('veh.vehId = :vehId')
+            ->andWhere('parte.parId = :parId')
+            ->setParameter('vehId',$vehiculoVeh)
+            ->setParameter('parId',$partePar)
+            ->getQuery();
+
+        $aplicacionesDeParte = $query->getResult();
+        if (count($aplicacionesDeParte) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
     * @Rest\Delete("/aplicacion/delete/allpartapp/{partId}")

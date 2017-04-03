@@ -29,7 +29,7 @@ AppBundle\Entity\Marca:
         marObservacion:
             type: string
             nullable: true
-            length: 45
+            length: 250
             options:
                 fixed: false
             column: MAR_OBSERVACION
@@ -40,4 +40,17 @@ AppBundle\Entity\Marca:
             options:
                 fixed: false
             column: MAR_IMAGEN
+        marPais:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: MAR_PAIS
+        marValor:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            column: MAR_VALOR
     lifecycleCallbacks: {  }

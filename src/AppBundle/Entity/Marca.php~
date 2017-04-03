@@ -31,7 +31,7 @@ class Marca
     /**
      * @var string
      *
-     * @ORM\Column(name="MAR_OBSERVACION", type="string", length=45, nullable=true)
+     * @ORM\Column(name="MAR_OBSERVACION", type="string", length=250, nullable=true)
      */
     private $marObservacion;
 
@@ -41,6 +41,20 @@ class Marca
      * @ORM\Column(name="MAR_IMAGEN", type="string", length=250, nullable=true)
      */
     private $marImagen;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_PAIS", type="string", length=45, nullable=true)
+     */
+    private $marPais;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_VALOR", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $marValor;
 
 
 }
