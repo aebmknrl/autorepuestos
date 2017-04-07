@@ -52,7 +52,7 @@ class Marca
     /**
      * @var string
      *
-     * @ORM\Column(name="MAR_VALOR", type="decimal", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="MAR_VALOR", type="decimal", precision=10, scale=1, nullable=true)
      */
     private $marValor;
 
