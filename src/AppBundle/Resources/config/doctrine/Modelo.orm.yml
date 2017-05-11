@@ -9,6 +9,9 @@ AppBundle\Entity\Modelo:
         MAR_ID_UNIQUE:
             columns:
                 - MOD_ID
+        MOD_NOMBRE_UNIQUE:
+            columns:
+                - MOD_NOMBRE
     id:
         modId:
             type: integer

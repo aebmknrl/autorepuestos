@@ -1,6 +1,10 @@
 AppBundle\Entity\Proveedor:
     type: entity
     table: proveedor
+    uniqueConstraints:
+        PROV_NOMBRE_UNIQUE:
+            columns:
+                - PROV_NOMBRE
     id:
         provId:
             type: integer
@@ -39,7 +43,6 @@ AppBundle\Entity\Proveedor:
             length: 45
             options:
                 fixed: false
-                default: ACTIVO
             column: PROV_STATUS
         provObservacion:
             type: string

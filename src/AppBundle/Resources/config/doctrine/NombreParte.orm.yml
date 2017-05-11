@@ -1,0 +1,56 @@
+AppBundle\Entity\NombreParte:
+    type: entity
+    table: nombre_parte
+    indexes:
+        fk_grupo_idx:
+            columns:
+                - PAR_GRUPO_ID
+    uniqueConstraints:
+        nombre_grupo_unique:
+            columns:
+                - PAR_NOMBRE
+                - PAR_GRUPO_ID
+    id:
+        parNombreId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: PAR_NOMBRE_ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        parNombre:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+            column: PAR_NOMBRE
+        parNombreIngles:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: PAR_NOMBRE_INGLES
+        parNombreOtros:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: PAR_NOMBRE_OTROS
+    manyToOne:
+        parGrupo:
+            targetEntity: Grupo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PAR_GRUPO_ID:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

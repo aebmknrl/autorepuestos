@@ -1,6 +1,6 @@
-AppBundle\Entity\EquivalenciaV2:
+AppBundle\Entity\Equivalencia:
     type: entity
-    table: equivalencia_v2
+    table: equivalencia
     id:
         id:
             type: integer
@@ -8,6 +8,7 @@ AppBundle\Entity\EquivalenciaV2:
             options:
                 unsigned: false
             id: true
+            column: ID
             generator:
                 strategy: IDENTITY
     fields:
@@ -17,17 +18,12 @@ AppBundle\Entity\EquivalenciaV2:
             length: 15
             options:
                 fixed: false
-            column: equivalencia_ref
-        part1Id:
-            type: integer
-            nullable: false
+            column: EQUIVALENCIA_REF
+        equivalenciaDesc:
+            type: string
+            nullable: true
+            length: 45
             options:
-                unsigned: false
-            column: part1_id
-        part2Id:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: part2_id
+                fixed: false
+            column: EQUIVALENCIA_DESC
     lifecycleCallbacks: {  }

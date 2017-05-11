@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Marca
  *
- * @ORM\Table(name="marca", uniqueConstraints={@ORM\UniqueConstraint(name="MAR_ID_UNIQUE", columns={"MAR_ID"})})
+ * @ORM\Table(name="marca", uniqueConstraints={@ORM\UniqueConstraint(name="MAR_ID_UNIQUE", columns={"MAR_ID"}), @ORM\UniqueConstraint(name="MAR_NOMBRE_UNIQUE", columns={"MAR_NOMBRE"})})
  * @ORM\Entity
  */
 class Marca
@@ -15,7 +15,7 @@ class Marca
     /**
      * @var integer
      *
-     * @ORM\Column(name="MAR_ID", type="integer")
+     * @ORM\Column(name="MAR_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -31,9 +31,30 @@ class Marca
     /**
      * @var string
      *
-     * @ORM\Column(name="MAR_OBSERVACION", type="string", length=45, nullable=true)
+     * @ORM\Column(name="MAR_OBSERVACION", type="string", length=250, nullable=true)
      */
     private $marObservacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_IMAGEN", type="string", length=250, nullable=true)
+     */
+    private $marImagen;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_PAIS", type="string", length=45, nullable=true)
+     */
+    private $marPais;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MAR_VALOR", type="decimal", precision=10, scale=1, nullable=true)
+     */
+    private $marValor;
 
 
 
@@ -93,5 +114,77 @@ class Marca
     public function getMarObservacion()
     {
         return $this->marObservacion;
+    }
+
+    /**
+     * Set marImagen
+     *
+     * @param string $marImagen
+     *
+     * @return Marca
+     */
+    public function setMarImagen($marImagen)
+    {
+        $this->marImagen = $marImagen;
+
+        return $this;
+    }
+
+    /**
+     * Get marImagen
+     *
+     * @return string
+     */
+    public function getMarImagen()
+    {
+        return $this->marImagen;
+    }
+
+    /**
+     * Set marPais
+     *
+     * @param string $marPais
+     *
+     * @return Marca
+     */
+    public function setMarPais($marPais)
+    {
+        $this->marPais = $marPais;
+
+        return $this;
+    }
+
+    /**
+     * Get marPais
+     *
+     * @return string
+     */
+    public function getMarPais()
+    {
+        return $this->marPais;
+    }
+
+    /**
+     * Set marValor
+     *
+     * @param string $marValor
+     *
+     * @return Marca
+     */
+    public function setMarValor($marValor)
+    {
+        $this->marValor = $marValor;
+
+        return $this;
+    }
+
+    /**
+     * Get marValor
+     *
+     * @return string
+     */
+    public function getMarValor()
+    {
+        return $this->marValor;
     }
 }

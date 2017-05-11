@@ -6,3 +6,47 @@ api_marcas:
     type: rest
     resource: "@AppBundle/Controller/MarcasController.php"
     name_prefix: api_marcas_
+api_modelos:
+    type: rest
+    resource: "@AppBundle/Controller/ModelosController.php"
+    name_prefix: api_modelos_
+api_vehiculos:
+    type: rest
+    resource: "@AppBundle/Controller/VehiculosController.php"
+    name_prefix: api_vehiculos_
+api_proveedores:
+    type: rest
+    resource: "@AppBundle/Controller/ProveedoresController.php"
+    name_prefix: api_proveedores_
+api_fabricantes:
+    type: rest
+    resource: "@AppBundle/Controller/FabricantesController.php"
+    name_prefix: api_fabricantes_
+api_aplicaciones:
+    type: rest
+    resource: "@AppBundle/Controller/AplicacionesController.php"
+    name_prefix: api_aplicaciones_
+api_conjuntos:
+    type: rest
+    resource: "@AppBundle/Controller/ConjuntosController.php"
+    name_prefix: api_conjuntos_
+api_partes:
+    type: rest
+    resource: "@AppBundle/Controller/PartesController.php"
+    name_prefix: api_partes_
+api_equivalencias:
+    type: rest
+    resource: "@AppBundle/Controller/EquivalenciasController.php"
+    name_prefix: api_equivalencias_
+api_inventarios:
+    type: rest
+    resource: "@AppBundle/Controller/InventariosController.php"
+    name_prefix: api_inventarios_
+api_grupos:
+    type: rest
+    resource: "@AppBundle/Controller/GruposController.php"
+    name_prefix: api_grupos_
+api_nombre_partes:
+    type: rest
+    resource: "@AppBundle/Controller/NombrePartesController.php"
+    name_prefix: api_nombre_partes_

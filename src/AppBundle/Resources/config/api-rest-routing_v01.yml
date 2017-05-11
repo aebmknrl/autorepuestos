@@ -1,0 +1,8 @@
+api_users:
+    type: rest
+    resource: "@AppBundle/Controller/UsersController.php"
+    name_prefix:  api_users_
+api_marcas:
+    type: rest
+    resource: "@AppBundle/Controller/MarcasController.php"
+    name_prefix: api_marcas_

@@ -15,7 +15,7 @@ class Aplicacion
     /**
      * @var integer
      *
-     * @ORM\Column(name="APL_ID", type="integer")
+     * @ORM\Column(name="APL_ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -36,9 +36,9 @@ class Aplicacion
     private $aplObservacion;
 
     /**
-     * @var \AppBundle\Entity\Parte
+     * @var \Parte
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Parte")
+     * @ORM\ManyToOne(targetEntity="Parte")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="PARTE_PAR_ID", referencedColumnName="PAR_ID")
      * })
@@ -46,9 +46,9 @@ class Aplicacion
     private $partePar;
 
     /**
-     * @var \AppBundle\Entity\Vehiculo
+     * @var \Vehiculo
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehiculo")
+     * @ORM\ManyToOne(targetEntity="Vehiculo")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="VEHICULO_VEH_ID", referencedColumnName="VEH_ID")
      * })

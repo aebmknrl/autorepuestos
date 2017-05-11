@@ -5,6 +5,9 @@ AppBundle\Entity\Marca:
         MAR_ID_UNIQUE:
             columns:
                 - MAR_ID
+        MAR_NOMBRE_UNIQUE:
+            columns:
+                - MAR_NOMBRE
     id:
         marId:
             type: integer
@@ -26,8 +29,28 @@ AppBundle\Entity\Marca:
         marObservacion:
             type: string
             nullable: true
-            length: 45
+            length: 250
             options:
                 fixed: false
             column: MAR_OBSERVACION
+        marImagen:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: MAR_IMAGEN
+        marPais:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: MAR_PAIS
+        marValor:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            column: MAR_VALOR
     lifecycleCallbacks: {  }

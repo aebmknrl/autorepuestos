@@ -1,37 +1,41 @@
-AppBundle\Entity\Imagenes:
+AppBundle\Entity\VehiculoNota:
     type: entity
-    table: imagenes
+    table: vehiculo_nota
     indexes:
-        fk_IMAGENES_PARTE1_idx:
+        fk_vehiculo_nota_idx:
             columns:
-                - PARTE_PAR_ID
+                - VEHICULO_VEH_ID
     id:
-        imgId:
+        vehNotaId:
             type: integer
             nullable: false
             options:
                 unsigned: false
             id: true
-            column: IMG_ID
+            column: VEH_NOTA_ID
             generator:
                 strategy: IDENTITY
     fields:
-        imgUbicacion:
+        vehNota:
             type: string
             nullable: true
-            length: 45
+            length: 100
             options:
                 fixed: false
-            column: IMG_UBICACION
+            column: VEH_NOTA
+        fechaNota:
+            type: date
+            nullable: true
+            column: FECHA_NOTA
     manyToOne:
-        partePar:
-            targetEntity: Parte
+        vehiculoVeh:
+            targetEntity: Vehiculo
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                PARTE_PAR_ID:
-                    referencedColumnName: PAR_ID
+                VEHICULO_VEH_ID:
+                    referencedColumnName: VEH_ID
             orphanRemoval: false
     lifecycleCallbacks: {  }

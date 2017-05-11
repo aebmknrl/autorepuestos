@@ -26,13 +26,6 @@ AppBundle\Entity\Vehiculo:
             options:
                 unsigned: false
             column: ANIO_ANI_ID
-        vehVariante:
-            type: string
-            nullable: false
-            length: 45
-            options:
-                fixed: false
-            column: VEH_VARIANTE
         vehVin:
             type: string
             nullable: true
@@ -40,6 +33,88 @@ AppBundle\Entity\Vehiculo:
             options:
                 fixed: false
             column: VEH_VIN
+        vehFabDesde:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: VEH_FAB_DESDE
+        vehFabHasta:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: VEH_FAB_HASTA
+        vehVariante:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: VEH_VARIANTE
+        vehCilindros:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_CILINDROS
+        vehLitros:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_LITROS
+        vehValvulas:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_VALVULAS
+        vehLevas:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+            column: VEH_LEVAS
+        vehVersion:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_VERSION
+        vehTipo:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_TIPO
+        vehTraccion:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_TRACCION
+        vehCaja:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_CAJA
+        vehObservacion:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: VEH_OBSERVACION
         nota:
             type: string
             nullable: true

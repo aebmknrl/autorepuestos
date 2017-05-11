@@ -2,15 +2,15 @@ AppBundle\Entity\Parte:
     type: entity
     table: parte
     indexes:
-        fk_PARTE_EQ2_idx:
+        fk_PARTE_NOMBRE_idx:
+            columns:
+                - PAR_NOMBRE_ID
+        fk_PARTE_EQ_idx:
             columns:
                 - PAR_EQ_ID
-        fk_PARTE_FABRICANTE1_idx:
+        fk_PARTE_FABRICANTE_idx:
             columns:
                 - FABRICANTE_FAB_ID
-        fk_PARTE_KIT2_idx:
-            columns:
-                - KIT_ID
     uniqueConstraints:
         PAR_ID_UNIQUE:
             columns:
@@ -29,45 +29,6 @@ AppBundle\Entity\Parte:
             generator:
                 strategy: IDENTITY
     fields:
-        parUpc:
-            type: string
-            nullable: true
-            length: 45
-            options:
-                fixed: false
-                comment: 'CODIGO UPC 12 DIGITOS'
-            column: PAR_UPC
-        parNombre:
-            type: string
-            nullable: false
-            length: 100
-            options:
-                fixed: false
-                comment: 'NOMBRE INTERNACIONAL TRADUCIDO DEL INGLES'
-            column: PAR_NOMBRE
-        parNombret:
-            type: string
-            nullable: false
-            length: 100
-            options:
-                fixed: false
-                comment: 'NOMBRE COLOQUIAL DE LA PIEZA'
-            column: PAR_NOMBRET
-        parNombrein:
-            type: string
-            nullable: true
-            length: 45
-            options:
-                fixed: false
-            column: PAR_NOMBREIN
-        parAsin:
-            type: string
-            nullable: true
-            length: 45
-            options:
-                fixed: false
-                comment: 'CODIGO EN AMAZON'
-            column: PAR_ASIN
         parCodigo:
             type: string
             nullable: false
@@ -76,22 +37,21 @@ AppBundle\Entity\Parte:
                 fixed: false
                 comment: 'CODIGO INTERNO DEL FABRICANTE'
             column: PAR_CODIGO
-        parGrupo:
-            type: string
-            nullable: false
-            length: 45
-            options:
-                fixed: false
-                comment: 'NOMBRE DEL CONJUNTO O SISTEMA AL QUE PERTENECE, SUSPENCION,FRENOS'
-            column: PAR_GRUPO
-        parSubgrupo:
+        parUpc:
             type: string
             nullable: true
             length: 45
             options:
                 fixed: false
-                comment: 'SUBCATEGORIA DENTRO DE PARTES, SUSPENCION NORMAL REFORZADOS EXTRAREFORZADOS'
-            column: PAR_SUBGRUPO
+                comment: 'CODIGO UPC 12 DIGITOS'
+            column: PAR_UPC
+        parSku:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: PAR_SKU
         parLargo:
             type: string
             nullable: false
@@ -109,7 +69,7 @@ AppBundle\Entity\Parte:
             column: PAR_ANCHO
         parEspesor:
             type: string
-            nullable: false
+            nullable: true
             length: 45
             options:
                 fixed: false
@@ -122,6 +82,13 @@ AppBundle\Entity\Parte:
                 fixed: false
                 comment: KILOS
             column: PAR_PESO
+        parteOrigen:
+            type: string
+            nullable: true
+            length: 30
+            options:
+                fixed: false
+            column: PARTE_ORIGEN
         parCaract:
             type: string
             nullable: true
@@ -138,20 +105,38 @@ AppBundle\Entity\Parte:
                 fixed: false
                 comment: 'TIPS, RECOMENDACIONES '
             column: PAR_OBSERVACION
+        parAsin:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+                comment: 'CODIGO EN AMAZON'
+            column: PAR_ASIN
+        parSubgrupo:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+                comment: 'SUBCATEGORIA DENTRO DE PARTES, SUSPENCION NORMAL REFORZADOS EXTRAREFORZADOS'
+            column: PAR_SUBGRUPO
         parKit:
-            type: boolean
-            nullable: false
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
             column: PAR_KIT
     manyToOne:
         parEq:
-            targetEntity: EquivalenciaV2
+            targetEntity: Equivalencia
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 PAR_EQ_ID:
-                    referencedColumnName: id
+                    referencedColumnName: ID
             orphanRemoval: false
         fabricanteFab:
             targetEntity: Fabricante
@@ -163,14 +148,14 @@ AppBundle\Entity\Parte:
                 FABRICANTE_FAB_ID:
                     referencedColumnName: FAB_ID
             orphanRemoval: false
-        kit:
-            targetEntity: ConjuntoV2
+        parNombre:
+            targetEntity: NombreParte
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                KIT_ID:
-                    referencedColumnName: id
+                PAR_NOMBRE_ID:
+                    referencedColumnName: PAR_NOMBRE_ID
             orphanRemoval: false
     lifecycleCallbacks: {  }

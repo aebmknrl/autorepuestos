@@ -40,7 +40,6 @@ AppBundle\Entity\Inventario:
             nullable: false
             options:
                 unsigned: false
-                comment: 'EN CASO DE CANTIDAD MINIMA DE VENTA'
             column: INV_EMPAQUE
         invObservacion:
             type: string
