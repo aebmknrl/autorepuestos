@@ -418,4 +418,63 @@ class AplicacionesController extends FOSRestController
         
         return $data;
     }
+
+
+
+    /**
+     * @Rest\Post("/aplicacion/equiv/{limit}/{page}")
+     */
+    public function getAplicacionEquivalentPartAction(Request $request)
+    {
+        // Set up the limit and page vars from request
+        $limit          = $request->get('limit');
+        $page           = $request->get('page');
+        $vehId          = $request->get('vehId');
+        $parId          = $request->get('parId');
+
+        // Check if the params are numbers before continue
+        if(!is_numeric($page)) {
+            throw new HttpException (400,"Por favor use solo números para la página");  
+        }
+        // Check if the limit asked has all or not.
+        if (!is_numeric($limit)) {
+            if ($limit != 'todos') {
+                if ($limit != 'Todos') {
+                    throw new HttpException (400,"Por favor use solo números para el límite o indique si son 'todos'");  
+                } else {
+                    $limit = 10000;
+                }
+            } else {
+                $limit = 10000;
+            }
+        }
+        if($vehId == ""){
+            throw new HttpException (400,"Escriba un texto para vehiculo"); 
+        }
+
+        // Connect with the autoparts db repository
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Aplicacion');
+        // The dsql syntax query
+        $query = $repository->createQueryBuilder('aplicacion')->join('aplicacion.partePar','p')->join('p.parNombre','n')->join('aplicacion.vehiculoVeh','v')
+            ->where('v.vehId Like :vehId')
+            ->andWhere('n.parNombreId Like :parId')
+            ->setParameter('vehId',"%" .$vehId."%")
+            ->setParameter('parId',"%" .$parId."%")
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        // Build the paginator
+        $paginator = new Paginator($query, $fetchJoinCollection = true);
+        // Construct the response
+        $response = array(
+            'aplicaciones'                  => $paginator->getIterator(),
+            'totalAplicacionesReturned'     => $paginator->getIterator()->count(),
+            'totalAplicaciones'             => $paginator->count(),
+            'vehId'                         => $vehId,
+            'parId'                         => $parId
+        );
+        // Send the response
+        return $response;
+    }
+
 }   
